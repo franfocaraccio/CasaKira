@@ -46,8 +46,7 @@ const favicon =
       (function () {
         try {
           var t = localStorage.getItem('casakira-theme');
-          document.documentElement.dataset.theme =
-            t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.theme = t || 'light';
         } catch (e) {
           document.documentElement.dataset.theme = 'light';
         }
@@ -64,10 +63,9 @@ const favicon =
     <Footer />
     <Fab />
 
-    <!-- Realce del nav y del FAB al scrollear. Sirve en todas las páginas. -->
+    <!-- Realce del nav al scrollear. Sirve en todas las páginas. -->
     <script>
       const nav = document.getElementById('nav');
-      const fab = document.getElementById('fab');
       let ticking = false;
       function onScroll() {
         if (ticking) return;
@@ -75,7 +73,6 @@ const favicon =
         requestAnimationFrame(() => {
           const y = window.scrollY;
           if (nav) nav.dataset.scrolled = y > 8 ? 'true' : 'false';
-          if (fab) fab.dataset.show = y > 600 ? 'true' : 'false';
           ticking = false;
         });
       }

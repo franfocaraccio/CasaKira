@@ -65,6 +65,13 @@
   --photo-filter:saturate(.18) contrast(1.04);
   --nav-bg:rgba(250,250,250,.85);
   color-scheme:light;
+
+  /* Bandas rojas plenas (Servicios, cierre de ficha): mismo rojo de marca. */
+  --band-bg:#C1272D;
+  --band-surface:#A9222A;
+  --band-fg:#FFFFFF;
+  --band-muted:rgba(255,255,255,.75);
+  --band-border:rgba(255,255,255,.18);
 }
 
 /* ── Tema oscuro ────────────────────────────────────────────────────────
@@ -99,6 +106,14 @@
   --photo-filter:saturate(.14) contrast(1.02) brightness(.92);
   --nav-bg:rgba(10,10,11,.85);
   color-scheme:dark;
+
+  /* Rojo más oscuro que --accent: en dark el accent se aclara y pierde
+     contraste con texto blanco encima de una banda plena. */
+  --band-bg:#8C1D22;
+  --band-surface:#762026;
+  --band-fg:#FFFFFF;
+  --band-muted:rgba(255,255,255,.72);
+  --band-border:rgba(255,255,255,.16);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -240,7 +255,7 @@ input,textarea,select{font:inherit;color:inherit}
 .brand{display:flex;align-items:center;gap:.875rem;flex:none}
 /* Logotipo reconstruido en vector. --logo-ink es el contorno: oscuro sobre
    fondo claro, y en modo oscuro se apaga para que el rojo respire. */
-.logo{display:block;height:38px;width:auto;flex:none;--logo-red:#C1272D;--logo-ink:#1B1B1E;--logo-ink-w:2.4}
+.logo{display:block;height:44px;width:auto;flex:none;--logo-red:#C1272D;--logo-ink:#1B1B1E;--logo-ink-w:2.4}
 :root[data-theme="dark"] .logo{--logo-red:#EF4444;--logo-ink:#0A0A0B;--logo-ink-w:0}
 .brand:hover .logo{--logo-red:var(--accent-hover)}
 .logo *{transition:fill var(--dur-fast) var(--ease),stroke var(--dur-fast) var(--ease)}
@@ -287,8 +302,6 @@ input,textarea,select{font:inherit;color:inherit}
   transition:background-color var(--dur-fast),color var(--dur-fast),border-color var(--dur-fast);
 }
 .icon-btn:hover{background:var(--surface);color:var(--text);border-color:var(--border-strong)}
-.nav__cta{display:none}
-@media(min-width:640px){.nav__cta{display:inline-flex}}
 .nav__burger{display:grid}
 @media(min-width:1024px){.nav__burger{display:none}}
 
@@ -555,10 +568,10 @@ input,textarea,select{font:inherit;color:inherit}
 .related__head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-6)}
 .related__head h2{font-size:1.375rem}
 
-.cta-band{background:var(--ink);color:var(--ink-fg);border-block:1px solid var(--ink-border);position:relative;overflow:hidden}
+.cta-band{background:var(--band-bg);color:var(--band-fg);border-block:1px solid var(--band-border);position:relative;overflow:hidden}
 .cta-band__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-5);padding-block:var(--s-7);position:relative;z-index:var(--z-content)}
 .cta-band h2{font-size:clamp(1.375rem,3vw,1.875rem);letter-spacing:-.02em;max-width:20ch}
-.cta-band p{color:var(--ink-muted);margin-top:.5rem;max-width:46ch;font-size:.9375rem;line-height:1.6}
+.cta-band p{color:var(--band-muted);margin-top:.5rem;max-width:46ch;font-size:.9375rem;line-height:1.6}
 .cta-band__actions{display:flex;flex-wrap:wrap;gap:.75rem}
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -598,24 +611,24 @@ input,textarea,select{font:inherit;color:inherit}
 /* ══════════════════════════════════════════════════════════════════════════
    Servicios — banda oscura
    ══════════════════════════════════════════════════════════════════════════ */
-.services{background:var(--ink);color:var(--ink-fg);position:relative;overflow:hidden;border-block:1px solid var(--ink-border)}
-.services .eyebrow{color:var(--accent-graphic)}
-.services .section-index{color:var(--ink-muted)}
+.services{background:var(--band-bg);color:var(--band-fg);position:relative;overflow:hidden;border-block:1px solid var(--band-border)}
+.services .eyebrow{color:var(--band-fg)}
+.services .section-index{color:var(--band-muted)}
 .services__grid{display:grid;gap:var(--s-7);position:relative;z-index:var(--z-content)}
 @media(min-width:1024px){.services__grid{grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}}
-.services p{color:var(--ink-muted);line-height:1.75}
-.services .lead{color:var(--ink-muted)}
-.svc-list{display:grid;gap:0;margin-top:var(--s-6);border-top:1px solid var(--ink-border)}
+.services p{color:var(--band-muted);line-height:1.75}
+.services .lead{color:var(--band-muted)}
+.svc-list{display:grid;gap:0;margin-top:var(--s-6);border-top:1px solid var(--band-border)}
 .svc-list li{
   display:flex;align-items:flex-start;gap:var(--s-4);padding:var(--s-4) 0;
-  border-bottom:1px solid var(--ink-border);
+  border-bottom:1px solid var(--band-border);
 }
-.svc-list__n{font-family:var(--font-mono);font-size:.6875rem;color:var(--accent-graphic);letter-spacing:.1em;padding-top:.28em;flex:none;font-variant-numeric:tabular-nums}
-.svc-list__t{font-weight:500;font-size:1rem;color:var(--ink-fg)}
-.svc-list__d{font-size:.875rem;color:var(--ink-muted);margin-top:.2rem;line-height:1.55}
+.svc-list__n{font-family:var(--font-mono);font-size:.6875rem;color:var(--band-fg);letter-spacing:.1em;padding-top:.28em;flex:none;font-variant-numeric:tabular-nums}
+.svc-list__t{font-weight:500;font-size:1rem;color:var(--band-fg)}
+.svc-list__d{font-size:.875rem;color:var(--band-muted);margin-top:.2rem;line-height:1.55}
 .services__visual{position:relative}
-.services__visual .photo-panel{background:var(--ink-surface);border-color:var(--ink-border)}
-.services__visual .photo-panel__tag{background:rgba(0,0,0,.5);border-color:var(--ink-border);color:var(--ink-muted)}
+.services__visual .photo-panel{background:var(--band-surface);border-color:var(--band-border)}
+.services__visual .photo-panel__tag{background:rgba(0,0,0,.35);border-color:var(--band-border);color:var(--band-muted)}
 
 /* ══════════════════════════════════════════════════════════════════════════
    Tienda online
@@ -746,10 +759,8 @@ input,textarea,select{font:inherit;color:inherit}
   min-height:52px;padding:.75rem 1.125rem;border-radius:99px;
   background:#1FA855;color:#fff;font-weight:600;font-size:.9375rem;
   box-shadow:0 6px 20px -4px rgba(31,168,85,.5),var(--shadow-md);
-  opacity:0;transform:translateY(12px);pointer-events:none;
-  transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease),background-color var(--dur-fast);
+  transition:background-color var(--dur-fast),transform var(--dur-fast) var(--ease);
 }
-.fab[data-show="true"]{opacity:1;transform:none;pointer-events:auto}
 .fab:hover{background:#17914A}
 .fab span{display:none}
 @media(min-width:640px){.fab span{display:inline}}

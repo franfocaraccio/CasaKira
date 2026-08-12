@@ -1,7 +1,6 @@
 ---
 import { SITE, NAV_LINKS, waLink } from '../data/site';
 import Logo from './Logo.astro';
-import BrandIcon from './BrandIcon.astro';
 import ThemeToggle from './islands/ThemeToggle.tsx';
 import MobileMenu from './islands/MobileMenu.tsx';
 ---
@@ -22,10 +21,6 @@ import MobileMenu from './islands/MobileMenu.tsx';
 
     <div class="nav__actions">
       <ThemeToggle client:load />
-      <a class="btn btn--primary btn--sm nav__cta" href={waLink()} target="_blank" rel="noopener">
-        <BrandIcon name="whatsapp" size={16} />
-        WhatsApp
-      </a>
       <MobileMenu
         client:load
         links={NAV_LINKS.map((l) => ({ href: l.href, label: l.label }))}
