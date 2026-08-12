@@ -2,7 +2,8 @@
 import { SITE, NAV_LINKS, waLink } from '../data/site';
 import Logo from './Logo.astro';
 import BrandIcon from './BrandIcon.astro';
-import ThemeToggle from './islands/ThemeToggle.tsx';
+// El switch de tema (ThemeToggle) queda desmontado por ahora, pero su lógica,
+// el script anti-flash del layout y el CSS siguen en el repo para reactivarlo.
 
 // Resalta el link de la página actual. Sin anclas, no hay scrollspy: el estado
 // activo se decide en el servidor comparando la ruta.
@@ -54,7 +55,6 @@ const waHref = waLink();
         <a class="nav__social-link" href={SITE.instagram} target="_blank" rel="noopener" aria-label="Instagram"><BrandIcon name="instagram" size={24} /></a>
         <a class="nav__social-link" href={SITE.facebook} target="_blank" rel="noopener" aria-label="Facebook"><BrandIcon name="facebook" size={24} /></a>
       </div>
-      <ThemeToggle client:load />
       <button class="icon-btn nav__burger" id="nav-burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sheet">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" />

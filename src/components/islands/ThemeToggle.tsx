@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
 /**
- * Botón de tema (isla de React). El tema inicial ya lo fija un script inline en
- * el <head> para evitar el flash; este botón sólo lo invierte y lo persiste.
+ * Switch de tema día/noche (isla de React). El tema inicial lo fija un script
+ * inline en el <head> para evitar el flash; este switch sólo lo invierte y lo
+ * persiste. El deslizamiento de la perilla lo maneja el CSS por [data-theme].
  */
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -27,17 +28,29 @@ export default function ThemeToggle() {
   const label = 'Cambiar a modo ' + (theme === 'dark' ? 'claro' : 'oscuro');
 
   return (
-    <button className="icon-btn" type="button" onClick={toggle} aria-label={label} title={label}>
-      {theme === 'dark' ? (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-      ) : (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-        </svg>
-      )}
+    <button
+      className="theme-switch"
+      type="button"
+      role="switch"
+      aria-checked={theme === 'dark'}
+      onClick={toggle}
+      aria-label={label}
+      title={label}
+    >
+      <span className="theme-switch__track" aria-hidden="true">
+        <span className="theme-switch__knob">
+          {theme === 'dark' ? (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          ) : (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+          )}
+        </span>
+      </span>
     </button>
   );
 }
