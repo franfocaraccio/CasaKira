@@ -33,8 +33,8 @@ export const SITE = {
 // (en la home scrollean; en una ficha navegan a la home y scrollean).
 export const NAV_LINKS = [
   { href: '/#nosotros', label: 'Nosotros' },
-  { href: '/#maquinas', label: 'Máquinas' },
-  { href: '/#repuestos', label: 'Repuestos' },
+  { href: '/catalogo#maquinas', label: 'Máquinas' },
+  { href: '/catalogo#repuestos', label: 'Repuestos' },
   { href: '/#servicios', label: 'Servicios' },
   { href: '/#tienda', label: 'Tienda online' },
   { href: '/#contacto', label: 'Contacto' },

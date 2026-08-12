@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import { CATEGORIAS } from '../../data/categorias';
+import Icon from '../Icon.astro';
+
+const maquinas = await getCollection('maquinas');
+const familias = [
+  {
+    href: '/catalogo#maquinas',
+    eyebrow: 'Máquinas',
+    img: 'Typical-Recta.gif',
+    alt: 'Máquina recta pespunteadora de 1 aguja de alta velocidad Typical',
+    h: 'Máquinas de coser y bordar',
+    p: 'Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela. Industriales y familiares, de las principales marcas.',
+    go: 'Ver máquinas',
+    meta: `${CATEGORIAS.length} categorías · ${maquinas.length} modelos`,
+  },
+  {
+    href: '/catalogo#repuestos',
+    eyebrow: 'Repuestos',
+    img: 'Hilos.gif',
+    alt: 'Conos de hilado de poliéster de distintos colores para coser y bordar',
+    h: 'Accesorios, repuestos e insumos',
+    p: 'Hilados para coser y bordar, prensatelas, motores, soportes, herramientas y repuestos originales. Trabajos a medida para maquinaria discontinuada.',
+    go: 'Ver repuestos',
+    meta: '300+ colores en hilado · originales',
+  },
+];
+---
+<section class="section" id="catalogo" style="background:var(--bg-alt);border-block:1px solid var(--border)">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head__top">
+        <div>
+          <p class="eyebrow">02 — Catálogo</p>
+          <h2 class="h-section" style="margin-top:var(--s-4)">Qué vas a encontrar.</h2>
+        </div>
+        <span class="section-index">Máquinas · Repuestos</span>
+      </div>
+      <p class="lead">
+        Todo nuestro catálogo, con fichas técnicas de cada modelo, vive en una página aparte.
+        Entrá por la familia que te interese.
+      </p>
+    </div>
+
+    <div class="cat-split">
+      {familias.map((f) => (
+        <a class="cat-card reveal" href={f.href}>
+          <div class="cat-card__media">
+            <img src={`/assets/maquinas/${f.img}`} alt={f.alt} width="700" height="394" loading="lazy" />
+          </div>
+          <div class="cat-card__body">
+            <p class="cat-card__eyebrow">{f.eyebrow}</p>
+            <h3>{f.h}</h3>
+            <p>{f.p}</p>
+            <span class="section-index" style="margin-top:var(--s-4)">{f.meta}</span>
+            <span class="cat-card__go">{f.go} <Icon name="arrowUpRight" size={16} /></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

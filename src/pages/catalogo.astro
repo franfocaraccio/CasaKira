@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Maquinas from '../components/catalogo/Maquinas.astro';
+import Repuestos from '../components/catalogo/Repuestos.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIAS } from '../data/categorias';
+import { waLink } from '../data/site';
+
+const maquinas = await getCollection('maquinas');
+
+const title = 'Catálogo — Máquinas, repuestos y accesorios · Casa Kira';
+const description =
+  'Catálogo de máquinas de coser y bordar (rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras), con fichas técnicas. Hilados, repuestos, motores y accesorios originales. Casa Kira, CABA.';
+---
+<Base title={title} description={description}>
+  <section class="section cat-intro">
+    <div class="tech-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <nav aria-label="Migas de pan">
+        <ol class="breadcrumb">
+          <li><a href="/">Inicio</a></li>
+          <li aria-current="page">Catálogo</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Catálogo completo</p>
+      <h1 class="h-display">Máquinas, repuestos y accesorios.</h1>
+      <p class="lead">
+        Trabajamos {CATEGORIAS.length} categorías de máquinas de las principales marcas, con ficha técnica
+        de cada modelo, más hilados, repuestos y accesorios originales. Por otros modelos, consultanos.
+      </p>
+      <div class="jump-row">
+        <a class="jump" href="#maquinas">Máquinas <span class="jump__count">{maquinas.length}</span></a>
+        <a class="jump" href="#repuestos">Repuestos y accesorios</a>
+      </div>
+    </div>
+  </section>
+
+  <Maquinas />
+  <Repuestos />
+
+  <section class="cta-band">
+    <div class="tech-grid" aria-hidden="true" style="mask-image:radial-gradient(ellipse 70% 90% at 80% 50%,#000 20%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 70% 90% at 80% 50%,#000 20%,transparent 100%)"></div>
+    <div class="wrap cta-band__in">
+      <div>
+        <h2>¿No sabés qué máquina necesitás?</h2>
+        <p>Contanos qué producís y te asesoramos sin cargo sobre el modelo que mejor se adapta a tu taller.</p>
+      </div>
+      <div class="cta-band__actions">
+        <a class="btn btn--ink" href={waLink()} target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        <a class="btn btn--ink-ghost" href="/#contacto">Ver datos de contacto</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../scripts/enhance';
+</script>

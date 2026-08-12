@@ -653,6 +653,43 @@ input,textarea,select{font:inherit;color:inherit}
 .shop-card__go svg{transition:transform var(--dur) var(--ease)}
 
 /* ══════════════════════════════════════════════════════════════════════════
+   Catálogo — encabezado de página
+   ══════════════════════════════════════════════════════════════════════════ */
+.cat-intro{padding-top:calc(var(--nav-h) + var(--s-6));padding-bottom:var(--s-7);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.cat-intro .h-display{font-size:clamp(2rem,5vw,3.25rem);margin-top:var(--s-4);max-width:16ch}
+.cat-intro .lead{margin-top:var(--s-5);max-width:60ch}
+.jump-row{display:flex;flex-wrap:wrap;gap:.625rem;margin-top:var(--s-6)}
+.jump{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .95rem;
+  border:1px solid var(--border-strong);border-radius:99px;font-size:.875rem;font-weight:500;background:var(--surface);
+  transition:border-color var(--dur-fast),background-color var(--dur-fast),color var(--dur-fast);
+}
+.jump:hover{border-color:var(--accent);color:var(--accent)}
+.jump .jump__count{font-family:var(--font-mono);font-size:.6875rem;color:var(--text-faint)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Home — acceso al catálogo (dos familias: máquinas y repuestos)
+   ══════════════════════════════════════════════════════════════════════════ */
+.cat-split{display:grid;gap:var(--s-4);margin-top:var(--s-6)}
+@media(min-width:768px){.cat-split{grid-template-columns:1fr 1fr}}
+.cat-card{
+  display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);
+  transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.cat-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.cat-card__media{overflow:hidden;background:var(--bg-alt);border-bottom:1px solid var(--border)}
+.cat-card__media img{width:100%;aspect-ratio:16/9;object-fit:cover;filter:var(--photo-filter);transition:filter var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease)}
+.cat-card:hover .cat-card__media img{transform:scale(1.03);filter:saturate(.85)}
+.cat-card__body{display:flex;flex-direction:column;flex:1;padding:var(--s-5)}
+.cat-card__eyebrow{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.cat-card h3{font-size:clamp(1.25rem,2.5vw,1.625rem);margin-top:.5rem}
+.cat-card p{color:var(--text-muted);margin-top:.5rem;font-size:.9375rem;line-height:1.6}
+.cat-card__go{display:inline-flex;align-items:center;gap:.4rem;margin-top:var(--s-5);font-weight:600;color:var(--accent)}
+.cat-card:hover .cat-card__go svg{transform:translate(3px,-3px)}
+.cat-card__go svg{transition:transform var(--dur) var(--ease)}
+
+/* ══════════════════════════════════════════════════════════════════════════
    Contacto
    ══════════════════════════════════════════════════════════════════════════ */
 .contact__grid{display:grid;gap:var(--s-7)}

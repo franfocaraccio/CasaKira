@@ -4,8 +4,8 @@ import { CATEGORIAS } from '../../data/categorias';
 import { SITE, waLink } from '../../data/site';
 import MachineCard from '../MachineCard.astro';
 
-// Los paneles se renderizan estáticos (SEO + funciona sin JS); un script en la
-// home cablea el cambio de pestaña. Las máquinas salen de la content collection.
+// Los paneles se renderizan estáticos (SEO + funciona sin JS); el script de
+// mejoras cablea el cambio de pestaña. Las máquinas salen de la content collection.
 const maquinas = await getCollection('maquinas');
 const cats = CATEGORIAS.map((cat) => ({
   ...cat,
@@ -14,12 +14,12 @@ const cats = CATEGORIAS.map((cat) => ({
     .sort((a, b) => a.data.orden - b.data.orden),
 }));
 ---
-<section class="section" id="maquinas" style="background:var(--bg-alt);border-block:1px solid var(--border)">
+<section class="section" id="maquinas">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="section-head__top">
         <div>
-          <p class="eyebrow">02 — Máquinas</p>
+          <p class="eyebrow">01 — Máquinas</p>
           <h2 class="h-section" style="margin-top:var(--s-4)">Máquinas para coser y bordar.</h2>
         </div>
         <span class="section-index">7 categorías · 3 marcas</span>

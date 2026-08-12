@@ -7,8 +7,8 @@ import Icon from './Icon.astro';
 
 const secciones = [
   { href: '/#nosotros', label: 'Quiénes somos' },
-  { href: '/#maquinas', label: 'Máquinas' },
-  { href: '/#repuestos', label: 'Accesorios y repuestos' },
+  { href: '/catalogo#maquinas', label: 'Máquinas' },
+  { href: '/catalogo#repuestos', label: 'Accesorios y repuestos' },
   { href: '/#servicios', label: 'Servicios' },
   { href: '/#tienda', label: 'Tienda online' },
   { href: '/#contacto', label: 'Contacto' },
@@ -38,7 +38,7 @@ const secciones = [
 
       <div>
         <h4>Máquinas</h4>
-        <ul>{CATEGORIAS.map((c) => <li><a href="/#maquinas">{c.nombre}</a></li>)}</ul>
+        <ul>{CATEGORIAS.map((c) => <li><a href="/catalogo#maquinas">{c.nombre}</a></li>)}</ul>
       </div>
 
       <div>
