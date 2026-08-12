@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
 
-interface Props { whatsappHumano: string }
-
 const ErrorMsg = ({ show, children }: { show: boolean; children: string }) => (
   <span className="field__error" role="alert" style={{ display: show ? 'flex' : 'none' }}>
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -16,7 +14,7 @@ const ErrorMsg = ({ show, children }: { show: boolean; children: string }) => (
  * error debajo y enfoca el primero que falla. Prototipo: sin backend todavía,
  * sólo muestra el estado de éxito (ver DESPLIEGUE.md, pendiente de backend).
  */
-export default function ContactForm({ whatsappHumano }: Props) {
+export default function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [invalid, setInvalid] = useState<Record<string, boolean>>({});
   const [sent, setSent] = useState(false);
@@ -73,13 +71,11 @@ export default function ContactForm({ whatsappHumano }: Props) {
         <div className="field">
           <label htmlFor="f-tel">Teléfono</label>
           <input id="f-tel" name="telefono" type="tel" inputMode="tel" autoComplete="tel" onBlur={onBlur} onInput={onInput} />
-          <span className="field__help">Si preferís que te llamemos.</span>
         </div>
 
         <div className="field field--full">
           <label htmlFor="f-dir">Dirección</label>
           <input id="f-dir" name="direccion" type="text" autoComplete="street-address" onBlur={onBlur} onInput={onInput} />
-          <span className="field__help">Necesaria si querés retiro y entrega a domicilio.</span>
         </div>
 
         <div className="field field--full" data-invalid={String(!!invalid.consulta)}>
@@ -98,7 +94,6 @@ export default function ContactForm({ whatsappHumano }: Props) {
             </svg>
           )}
         </button>
-        <p className="form-foot__note">También podés escribirnos por WhatsApp al {whatsappHumano}.</p>
       </div>
 
       <p className="form-status" role="status" aria-live="polite" data-show={String(sent)}>
