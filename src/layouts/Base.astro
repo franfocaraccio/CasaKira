@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import { SITE } from '../data/site';
-import UtilityBar from '../components/UtilityBar.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Fab from '../components/Fab.astro';
@@ -57,13 +56,14 @@ const favicon =
   </head>
   <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
-    <UtilityBar />
     <Nav />
     <main id="main"><slot /></main>
     <Footer />
     <Fab />
 
-    <!-- Realce del nav al scrollear. Sirve en todas las páginas. -->
+    <!-- Realce del nav al scrollear + menú mobile. Van en el layout para correr
+         en TODAS las páginas (incluidas las fichas). El menú es HTML estático:
+         no depende de la hidratación de ningún framework, así siempre abre. -->
     <script>
       const nav = document.getElementById('nav');
       let ticking = false;
@@ -78,6 +78,27 @@ const favicon =
       }
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+
+      const burger = document.getElementById('nav-burger');
+      const sheet = document.getElementById('sheet');
+      if (burger && sheet) {
+        const closeBtn = sheet.querySelector('[data-sheet-close]');
+        const setOpen = (open: boolean) => {
+          sheet.dataset.open = String(open);
+          burger.setAttribute('aria-expanded', String(open));
+          document.body.style.overflow = open ? 'hidden' : '';
+          if (open) (sheet.querySelector('a, button') as HTMLElement | null)?.focus();
+          else burger.focus();
+        };
+        burger.addEventListener('click', () => setOpen(true));
+        closeBtn?.addEventListener('click', () => setOpen(false));
+        sheet
+          .querySelectorAll('.sheet__link, .sheet__foot a')
+          .forEach((a) => a.addEventListener('click', () => setOpen(false)));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && sheet.dataset.open === 'true') setOpen(false);
+        });
+      }
     </script>
   </body>
 </html>

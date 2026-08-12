@@ -1,8 +1,8 @@
 ---
 import { SITE, NAV_LINKS, waLink } from '../data/site';
 import Logo from './Logo.astro';
+import BrandIcon from './BrandIcon.astro';
 import ThemeToggle from './islands/ThemeToggle.tsx';
-import MobileMenu from './islands/MobileMenu.tsx';
 
 // Resalta el link de la página actual. Sin anclas, no hay scrollspy: el estado
 // activo se decide en el servidor comparando la ruta.
@@ -14,6 +14,7 @@ function isActive(href: string): boolean {
   if (base === '/catalogo') return path === '/catalogo' || path.startsWith('/maquinas');
   return path === base;
 }
+const waHref = waLink();
 ---
 <header class="nav" id="nav">
   <div class="wrap nav__in">
@@ -49,15 +50,48 @@ function isActive(href: string): boolean {
 
     <div class="nav__actions">
       <a class="nav__tienda" href={SITE.tiendaUrl} target="_blank" rel="noopener">Tienda online</a>
+      <div class="nav__social">
+        <a class="nav__social-link" href={SITE.instagram} target="_blank" rel="noopener" aria-label="Instagram"><BrandIcon name="instagram" size={18} /></a>
+        <a class="nav__social-link" href={SITE.facebook} target="_blank" rel="noopener" aria-label="Facebook"><BrandIcon name="facebook" size={18} /></a>
+      </div>
       <ThemeToggle client:load />
-      <MobileMenu
-        client:load
-        links={NAV_LINKS.map((l) => ({ href: l.href, label: l.label }))}
-        tiendaHref={SITE.tiendaUrl}
-        waHref={waLink()}
-        telHref={`tel:${SITE.tel}`}
-        telLabel={SITE.telCorto}
-      />
+      <button class="icon-btn nav__burger" id="nav-burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sheet">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
     </div>
   </div>
 </header>
+
+<!-- Menú mobile: HTML estático. La lógica (abrir/cerrar/Escape/bloqueo de
+     scroll) vive en el script del layout, sin depender de ningún framework. -->
+<div class="sheet" id="sheet" data-open="false" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="wrap sheet__head">
+    <span class="brand"><Logo /></span>
+    <button class="icon-btn" type="button" data-sheet-close aria-label="Cerrar menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="wrap sheet__body" aria-label="Navegación">
+    {NAV_LINKS.map((l, i) => (
+      <a class="sheet__link" href={l.href} aria-current={isActive(l.href) ? 'true' : undefined}>
+        <span>{String(i + 1).padStart(2, '0')}</span>
+        {l.label}
+      </a>
+    ))}
+  </nav>
+
+  <div class="wrap sheet__foot">
+    <a class="btn btn--primary btn--wide" href={SITE.tiendaUrl} target="_blank" rel="noopener">Tienda online</a>
+    <div class="sheet__social">
+      <a href={SITE.instagram} target="_blank" rel="noopener"><BrandIcon name="instagram" size={19} /> Instagram</a>
+      <a href={SITE.facebook} target="_blank" rel="noopener"><BrandIcon name="facebook" size={19} /> Facebook</a>
+    </div>
+    <a class="btn btn--ghost btn--wide" href={waHref} target="_blank" rel="noopener">Consultar por WhatsApp</a>
+    <a class="btn btn--ghost btn--wide" href={`tel:${SITE.tel}`}>Llamar al {SITE.telCorto}</a>
+  </div>
+</div>

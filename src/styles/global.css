@@ -227,21 +227,8 @@ input,textarea,select{font:inherit;color:inherit}
 .link-arrow:hover svg{transform:translate(3px,-3px)}
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Barra de utilidad + navegación
+   Navegación
    ══════════════════════════════════════════════════════════════════════════ */
-.utility{
-  background:var(--ink);color:var(--ink-muted);
-  font-size:.78125rem;border-bottom:1px solid var(--ink-border);
-}
-.utility__in{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);min-height:38px}
-.utility__group{display:flex;align-items:center;gap:var(--s-5)}
-.utility a{display:inline-flex;align-items:center;gap:.4rem;transition:color var(--dur-fast)}
-.utility a:hover{color:var(--ink-fg)}
-.utility__hours{display:none;align-items:center;gap:.4rem}
-@media(min-width:900px){.utility__hours{display:inline-flex}}
-.utility__social{display:none;gap:var(--s-4)}
-@media(min-width:640px){.utility__social{display:flex}}
-
 .nav{
   position:sticky;top:0;z-index:var(--z-nav);
   background:var(--nav-bg);backdrop-filter:blur(14px) saturate(1.4);
@@ -328,6 +315,15 @@ input,textarea,select{font:inherit;color:inherit}
 @media(min-width:1024px){.nav__tienda{display:inline-flex}}
 .nav__tienda:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 4px 14px -3px rgba(193,39,45,.6)}
 
+/* ── Redes sociales en el nav (junto a Tienda online) ──────────────────────── */
+.nav__social{display:none;align-items:center;gap:.15rem}
+@media(min-width:1024px){.nav__social{display:flex}}
+.nav__social-link{
+  width:38px;height:38px;display:grid;place-items:center;border-radius:var(--r-sm);
+  color:var(--text-muted);transition:color var(--dur-fast),background-color var(--dur-fast);
+}
+.nav__social-link:hover{color:var(--accent);background:var(--surface)}
+
 .nav__actions{display:flex;align-items:center;gap:.5rem;flex:none}
 .icon-btn{
   width:44px;height:44px;border-radius:var(--r-sm);display:grid;place-items:center;
@@ -359,7 +355,16 @@ input,textarea,select{font:inherit;color:inherit}
   border-bottom:1px solid var(--border);
 }
 .sheet__link span{font-family:var(--font-mono);font-size:.6875rem;color:var(--text-faint);letter-spacing:.1em}
+.sheet__link[aria-current="true"]{color:var(--accent)}
 .sheet__foot{padding-block:var(--s-5);display:grid;gap:.75rem;border-top:1px solid var(--border)}
+.sheet__social{display:flex;gap:.75rem}
+.sheet__social a{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:44px;
+  border:1px solid var(--border-strong);border-radius:var(--r-sm);
+  font-size:.9375rem;font-weight:500;color:var(--text);
+  transition:border-color var(--dur-fast),color var(--dur-fast),background-color var(--dur-fast);
+}
+.sheet__social a:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ══════════════════════════════════════════════════════════════════════════
    Hero
