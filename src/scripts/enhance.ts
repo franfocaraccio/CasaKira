@@ -106,3 +106,17 @@
   );
   nums.forEach((n) => cio.observe(n));
 })();
+
+// ── Spotlight de los KPIs: el resplandor rojo sigue al puntero. Sólo en hover
+//    (en táctil no dispara y no pasa nada). ────────────────────────────────────
+(() => {
+  const cards = [...document.querySelectorAll<HTMLElement>('.stat')];
+  if (!cards.length) return;
+  cards.forEach((card) => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+      card.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+    });
+  });
+})();

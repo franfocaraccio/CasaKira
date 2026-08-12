@@ -53,6 +53,7 @@
   --accent-fg:#FFFFFF;
   --accent-soft:rgba(193,39,45,.08);
   --accent-on-soft:#C1272D;  /* texto sobre --accent-soft, que aclara el fondo */
+  --glow:rgba(193,39,45,.15); /* resplandor del spotlight en los KPIs */
   --ink:#18181B;
   --ink-surface:#27272A;
   --ink-fg:#FAFAFA;
@@ -94,6 +95,7 @@
   --accent-fg:#18181B;
   --accent-soft:rgba(239,68,68,.14);
   --accent-on-soft:#F87171;  /* #EF4444 sobre el rojo translúcido cae a 4.13 */
+  --glow:rgba(239,68,68,.20); /* resplandor del spotlight en los KPIs */
   --ink:#141416;
   --ink-surface:#1D1D20;
   --ink-fg:#FAFAFA;
@@ -407,11 +409,20 @@ input,textarea,select{font:inherit;color:inherit}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-3);margin-top:var(--s-7)}
 @media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr);gap:var(--s-4)}}
 .stat{
+  position:relative;overflow:hidden;
   padding:var(--s-5) var(--s-4);border:1px solid var(--border);border-radius:var(--r-md);
   background:var(--surface);display:flex;flex-direction:column-reverse;justify-content:flex-end;
   transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
 }
-.stat:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+/* Spotlight: el resplandor sigue al mouse (las coords --mx/--my las fija el JS). */
+.stat::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(200px circle at var(--mx,50%) var(--my,0%),var(--glow),transparent 70%);
+  opacity:0;transition:opacity var(--dur) var(--ease);
+}
+.stat:hover::before{opacity:1}
+.stat > *{position:relative;z-index:1}
+.stat:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-md)}
 .stat__num{font-family:var(--font-display);font-size:clamp(1.75rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
 .stat__num small{font-size:.46em;font-weight:600;color:var(--accent);margin-left:.18em;letter-spacing:0}
 .stat__label{font-size:.8125rem;color:var(--text-muted);margin-top:.5rem;line-height:1.4;max-width:18ch}
