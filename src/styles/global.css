@@ -38,7 +38,7 @@
    Paleta de marca: rojo Casa Kira + blanco, sobre neutros fríos.
    ──────────────────────────────────────────────────────────────────────── */
 :root,:root[data-theme="light"]{
-  --bg:#FAFAFA;
+  --bg:#F4F4F5;              /* fondo base gris (igual que --bg-alt): todas las páginas en gris */
   --bg-alt:#F4F4F5;
   --surface:#FFFFFF;
   --surface-2:#FAFAFA;
