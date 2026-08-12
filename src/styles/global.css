@@ -181,6 +181,8 @@ input,textarea,select{font:inherit;color:inherit}
 .eyebrow::before{content:"";width:20px;height:1px;background:var(--accent-graphic);flex:none}
 .eyebrow--muted{color:var(--text-faint)}
 .eyebrow--muted::before{background:var(--border-strong)}
+/* El label centrado del marquee lleva línea a ambos lados (divisor simétrico). */
+.brands__label .eyebrow::after{content:"";width:20px;height:1px;background:var(--border-strong);flex:none}
 
 .h-display{font-size:clamp(2.35rem,7vw,4.6rem);font-weight:700;letter-spacing:-.035em;line-height:.98}
 .h-section{font-size:clamp(1.85rem,4.2vw,3rem);font-weight:600;letter-spacing:-.03em;line-height:1.04}
@@ -395,21 +397,21 @@ input,textarea,select{font:inherit;color:inherit}
 @media(min-width:1024px){.hero__grid{grid-template-columns:1.08fr .92fr;gap:var(--s-8)}}
 
 .hero h1{margin-top:var(--s-4)}
-.hero h1 em{font-style:normal;color:var(--accent);position:relative;white-space:nowrap}
-.hero h1 em::after{
-  content:"";position:absolute;left:0;right:0;bottom:.02em;height:3px;
-  background-image:repeating-linear-gradient(90deg,var(--accent-graphic) 0 8px,transparent 8px 15px);
-}
+.hero h1 em{font-style:normal;color:var(--accent);white-space:nowrap}
 .hero__lead{margin-top:var(--s-5)}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
 
 .stats{display:grid;grid-template-columns:repeat(2,1fr);margin-top:var(--s-7);border-top:1px solid var(--border)}
 @media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
-/* column-reverse: el número se ve arriba, pero en el DOM el término precede a la definición */
-.stat{padding:var(--s-5) var(--s-4) var(--s-4) 0;border-right:1px solid var(--border);display:flex;flex-direction:column-reverse;justify-content:flex-end}
-.stat:last-child{border-right:0}
+/* column-reverse: el número se ve arriba, pero en el DOM el término precede a la definición.
+   Padding simétrico para que la línea separadora quede centrada entre columnas;
+   la primera pega a la izquierda y la última a la derecha. */
+.stat{padding:var(--s-5) var(--s-4) var(--s-4);border-right:1px solid var(--border);display:flex;flex-direction:column-reverse;justify-content:flex-end}
+.stat:first-child{padding-left:0}
+.stat:last-child{border-right:0;padding-right:0}
 @media(max-width:599px){
-  .stat:nth-child(2n){border-right:0;padding-left:var(--s-4)}
+  .stat:nth-child(odd){padding-left:0}
+  .stat:nth-child(even){border-right:0;padding-right:0}
   .stat:nth-child(n+3){border-top:1px solid var(--border)}
 }
 .stat__num{font-family:var(--font-display);font-size:clamp(1.75rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -666,26 +668,23 @@ input,textarea,select{font:inherit;color:inherit}
 .b-item:hover .tag{border-color:var(--border-strong)}
 
 /* ══════════════════════════════════════════════════════════════════════════
-   Servicios — banda oscura
+   Servicios — sección clara (mismo fondo que Contacto)
    ══════════════════════════════════════════════════════════════════════════ */
-.services{background:var(--band-bg);color:var(--band-fg);position:relative;overflow:hidden;border-block:1px solid var(--band-border)}
-.services .eyebrow{color:var(--band-fg)}
-.services .section-index{color:var(--band-muted)}
+.services{background:var(--bg-alt);position:relative;overflow:hidden;border-block:1px solid var(--border)}
+/* el eyebrow es un <p>: sin esto, .services p le ganaría en especificidad */
+.services .eyebrow{color:var(--accent)}
 .services__grid{display:grid;gap:var(--s-7);position:relative;z-index:var(--z-content)}
 @media(min-width:1024px){.services__grid{grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}}
-.services p{color:var(--band-muted);line-height:1.75}
-.services .lead{color:var(--band-muted)}
-.svc-list{display:grid;gap:0;margin-top:var(--s-6);border-top:1px solid var(--band-border)}
+.services p{color:var(--text-muted);line-height:1.75}
+.svc-list{display:grid;gap:0;margin-top:var(--s-6);border-top:1px solid var(--border)}
 .svc-list li{
   display:flex;align-items:flex-start;gap:var(--s-4);padding:var(--s-4) 0;
-  border-bottom:1px solid var(--band-border);
+  border-bottom:1px solid var(--border);
 }
-.svc-list__n{font-family:var(--font-mono);font-size:.6875rem;color:var(--band-fg);letter-spacing:.1em;padding-top:.28em;flex:none;font-variant-numeric:tabular-nums}
-.svc-list__t{font-weight:500;font-size:1rem;color:var(--band-fg)}
-.svc-list__d{font-size:.875rem;color:var(--band-muted);margin-top:.2rem;line-height:1.55}
+.svc-list__n{font-family:var(--font-mono);font-size:.6875rem;color:var(--accent);letter-spacing:.1em;padding-top:.28em;flex:none;font-variant-numeric:tabular-nums}
+.svc-list__t{font-weight:500;font-size:1rem;color:var(--text)}
+.svc-list__d{font-size:.875rem;color:var(--text-muted);margin-top:.2rem;line-height:1.55}
 .services__visual{position:relative}
-.services__visual .photo-panel{background:var(--band-surface);border-color:var(--band-border)}
-.services__visual .photo-panel__tag{background:rgba(0,0,0,.35);border-color:var(--band-border);color:var(--band-muted)}
 
 /* ══════════════════════════════════════════════════════════════════════════
    Tienda online

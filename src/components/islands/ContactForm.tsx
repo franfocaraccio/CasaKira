@@ -55,36 +55,36 @@ export default function ContactForm({ whatsappHumano }: Props) {
       <div className="form-grid">
         <div className="field" data-invalid={String(!!invalid.nombre)}>
           <label htmlFor="f-nombre">Nombre y apellido <span className="req" aria-hidden="true">*</span></label>
-          <input id="f-nombre" name="nombre" type="text" autoComplete="name" required placeholder="Juan Pérez" onBlur={onBlur} onInput={onInput} />
+          <input id="f-nombre" name="nombre" type="text" autoComplete="name" required onBlur={onBlur} onInput={onInput} />
           <ErrorMsg show={!!invalid.nombre}>Ingresá tu nombre para poder responderte.</ErrorMsg>
         </div>
 
         <div className="field">
           <label htmlFor="f-empresa">Empresa</label>
-          <input id="f-empresa" name="empresa" type="text" autoComplete="organization" placeholder="Taller, fábrica o marca" onBlur={onBlur} onInput={onInput} />
+          <input id="f-empresa" name="empresa" type="text" autoComplete="organization" onBlur={onBlur} onInput={onInput} />
         </div>
 
         <div className="field" data-invalid={String(!!invalid.email)}>
           <label htmlFor="f-email">E-mail <span className="req" aria-hidden="true">*</span></label>
-          <input id="f-email" name="email" type="email" inputMode="email" autoComplete="email" required placeholder="nombre@empresa.com" onBlur={onBlur} onInput={onInput} />
+          <input id="f-email" name="email" type="email" inputMode="email" autoComplete="email" required onBlur={onBlur} onInput={onInput} />
           <ErrorMsg show={!!invalid.email}>Revisá el e-mail: falta el @ o el dominio.</ErrorMsg>
         </div>
 
         <div className="field">
           <label htmlFor="f-tel">Teléfono</label>
-          <input id="f-tel" name="telefono" type="tel" inputMode="tel" autoComplete="tel" placeholder="11 3198-6183" onBlur={onBlur} onInput={onInput} />
+          <input id="f-tel" name="telefono" type="tel" inputMode="tel" autoComplete="tel" onBlur={onBlur} onInput={onInput} />
           <span className="field__help">Si preferís que te llamemos.</span>
         </div>
 
         <div className="field field--full">
           <label htmlFor="f-dir">Dirección</label>
-          <input id="f-dir" name="direccion" type="text" autoComplete="street-address" placeholder="Calle, número, localidad" onBlur={onBlur} onInput={onInput} />
+          <input id="f-dir" name="direccion" type="text" autoComplete="street-address" onBlur={onBlur} onInput={onInput} />
           <span className="field__help">Necesaria si querés retiro y entrega a domicilio.</span>
         </div>
 
         <div className="field field--full" data-invalid={String(!!invalid.consulta)}>
           <label htmlFor="f-consulta">Consulta <span className="req" aria-hidden="true">*</span></label>
-          <textarea id="f-consulta" name="consulta" required placeholder="Ej.: necesito una overlock de 5 hilos y presupuesto de service para una recta Typical." onBlur={onBlur} onInput={onInput}></textarea>
+          <textarea id="f-consulta" name="consulta" required onBlur={onBlur} onInput={onInput}></textarea>
           <ErrorMsg show={!!invalid.consulta}>Contanos brevemente qué necesitás.</ErrorMsg>
         </div>
       </div>
