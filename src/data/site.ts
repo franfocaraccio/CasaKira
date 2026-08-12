@@ -40,9 +40,18 @@ export const MARCAS = [
   'Yamata', 'Brother', 'Pegasus', 'Juki', 'Siruba',
 ] as const;
 
-/** Las marcas listadas para prosa: "A, B y C". */
-export const marcasEnProsa = (): string =>
-  `${MARCAS.slice(0, -1).join(', ')} y ${MARCAS[MARCAS.length - 1]}`;
+/** Marcas propias registradas: llevan ® cuando se las nombra en prosa. */
+const REGISTRADAS = new Set<string>(['Mirsew']);
+
+/**
+ * Las marcas listadas para prosa: "A, B y C".
+ * Con `registro`, las de REGISTRADAS salen con ® (se usa en Nosotros; en la
+ * metadata va sin símbolo).
+ */
+export const marcasEnProsa = (registro = false): string => {
+  const lista = MARCAS.map((m) => (registro && REGISTRADAS.has(m) ? `${m}®` : m));
+  return `${lista.slice(0, -1).join(', ')} y ${lista[lista.length - 1]}`;
+};
 
 // Links de sección, root-relative para que funcionen desde cualquier página
 // (en la home scrollean; en una ficha navegan a la home y scrollean).
