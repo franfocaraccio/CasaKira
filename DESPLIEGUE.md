@@ -43,8 +43,10 @@ No toca el correo en ningún paso.
 - [x] Repo en GitHub con build reproducible (`npm run build`). — hecho
 - [ ] Crear cuenta en **Cloudflare**.
 - [ ] En **Pages**, conectar el repo `franfocaraccio/CasaKira`.
+  - Framework preset: **Astro**
   - Build command: `npm run build`
-  - Output directory: `/`
+  - Output directory: `dist`
+  - (el sitio es Astro + React + Tailwind; genera estático en `dist/`)
 - [ ] Verificar el deploy en la URL provisoria `*.pages.dev` (sin tocar el dominio todavía): navegar las 6 secciones, las 13 fichas, el toggle de tema y el menú mobile.
 - [ ] **(Se completa en la Vía C)** apuntar el dominio.
 

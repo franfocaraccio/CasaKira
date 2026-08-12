@@ -1,0 +1,41 @@
+{
+  "nombre": "Atracadora de alta velocidad",
+  "marca": "Feiyute",
+  "categoria": "atracadora",
+  "orden": 1,
+  "ref": "ATR-FEI",
+  "img": "Yamata-Atracadora.gif",
+  "resumen": "Refuerza puntos de tensión en jeans, uniformes y lencería, con cabezal ajustable en largo y ancho.",
+  "chips": [
+    "Cabezal ajustable",
+    "Lubricación concentrada"
+  ],
+  "specs": [
+    {
+      "k": "Aplicación",
+      "v": "Jeans, uniformes, ropa de trabajo, lencería"
+    },
+    {
+      "k": "Cabezal",
+      "v": "Largo y ancho ajustables"
+    },
+    {
+      "k": "Pedal",
+      "v": "Presión automática"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Sistema concentrado"
+    },
+    {
+      "k": "Régimen",
+      "v": "Recomendada a altas velocidades"
+    }
+  ],
+  "feats": [
+    "Refuerza las partes tirantes de conjuntos, pantalones vaqueros, uniformes, ropa de trabajo y lencería, y los extremos redondeados del ojal.",
+    "La longitud y el ancho del cabezal se pueden ajustar fácilmente.",
+    "Condensador de ajuste automático del hilo de rosca, presión de pedal automática y sistema concentrado de lubricación.",
+    "Se recomienda la utilización del equipo a altas velocidades."
+  ]
+}

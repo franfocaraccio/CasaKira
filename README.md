@@ -1,39 +1,60 @@
 # Casa Kira — rediseño web
 
 Rediseño del sitio de **Casa Kira S.R.L.** (máquinas de coser y bordar industriales, Av. Forest 888, CABA).
-Prototipo de diseño, sin backend.
 
-## Archivos
+Sitio estático hecho con **Astro + React + Tailwind v4**. Genera HTML plano (bueno para SEO y
+velocidad) y usa React sólo en tres "islas" interactivas.
 
-| Archivo | Para qué |
-|---|---|
-| `index.html` | La home. |
-| `maquinas/*.html` | Las 13 fichas de producto, **generadas**. No editar a mano. |
-| `assets/styles.css` | Todo el CSS, compartido por la home y las fichas. |
-| `assets/catalogo.js` | **Fuente única del catálogo.** Lo consumen la home y el generador. |
-| `assets/logo-casakira.svg` | Logotipo reconstruido en vector. Ver "El logo" más abajo. |
-| `assets/maquinas/` | Fotos y logos rescatados del sitio viejo (GIFs de 250×167 a 439×210 px). |
-| `sitemap.xml` | Generado. El sitio actual no tenía. |
-| `build.js` | Genera las fichas y el sitemap desde el catálogo. |
-| `check.js` | Verifica las fichas: estructura, rutas, SEO, links y etiquetas balanceadas. |
-| `build-single-file.js` | Genera las dos copias autocontenidas de abajo. |
-| `casa-kira-prototipo.html` | Home autocontenida (CSS, JS e imágenes embebidos). Doble clic o mail. |
-| `casa-kira-ficha-ejemplo.html` | Una ficha de producto autocontenida, de muestra. |
-
-Sin dependencias: HTML, CSS y JS a mano. Node se usa sólo para generar, nunca en el navegador.
+## Comandos
 
 ```bash
-node build.js && node check.js && node build-single-file.js
+npm install       # dependencias
+npm run dev       # servidor de desarrollo (localhost:4321)
+npm run build     # genera el sitio estático en dist/
+npm run check     # astro check (tipos)
+npm run preview   # sirve dist/ para revisar el build
 ```
 
-El sitio es **multipágina**, así que para recorrerlo hay que servirlo:
+## Estructura
 
-```bash
-python -m http.server 8791
+```
+src/
+  pages/
+    index.astro              La home (arma las secciones + el script de realce)
+    maquinas/[slug].astro    Genera una ficha por máquina (getStaticPaths)
+  layouts/Base.astro         <head>, anti-flash de tema, nav, footer, FAB
+  components/
+    Nav / Footer / UtilityBar / Fab / Logo / Icon / BrandIcon / MachineCard
+    home/                    Hero, Brands, Nosotros, Maquinas, Repuestos, Servicios, Tienda, Contacto
+    islands/                 Las 3 islas de React (ver abajo)
+  content/maquinas/*.json    Una máquina = un archivo (content collection)
+  content.config.ts          Schema (zod) de la collection
+  data/
+    catalogo.ts   → no; el catálogo vive en content/. Acá:
+    categorias.ts            Metadatos de las 7 categorías
+    site.ts                  Contacto, tiendas y ayudas de WhatsApp (fuente única)
+  styles/global.css          @import tailwindcss + los estilos del sitio
+public/assets/               Imágenes y logo (se sirven tal cual)
+scripts/gen-content.cjs      One-off: convirtió el catálogo vanilla en la collection
+legacy/                      El prototipo vanilla anterior, congelado como referencia
 ```
 
-Los dos archivos autocontenidos sirven para mirar rápido o enviar por mail. Ojo: los links a
-fichas de la home apuntan a `maquinas/<slug>.html`, así que en el archivo suelto no navegan.
+### Islas de React (`client:load`)
+
+Sólo lo genuinamente interactivo va en React; el resto es HTML estático.
+
+- **`ThemeToggle`** — el botón de tema. El tema inicial lo fija un script inline en el `<head>`
+  (anti-flash); la isla sólo lo invierte y lo persiste.
+- **`MobileMenu`** — la hamburguesa y la hoja a pantalla completa (Escape, foco, bloqueo de scroll).
+- **`ContactForm`** — validación al salir del campo y foco en el primer error.
+
+Las **pestañas de máquinas NO son React**: los 7 paneles se renderizan estáticos (así el catálogo
+queda en el HTML para Google y funciona sin JS) y un script chico sólo cambia cuál se ve.
+
+### Agregar una máquina
+
+Crear un `.json` en `src/content/maquinas/` (el nombre del archivo es el slug de la URL) con los
+campos del schema y `npm run build`. Aparece sola en la home y en su ficha `/maquinas/<slug>`.
 
 ## Relevamiento del sitio actual (casakira.com.ar)
 
@@ -107,20 +128,18 @@ Generadas con el skill `ui-ux-pro-max` y ajustadas al rubro.
 
 ### Fichas de producto
 
-Cada uno de los 13 modelos tiene su propia página en `/maquinas/<slug>.html`, generada por
-`build.js` desde `assets/catalogo.js`. Motivo: el trabajo real de este sitio es aparecer en
-Google cuando alguien busca "overlock Siruba" o "máquina de coser industrial Buenos Aires", y
-una sola página con anchors no se indexa por modelo. Además permite mandarle a un cliente el
-link exacto de lo que consultó.
+Cada uno de los 13 modelos tiene su propia página en `/maquinas/<slug>`, generada por
+`src/pages/maquinas/[slug].astro` desde la content collection. Motivo: el trabajo real de este
+sitio es aparecer en Google cuando alguien busca "overlock Siruba" o "máquina de coser industrial
+Buenos Aires", y una sola página con anchors no se indexa por modelo. Además permite mandarle a un
+cliente el link exacto de lo que consultó.
 
 Cada ficha lleva foto, resumen, características completas, tabla de ficha técnica, otros
 modelos de su categoría, migas de pan, `title` y `description` propios, `canonical`, Open Graph
 y JSON-LD de tipo `Product`.
 
-El nav, el menú mobile y el footer se **recortan de `index.html`** en tiempo de build en vez de
-duplicarse, para que no se desincronicen mientras el sitio siga en HTML plano. Al migrar a
-Astro, eso lo reemplaza un layout y las fichas pasan a ser una ruta dinámica sobre content
-collections, con los mismos campos que ya tiene el catálogo.
+El nav, el menú mobile y el footer son **componentes únicos** (`Base.astro` los ensambla), así que
+no se pueden desincronizar entre páginas.
 
 ### WhatsApp precargado
 
@@ -179,23 +198,27 @@ rojo se aclara.
   sólo si hay JS (clase `.js` en el `<html>`), y si el `IntersectionObserver` no llega a
   reportar nada en 1,5 s se agrega `.reveal-off` y se muestra todo. Antes, 18 bloques arrancaban
   en `opacity:0` y un fallo del observador dejaba la página en blanco.
-- `check.js` valida las 13 fichas en cada build: rutas relativas, anchors al home, JSON-LD
-  parseable, links internos existentes y etiquetas balanceadas.
 
-## Stack para producción
+### Verificado sobre el build de Astro (esta migración)
 
-Decidido: **Astro + Tailwind v4**, con el contenido en Markdown (content collections).
+- `astro build` limpio: 14 páginas (home + 13 fichas) + sitemap. `astro check`: 0 errores.
+- Home: las 7 secciones y las 13 fichas quedan en el HTML estático (SEO); 24 imágenes, 0 rotas.
+- Las 3 islas hidratan y funcionan: tema (claro↔oscuro), menú mobile (abre/cierra con Escape) y
+  formulario (marca los 3 requeridos, enfoca el primero, no navega).
+- Ficha: contraste 14/14 en oscuro; WhatsApp precargado; JSON-LD `Product` con imagen absoluta.
+- Sin scroll horizontal en 375/768/1024/1280, y el nav conmuta links↔hamburguesa en el breakpoint.
 
-- Genera HTML estático, que es lo que este sitio necesita para SEO y velocidad.
-- Cero JS por defecto; islas sólo en pestañas, toggle de tema y menú mobile.
-- Hosting estático portable (Cloudflare Pages, Netlify).
-- **Sin CMS**: Casa Kira no va a editar precios ni modelos por su cuenta, así que Markdown
-  alcanza. Astro permite enchufar un CMS después sin rehacer el modelado.
-- Se descartó Next.js (SSR innecesario: no hay app, ni auth, ni datos por usuario) y WordPress
-  (mantenimiento, plugins y peor performance a cambio de autonomía que no piden).
-- `shadcn/ui` no se usa hoy: resuelve componentes de aplicación que este sitio no tiene, y las
-  pestañas propias ya son accesibles. Entra si se agregan buscador con filtros (combobox),
-  lista de consulta múltiple (sheet) o FAQ (accordion).
+## Stack — implementado
+
+**Astro 7 + React 19 (islas) + Tailwind v4**, contenido en una content collection (JSON por máquina).
+
+- Genera HTML estático: SEO y velocidad, hosting gratis con uso comercial (ver `DESPLIEGUE.md`).
+- React sólo en las 3 islas; el resto es HTML estático (cero JS donde no hace falta).
+- **Sin CMS**: Casa Kira no edita precios ni modelos por su cuenta. Astro permite enchufar un CMS
+  después sin rehacer el modelado.
+- Se descartó Next.js (SSR innecesario: no hay app, ni auth, ni datos por usuario) y WordPress.
+- `shadcn/ui` todavía no se usa: entra si se agregan buscador con filtros (combobox), lista de
+  consulta múltiple (sheet) o FAQ (accordion). React ya está en el stack para cuando toque.
 
 ## Pendientes antes de producción
 
@@ -203,9 +226,9 @@ Decidido: **Astro + Tailwind v4**, con el contenido en Markdown (content collect
    no para publicar. Es lo primero que hay que resolver.
 2. **El vector original del logo de Casa Kira** (ver arriba) y los logos oficiales de las
    marcas que representa: faltan Juki, Brother, Pegasus y Feiyute; hoy el marquee usa las
-   marcas escritas en tipografía. Los de Typical, Siruba y Yamata están en `assets/maquinas/`
+   marcas escritas en tipografía. Los de Typical, Siruba y Yamata están en `public/assets/`
    pero en baja resolución.
-3. **Backend del formulario.** Hoy el submit solo simula el envío.
+3. **Backend del formulario.** Hoy el submit solo simula el envío (`ContactForm.tsx`).
 4. **Certificado TLS** y redirección de HTTP a HTTPS.
 5. **Precios y stock.** El sitio delega en Mercado Libre. Las fichas declaran `InStock` en el
    JSON-LD sin precio: hay que confirmar con Casa Kira que la disponibilidad es real, o quitarlo.

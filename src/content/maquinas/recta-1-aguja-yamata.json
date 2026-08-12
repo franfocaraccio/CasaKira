@@ -1,0 +1,41 @@
+{
+  "nombre": "Recta pespunteadora 1 aguja de alta velocidad",
+  "marca": "Yamata",
+  "categoria": "recta",
+  "orden": 3,
+  "ref": "REC-YAM",
+  "img": "Yamata-Recta.gif",
+  "resumen": "Para algodón y materiales pesados y sintéticos, con aceite automático de dos vías y bajo nivel de ruido.",
+  "chips": [
+    "Aceite automático 2 vías",
+    "Bajo nivel de ruido"
+  ],
+  "specs": [
+    {
+      "k": "Tipo de puntada",
+      "v": "Pespunte"
+    },
+    {
+      "k": "Agujas",
+      "v": "1"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Automática de dos vías con recuperación"
+    },
+    {
+      "k": "Materiales",
+      "v": "Algodón, pesados y sintéticos"
+    },
+    {
+      "k": "Ruido",
+      "v": "Bajo en funcionamiento"
+    }
+  ],
+  "feats": [
+    "Para fibras de desgaste (algodón) y también materiales pesados y sintéticos.",
+    "Fuente de aceite de alimentación automática de dos vías, con dispositivo de recuperación.",
+    "Funciona con facilidad en puntadas rápidas.",
+    "Produce poco ruido durante el funcionamiento."
+  ]
+}

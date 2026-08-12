@@ -1,0 +1,42 @@
+{
+  "nombre": "Overlock de alta velocidad",
+  "marca": "Typical",
+  "categoria": "overlock",
+  "orden": 1,
+  "ref": "OVE-TYP",
+  "img": "Tyoical-Overlok.gif",
+  "resumen": "Hasta 7500 rpm para telas ligeras y medio pesadas, con protector movible de aguja y lubricación automática.",
+  "chips": [
+    "7500 rpm",
+    "Lubricación automática"
+  ],
+  "specs": [
+    {
+      "k": "Velocidad máxima",
+      "v": "7500 rpm"
+    },
+    {
+      "k": "Materiales",
+      "v": "Telas ligeras y medio pesadas"
+    },
+    {
+      "k": "Agujas",
+      "v": "2 rectas, doble alzador"
+    },
+    {
+      "k": "Protector de aguja",
+      "v": "Movible, se activa sólo si es necesario"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Automática"
+    }
+  ],
+  "feats": [
+    "Conveniente para coser telas ligeras y medio pesadas. Velocidad extra rápida: 7500 rpm.",
+    "Componentes y materiales de fabricación de alta resistencia y durabilidad.",
+    "Protector movible de aguja que se activa solamente si es necesario, eliminando el salto de puntada.",
+    "Sistema de lubricación automático, que reduce la suciedad al máximo.",
+    "Dos agujas rectas y doble alzadores: realiza el borde que ata y cose simultáneamente."
+  ]
+}

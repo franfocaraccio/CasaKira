@@ -1,0 +1,37 @@
+{
+  "nombre": "Máquina de poste de 1 y 2 agujas",
+  "marca": "Feiyute",
+  "categoria": "poste",
+  "orden": 1,
+  "ref": "POS-FEI",
+  "img": "Yamata-pOSTE.gif",
+  "resumen": "Punto de cadena de 1 y 2 agujas, ideal para trabajos en cuero: zapatos, sandalias y marroquinería.",
+  "chips": [
+    "1 y 2 agujas",
+    "Punto de cadena"
+  ],
+  "specs": [
+    {
+      "k": "Agujas",
+      "v": "1 y 2"
+    },
+    {
+      "k": "Puntada",
+      "v": "Punto de cadena"
+    },
+    {
+      "k": "Aplicación",
+      "v": "Cuero: zapatos, sandalias"
+    },
+    {
+      "k": "Soporte",
+      "v": "Sistema pilar-soporte"
+    }
+  ],
+  "feats": [
+    "Costura de punto de cadena, de 1 y 2 agujas.",
+    "Ideal para realizar trabajos en cuero: zapatos, sandalias y afines.",
+    "Excelente sistema de pilar-soporte, de fácil operatividad.",
+    "Construida con materiales durables y confiables."
+  ]
+}

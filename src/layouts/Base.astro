@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+import { SITE } from '../data/site';
+import UtilityBar from '../components/UtilityBar.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Fab from '../components/Fab.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  ogType?: string;
+}
+const { title, description, image, canonical, ogType = 'website' } = Astro.props;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE.dominio).href;
+const ogImage = image ?? `${SITE.dominio}/assets/maquinas/Typical-Recta.gif`;
+const favicon =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23C1272D'/%3E%3Ctext x='32' y='47' font-family='Arial Black,Impact,sans-serif' font-size='44' font-weight='900' fill='%23fff' text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E";
+---
+<!doctype html>
+<html lang="es-AR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_AR" />
+    <link rel="icon" href={favicon} />
+    <meta name="theme-color" content="#C1272D" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tema antes del primer pintado, para evitar el flash. Y marca .js: sin
+         JavaScript el contenido igual se ve (las animaciones .reveal se apagan). -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('casakira-theme');
+          document.documentElement.dataset.theme =
+            t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light';
+        }
+        document.documentElement.classList.add('js');
+      })();
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <UtilityBar />
+    <Nav />
+    <main id="main"><slot /></main>
+    <Footer />
+    <Fab />
+
+    <!-- Realce del nav y del FAB al scrollear. Sirve en todas las páginas. -->
+    <script>
+      const nav = document.getElementById('nav');
+      const fab = document.getElementById('fab');
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          if (nav) nav.dataset.scrolled = y > 8 ? 'true' : 'false';
+          if (fab) fab.dataset.show = y > 600 ? 'true' : 'false';
+          ticking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    </script>
+  </body>
+</html>

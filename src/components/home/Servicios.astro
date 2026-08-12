@@ -1,0 +1,51 @@
+---
+import { waLink } from '../../data/site';
+
+const servicios = [
+  { t: 'Presupuestos y asesoramiento sin cargo', d: 'Diagnosticamos y cotizamos antes de intervenir la máquina.' },
+  { t: 'Retiros y entregas a domicilio', d: 'No hace falta que muevas la máquina: la buscamos y la devolvemos.' },
+  { t: 'Trabajos para el interior del país', d: 'Atendemos talleres y fábricas fuera del AMBA.' },
+  { t: 'Retiros y envíos a todo el país', d: 'Coordinamos la logística de ida y vuelta.' },
+];
+---
+<section class="section services" id="servicios">
+  <div class="tech-grid" aria-hidden="true" style="mask-image:radial-gradient(ellipse 70% 90% at 80% 50%,#000 20%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 70% 90% at 80% 50%,#000 20%,transparent 100%)"></div>
+  <div class="wrap">
+    <div class="services__grid">
+      <div class="reveal">
+        <p class="eyebrow">04 — Servicios</p>
+        <h2 class="h-section" style="margin-top:var(--s-4);color:var(--ink-fg)">Post venta, mantenimiento y reparación.</h2>
+        <p class="lead" style="margin-top:var(--s-5)">
+          Nuestro personal altamente capacitado nos permite ofrecer garantía de excelencia en el servicio
+          de post venta y reparación de maquinarias, tanto a nivel industrial como hogareño. Somos además
+          importadores directos de repuestos de las principales marcas, indispensables para un
+          mantenimiento apropiado.
+        </p>
+
+        <ul class="svc-list">
+          {servicios.map((s, i) => (
+            <li>
+              <span class="svc-list__n">{String(i + 1).padStart(2, '0')}</span>
+              <span>
+                <span class="svc-list__t">{s.t}</span>
+                <span class="svc-list__d">{s.d}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="hero__cta" style="margin-top:var(--s-6)">
+          <a class="btn btn--ink" href="/#contacto">Pedir presupuesto</a>
+          <a class="btn btn--ink-ghost" href={waLink()} target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="services__visual reveal">
+        <div class="photo-panel">
+          <img src="/assets/maquinas/FotoServicios.gif" alt="Taller de servicio técnico de Casa Kira reparando máquinas de coser" width="700" height="525" loading="lazy" />
+          <span class="photo-panel__tag">Taller propio · Servicio técnico</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

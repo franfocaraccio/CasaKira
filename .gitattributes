@@ -1,0 +1,6 @@
+# Normalizar saltos de línea: LF en el repo (el build corre en Linux).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.gif binary
+*.svg text eol=lf

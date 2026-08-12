@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  slug: string;
+  nombre: string;
+  marca: string;
+  ref: string;
+  img: string;
+  chips: string[];
+  feats: string[];
+  heading?: 'h3' | 'h4';
+}
+const { slug, nombre, marca, ref, img, chips, feats, heading = 'h4' } = Astro.props;
+const H = heading;
+const url = `/maquinas/${slug}`;
+---
+<article class="m-card">
+  <a class="m-card__media" href={url} tabindex="-1" aria-hidden="true">
+    <img src={`/assets/maquinas/${img}`} alt={`${nombre} ${marca}`} width="640" height="440" loading="lazy" />
+    <span class="m-card__brand">{marca}</span>
+  </a>
+  <div class="m-card__body">
+    <H class="m-card__title"><a class="m-card__link" href={url}>{nombre} {marca}</a></H>
+    <div class="chips">{chips.map((c) => <span class="chip">{c}</span>)}</div>
+    <ul class="feat-list">{feats.slice(0, 3).map((f) => <li>{f}</li>)}</ul>
+    <div class="m-card__foot">
+      <span class="m-card__ref">{ref}</span>
+      <span class="link-arrow">Ver ficha <Icon name="arrow" size={15} /></span>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,38 @@
+---
+import { SITE } from '../../data/site';
+import Icon from '../Icon.astro';
+
+const tiendas = [
+  { badge: 'Mercado Libre', h: 'Nuestros productos', p: 'El catálogo completo con precios actualizados, cuotas y envíos.', cta: 'Ver publicaciones', href: SITE.tiendas.mercadoLibre },
+  { badge: 'e-Shop', h: 'Nuestro e-shop', p: 'Tienda oficial de Casa Kira dentro de Mercado Libre.', cta: 'Visitar e-shop', href: SITE.tiendas.eshop },
+  { badge: 'Mercado Shops', h: 'Nuestro MercadoShop', p: 'Máquinas de coser, bordar y estampar, accesorios, insumos y servicio técnico.', cta: 'Visitar tienda', href: SITE.tiendas.mercadoShop },
+];
+---
+<section class="section" id="tienda">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head__top">
+        <div>
+          <p class="eyebrow">05 — Tienda online</p>
+          <h2 class="h-section" style="margin-top:var(--s-4)">Comprá online, con stock actualizado.</h2>
+        </div>
+        <span class="section-index">Precios y disponibilidad al día</span>
+      </div>
+      <p class="lead">Publicamos máquinas, accesorios, insumos y servicio técnico en nuestras tiendas.</p>
+    </div>
+
+    <div class="shops">
+      {tiendas.map((t) => (
+        <a class="shop-card reveal" href={t.href} target="_blank" rel="noopener">
+          <div class="shop-card__head">
+            <span class="shop-card__badge">{t.badge}</span>
+            <Icon name="arrowUpRight" size={18} class="shop-card__corner" />
+          </div>
+          <h3>{t.h}</h3>
+          <p>{t.p}</p>
+          <span class="shop-card__go">{t.cta} <Icon name="arrowUpRight" size={15} /></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

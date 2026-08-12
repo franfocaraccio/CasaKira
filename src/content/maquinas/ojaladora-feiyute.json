@@ -1,0 +1,41 @@
+{
+  "nombre": "Ojaladora de alta velocidad",
+  "marca": "Feiyute",
+  "categoria": "ojaladora",
+  "orden": 1,
+  "ref": "OJA-FEI",
+  "img": "Yamata-Ojaladora.gif",
+  "resumen": "Ojales en algodón, fibra y paño, con puntada plana o de triángulo y tijera automática.",
+  "chips": [
+    "Puntada plana y de triángulo",
+    "Tijera automática"
+  ],
+  "specs": [
+    {
+      "k": "Materiales",
+      "v": "Algodón, fibra y paño; telas delgadas y gruesas"
+    },
+    {
+      "k": "Puntadas",
+      "v": "Plana y de triángulo"
+    },
+    {
+      "k": "Ojal",
+      "v": "Largo y ancho ajustables"
+    },
+    {
+      "k": "Tijera",
+      "v": "Automática"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Con sistema lubricante"
+    }
+  ],
+  "feats": [
+    "Alta velocidad. Se aplica a la confección de ojales en todas las clases de soporte: algodón, fibra y paño, en telas delgadas y gruesas.",
+    "Puede coser dos tipos de puntada, plana y de triángulo, manteniendo la costura prolija y firme.",
+    "La longitud y anchura de los ojales y la cantidad de puntadas son ajustables.",
+    "Cuenta con tijera automática y sistema lubricante."
+  ]
+}

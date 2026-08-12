@@ -1,0 +1,29 @@
+---
+import { SITE } from '../data/site';
+import Icon from './Icon.astro';
+import BrandIcon from './BrandIcon.astro';
+---
+<div class="utility">
+  <div class="wrap utility__in">
+    <div class="utility__group">
+      <a href={`tel:${SITE.tel}`}>
+        <Icon name="phone" size={14} />
+        <span class="mono">{SITE.telCorto}</span>
+      </a>
+      <span class="utility__hours">
+        <Icon name="clock" size={14} />
+        Lun a Vie 9–12.30 · 14–18 h &nbsp;·&nbsp; Sáb 9–12 h
+      </span>
+    </div>
+    <div class="utility__social">
+      <a href={SITE.instagram} target="_blank" rel="noopener">
+        <BrandIcon name="instagram" size={15} />
+        {SITE.instagramHandle}
+      </a>
+      <a href={SITE.facebook} target="_blank" rel="noopener">
+        <BrandIcon name="facebook" size={15} />
+        {SITE.facebookHandle}
+      </a>
+    </div>
+  </div>
+</div>

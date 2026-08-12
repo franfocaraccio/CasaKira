@@ -1,0 +1,42 @@
+{
+  "nombre": "Overlock / puntada de seguridad de alta velocidad",
+  "marca": "Siruba",
+  "categoria": "overlock",
+  "orden": 2,
+  "ref": "OVE-SIR",
+  "img": "Siruba-oVERLOK.gif",
+  "resumen": "Puntada de seguridad a 7500 rpm, con impulsión directa de la barra de aguja y cortador neumático.",
+  "chips": [
+    "7500 rpm",
+    "Impulsión directa"
+  ],
+  "specs": [
+    {
+      "k": "Velocidad máxima",
+      "v": "7500 rpm"
+    },
+    {
+      "k": "Puntada",
+      "v": "Overlock / de seguridad"
+    },
+    {
+      "k": "Barra de aguja",
+      "v": "Impulsión directa"
+    },
+    {
+      "k": "Cortador de hilo",
+      "v": "Neumático vertical y horizontal"
+    },
+    {
+      "k": "Salto de puntada",
+      "v": "Sistema de prevención"
+    }
+  ],
+  "feats": [
+    "Overlock / puntada de seguridad de alta velocidad, 7500 rpm.",
+    "Impulsión directa de la barra de la aguja, para coser regulando según la media de la tela.",
+    "Cortador de hilo neumático vertical y horizontal.",
+    "Sistema para evitar el salto de puntada.",
+    "Elementos de fabricación de alta calidad y resistencia. Admite el agregado de varios accesorios."
+  ]
+}

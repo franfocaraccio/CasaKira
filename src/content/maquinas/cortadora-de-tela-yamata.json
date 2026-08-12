@@ -1,0 +1,42 @@
+{
+  "nombre": "Máquina recta para corte de tela",
+  "marca": "Yamata",
+  "categoria": "cortadora",
+  "orden": 1,
+  "ref": "COR-YAM",
+  "img": "Yamata-Cortetela.gif",
+  "resumen": "Corte recto y curvilíneo en 6, 8, 10 y 12 pulgadas, con dispositivo de cuchillo automático.",
+  "chips": [
+    "6\" · 8\" · 10\" · 12\"",
+    "Cuchillo automático"
+  ],
+  "specs": [
+    {
+      "k": "Medidas",
+      "v": "6, 8, 10 y 12 pulgadas"
+    },
+    {
+      "k": "Materiales",
+      "v": "Algodón, cuero, lana, lino y sintéticos"
+    },
+    {
+      "k": "Corte",
+      "v": "Recto y curvilíneo"
+    },
+    {
+      "k": "Cuchillo",
+      "v": "Dispositivo automático"
+    },
+    {
+      "k": "Ruido",
+      "v": "Bajo, funcionamiento estable"
+    }
+  ],
+  "feats": [
+    "Corte de tela en 6, 8, 10 y 12 pulgadas.",
+    "Conveniente para algodón, cuero, género de lana, lino y fibras sintéticas.",
+    "Realiza cortes limpios, rectos y curvilíneos.",
+    "Funcionamiento con poco ruido, estable, fácil de operar y de alta eficacia.",
+    "Cuenta con dispositivo de cuchillo automático."
+  ]
+}

@@ -1,0 +1,16 @@
+---
+const marcas = ['Typical', 'Siruba', 'Yamata', 'Juki', 'Brother', 'Pegasus', 'Feiyute', 'Singer'];
+---
+<section class="brands" aria-label="Marcas que representamos">
+  <div class="wrap brands__label">
+    <p class="eyebrow eyebrow--muted" style="justify-content:center">Importador directo de máquinas y repuestos</p>
+  </div>
+  <div class="marquee">
+    <div class="marquee__track" aria-hidden="false">
+      {marcas.map((m) => <span class="brand-word">{m}</span>)}
+    </div>
+    <div class="marquee__track" aria-hidden="true">
+      {marcas.map((m) => <span class="brand-word">{m}</span>)}
+    </div>
+  </div>
+</section>

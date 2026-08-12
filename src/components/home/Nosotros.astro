@@ -1,0 +1,59 @@
+---
+import Icon from '../Icon.astro';
+
+const cards = [
+  { icon: 'box', h: 'Importador directo', p: 'Sin intermediarios: mejores precios y disponibilidad real de repuestos originales.' },
+  { icon: 'wrench', h: 'Servicio técnico propio', p: 'Personal altamente capacitado en máquinas industriales y hogareñas.' },
+  { icon: 'truck', h: 'Logística a todo el país', p: 'Retiros y entregas a domicilio, y trabajos para el interior.' },
+];
+---
+<section class="section" id="nosotros">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head__top">
+        <div>
+          <p class="eyebrow">01 — Quiénes somos</p>
+          <h2 class="h-section" style="margin-top:var(--s-4)">Medio siglo largo al lado del taller.</h2>
+        </div>
+        <span class="section-index">Av. Forest 888 · CABA</span>
+      </div>
+    </div>
+
+    <div class="about__grid">
+      <div class="about__body reveal">
+        <p>
+          Desde <strong>1968</strong> que en Casa Kira satisfacemos las necesidades de la industria textil,
+          con una gran variedad de productos en maquinarias industriales y familiares para coser y bordar,
+          hilados, repuestos y accesorios.
+        </p>
+        <p>
+          Somos además <strong>importadores directos</strong> de las principales marcas de máquinas y sus
+          repuestos: Typical, Yamata, Brother, Pegasus, Juki y Siruba.
+        </p>
+        <p>
+          Ofrecemos garantía de excelencia en nuestro servicio de post venta y reparación de maquinarias,
+          tanto a nivel industrial como hogareño. <strong>58 años de experiencia</strong> nos permiten dar
+          la mejor atención, cubriendo las necesidades puntuales de cada cliente.
+        </p>
+        <blockquote class="pull-quote">Casa Kira fue, es y será su respaldo de confianza.</blockquote>
+
+        <div class="feature-cards">
+          {cards.map((c) => (
+            <article class="f-card">
+              <span class="f-card__icon" aria-hidden="true"><Icon name={c.icon} size={20} /></span>
+              <h3>{c.h}</h3>
+              <p>{c.p}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="photo-panel photo-panel--square">
+          <img src="/assets/maquinas/Foto-Quienes.gif" alt="Salón de ventas de Casa Kira con máquinas de coser industriales" width="295" height="303" loading="lazy" />
+          <span class="photo-panel__tag">Casa central · Av. Forest 888</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

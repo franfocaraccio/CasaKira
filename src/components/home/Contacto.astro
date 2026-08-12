@@ -1,0 +1,80 @@
+---
+import { SITE, mapsLink } from '../../data/site';
+import Icon from '../Icon.astro';
+import ContactForm from '../islands/ContactForm.tsx';
+---
+<section class="section" id="contacto" style="background:var(--bg-alt);border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head__top">
+        <div>
+          <p class="eyebrow">06 — Contacto</p>
+          <h2 class="h-section" style="margin-top:var(--s-4)">Escribinos o pasá por el local.</h2>
+        </div>
+        <span class="section-index">Casa central</span>
+      </div>
+    </div>
+
+    <div class="contact__grid">
+      <div class="reveal">
+        <dl class="c-list">
+          <div class="c-item">
+            <span class="c-item__icon" aria-hidden="true"><Icon name="pin" size={18} /></span>
+            <div>
+              <dt class="c-item__label">Dirección</dt>
+              <dd class="c-item__value" style="margin:0">{SITE.direccion} — ({SITE.cp}) {SITE.ciudad}</dd>
+              <p class="c-item__note">Ciudad Autónoma de Buenos Aires, Argentina</p>
+            </div>
+          </div>
+
+          <div class="c-item">
+            <span class="c-item__icon" aria-hidden="true"><Icon name="phone" size={18} /></span>
+            <div>
+              <dt class="c-item__label">Teléfonos</dt>
+              <dd class="c-item__value mono" style="margin:0">
+                <a href={`tel:${SITE.tel}`}>{SITE.telHumano}</a><br />
+                <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener">{SITE.whatsappHumano}</a>
+              </dd>
+              <p class="c-item__note">Tel/Fax · Celular y WhatsApp</p>
+            </div>
+          </div>
+
+          <div class="c-item">
+            <span class="c-item__icon" aria-hidden="true"><Icon name="mail" size={18} /></span>
+            <div>
+              <dt class="c-item__label">E-mail</dt>
+              <dd class="c-item__value" style="margin:0"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+            </div>
+          </div>
+
+          <div class="c-item">
+            <span class="c-item__icon" aria-hidden="true"><Icon name="clock" size={18} /></span>
+            <div>
+              <dt class="c-item__label">Horario de atención</dt>
+              <dd class="c-item__value" style="margin:0">{SITE.horario}</dd>
+              <p class="c-item__note">{SITE.horarioSab}</p>
+            </div>
+          </div>
+        </dl>
+
+        <div class="map-card">
+          <div class="map-card__canvas">
+            <span class="map-card__pin" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"></path></svg>
+            </span>
+          </div>
+          <div class="map-card__foot">
+            <span class="map-card__addr">{SITE.direccion}, {SITE.ciudad}</span>
+            <a class="link-arrow" href={mapsLink()} target="_blank" rel="noopener">
+              Ver en Google Maps <Icon name="arrowUpRight" size={15} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <ContactForm client:load whatsappHumano={SITE.whatsappHumano} />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+---
+// Logotipo reconstruido en vector. Geometría derivada del logo del cliente:
+// KIRA mide 3,05× el alto de mayúscula y CASA 0,93 de ese alto; textLength lo fija.
+interface Props { class?: string }
+const { class: cls } = Astro.props;
+---
+<svg class:list={['logo', cls]} viewBox="0 0 212 70" aria-hidden="true">
+  <g class="lettering">
+    <text transform="translate(20.4 63.6) rotate(-90)" font-size="22.6"
+          textLength="55.8" lengthAdjust="spacingAndGlyphs">CASA</text>
+    <text x="23.1" y="65" font-size="88.2"
+          textLength="183" lengthAdjust="spacingAndGlyphs">KIRA</text>
+  </g>
+</svg>

@@ -1,0 +1,65 @@
+---
+import { SITE } from '../data/site';
+import { CATEGORIAS } from '../data/categorias';
+import Logo from './Logo.astro';
+import BrandIcon from './BrandIcon.astro';
+import Icon from './Icon.astro';
+
+const secciones = [
+  { href: '/#nosotros', label: 'Quiénes somos' },
+  { href: '/#maquinas', label: 'Máquinas' },
+  { href: '/#repuestos', label: 'Accesorios y repuestos' },
+  { href: '/#servicios', label: 'Servicios' },
+  { href: '/#tienda', label: 'Tienda online' },
+  { href: '/#contacto', label: 'Contacto' },
+];
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <span class="brand"><Logo /></span>
+        <p class="footer__blurb">
+          Máquinas para coser y bordar, industria textil, maquinarias de costura.
+          Rectas, overlock, interlock, accesorios, repuestos, reparación y servicio técnico.
+          Buenos Aires, Argentina.
+        </p>
+        <div class="footer__social">
+          <a href={SITE.whatsapp && `https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener" aria-label="WhatsApp"><BrandIcon name="whatsapp" /></a>
+          <a href={SITE.instagram} target="_blank" rel="noopener" aria-label="Instagram"><BrandIcon name="instagram" /></a>
+          <a href={SITE.facebook} target="_blank" rel="noopener" aria-label="Facebook"><BrandIcon name="facebook" /></a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Secciones</h4>
+        <ul>{secciones.map((s) => <li><a href={s.href}>{s.label}</a></li>)}</ul>
+      </div>
+
+      <div>
+        <h4>Máquinas</h4>
+        <ul>{CATEGORIAS.map((c) => <li><a href="/#maquinas">{c.nombre}</a></li>)}</ul>
+      </div>
+
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>{SITE.direccion}<br />({SITE.cp}) {SITE.ciudad}</li>
+          <li class="mono"><a href={`tel:${SITE.tel}`}>{SITE.telHumano}</a></li>
+          <li class="mono"><a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener">{SITE.whatsappHumano}</a></li>
+          <li><a href={`mailto:${SITE.email}`} set:html={SITE.email.replace('@', '@<wbr>')}></a></li>
+          <li>Lun a Vie 9–12.30 · 14–18 h<br />Sáb 9–12 h</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bar">
+      <span>© <span class="mono">1968–2026</span> {SITE.nombreLegal} — Todos los derechos reservados.</span>
+      <div class="footer__legal">
+        <a class="afip-badge" href={SITE.dataFiscal} target="_blank" rel="noopener">
+          <Icon name="shield" size={13} /> Data fiscal ARCA
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

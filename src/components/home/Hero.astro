@@ -1,0 +1,63 @@
+---
+import Icon from '../Icon.astro';
+
+const mosaico = [
+  { img: 'Typical-Recta.gif', alt: 'Máquina recta pespunteadora de 1 aguja de alta velocidad Typical', cap: 'Recta 1 aguja · Typical', eager: true },
+  { img: 'Siruba-oVERLOK.gif', alt: 'Máquina overlock de alta velocidad Siruba', cap: 'Overlock · Siruba' },
+  { img: 'Yamata-Interlok.gif', alt: 'Máquina interlock de alta velocidad Yamata', cap: 'Interlock · Yamata' },
+  { img: 'Yamata-Cortetela.gif', alt: 'Máquina recta para corte de tela Yamata', cap: 'Cortadora · Yamata' },
+];
+const stats = [
+  { label: 'De trayectoria ininterrumpida', n: 58, suf: 'años' },
+  { label: 'Representadas como importador', n: 6, suf: 'marcas' },
+  { label: 'Tipos de máquina en catálogo', n: 7, suf: 'tipos' },
+  { label: 'Colores en hilado para bordar', n: 300, suf: '+' },
+];
+---
+<section class="hero" id="inicio">
+  <div class="tech-grid" aria-hidden="true"></div>
+  <div class="wrap hero__in">
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">Importador directo · Buenos Aires</p>
+        <h1 class="h-display">Equipamos la industria textil argentina desde <em>1968</em>.</h1>
+        <p class="lead hero__lead">
+          Venta y reparación de máquinas de coser y bordar, industriales y familiares.
+          Máquinas de broches y de cortar, planchas, hilados, repuestos y accesorios originales.
+          Servicio técnico propio, con retiro y entrega a domicilio.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="/#maquinas">Ver máquinas <Icon name="arrow" size={17} /></a>
+          <a class="btn btn--ghost" href="/#contacto">Pedir presupuesto sin cargo</a>
+        </div>
+
+        <dl class="stats">
+          {stats.map((s) => (
+            <div class="stat">
+              <dt class="stat__label">{s.label}</dt>
+              <dd class="stat__num" style="margin:0"><span data-count={s.n}>{s.n}</span><small>{s.suf}</small></dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div class="hero__visual reveal">
+        <div class="mosaic">
+          {mosaico.map((m) => (
+            <figure class="mosaic__cell">
+              <img src={`/assets/maquinas/${m.img}`} alt={m.alt} width="250" height="167" loading={m.eager ? undefined : 'lazy'} />
+              <figcaption>{m.cap}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <div class="mosaic-note">
+          <p>Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela.</p>
+          <a class="link-arrow" href="/#maquinas">Ver las 7 categorías <Icon name="arrowUpRight" size={15} /></a>
+        </div>
+        <svg style="position:absolute;left:-6%;bottom:-14%;width:55%;height:56px;overflow:visible;pointer-events:none" viewBox="0 0 300 40" fill="none" aria-hidden="true">
+          <path class="stitch-draw" d="M0 30 C 60 30, 80 6, 140 12 S 240 34, 300 8" stroke="var(--accent-graphic)" stroke-width="2" stroke-linecap="round" opacity=".5"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>

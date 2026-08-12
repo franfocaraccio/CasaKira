@@ -1,0 +1,92 @@
+---
+const accesorios = ['Guías', 'Prensatelas', 'Cuchillas', 'Bobinas', 'Cortadores', 'Dientes', 'Protectores de aguja', 'Barras de aguja', 'Aparejos', 'Chapas'];
+const herramientas = ['Tijeras', 'Cortantes', 'Pinzas especiales', 'Abridores de costura', 'Destornilladores', 'Tuercas y tornillos'];
+---
+<section class="section" id="repuestos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head__top">
+        <div>
+          <p class="eyebrow">03 — Accesorios y repuestos</p>
+          <h2 class="h-section" style="margin-top:var(--s-4)">Todo lo que la máquina necesita.</h2>
+        </div>
+        <span class="section-index">Originales · Nuevos y usados</span>
+      </div>
+    </div>
+
+    <div class="bento">
+      <div class="bento__item--lg">
+        <article class="b-item b-item--color" style="height:100%">
+          <div class="b-item__media">
+            <img src="/assets/maquinas/Hilos.gif" alt="Conos de hilado de poliéster de distintos colores para coser y bordar" width="700" height="875" loading="lazy" />
+          </div>
+          <div class="b-item__body">
+            <p class="b-item__num">01 · Hilados</p>
+            <h3>Hilados 100% poliéster para coser y bordar</h3>
+            <p>Gran variedad de títulos y colores, para todo tipo de prendas y de gran resistencia.</p>
+            <p>Poliéster para bordar con <strong style="color:var(--text)">más de 300 colores</strong>, para todo tipo de bordados en telas livianas y pesadas.</p>
+            <div class="tag-grid"><span class="tag">Coser</span><span class="tag">Bordar</span><span class="tag">300+ colores</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="bento__item--wide">
+        <article class="b-item" style="height:100%">
+          <div class="b-item__media">
+            <img src="/assets/maquinas/Accesorio.gif" alt="Accesorios y repuestos para máquinas de coser: prensatelas, bobinas, cuchillas y chapas" width="700" height="394" loading="lazy" />
+          </div>
+          <div class="b-item__body">
+            <p class="b-item__num">02 · Accesorios</p>
+            <h3>Accesorios y repuestos para tu máquina</h3>
+            <p>Todo tipo de accesorios y repuestos para máquinas de coser y bordar.</p>
+            <div class="tag-grid">{accesorios.map((t) => <span class="tag">{t}</span>)}</div>
+          </div>
+        </article>
+      </div>
+
+      <article class="b-item">
+        <div class="b-item__media">
+          <img src="/assets/maquinas/Tijeras.gif" alt="Tijeras, pinzas especiales y abridores de costura" width="700" height="394" loading="lazy" />
+        </div>
+        <div class="b-item__body">
+          <p class="b-item__num">03 · Herramientas</p>
+          <h3>Cortantes, pinzas y abridores de costura</h3>
+          <div class="tag-grid">{herramientas.map((t) => <span class="tag">{t}</span>)}</div>
+        </div>
+      </article>
+
+      <article class="b-item">
+        <div class="b-item__media">
+          <img src="/assets/maquinas/Motores.gif" alt="Motores y pedaleras para máquinas de coser industriales y hogareñas" width="700" height="394" loading="lazy" />
+        </div>
+        <div class="b-item__body">
+          <p class="b-item__num">04 · Motores</p>
+          <h3>Motores y pedaleras</h3>
+          <p>Para todo tipo de máquinas, industriales y hogareñas. Con y sin pedalera. Originales, nuevos y usados.</p>
+        </div>
+      </article>
+
+      <article class="b-item">
+        <div class="b-item__media">
+          <img src="/assets/maquinas/Soportes.gif" alt="Soportes, patas y bases para mesas de máquinas de coser" width="700" height="394" loading="lazy" />
+        </div>
+        <div class="b-item__body">
+          <p class="b-item__num">05 · Soportes</p>
+          <h3>Soportes y bases</h3>
+          <p>Patas para mesas, soportes con distintos modelos de pedal y venta de pedaleras. Bases originales con diferentes calados según modelo.</p>
+          <div class="tag-grid"><span class="tag">Nuevos y usados</span><span class="tag">Trabajos a medida</span></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="callout reveal">
+      <div>
+        <h3>Trabajos a medida para maquinaria antigua o discontinuada</h3>
+        <p>Fabricamos y adaptamos piezas cuando ya no hay repuesto de fábrica.</p>
+      </div>
+      <div class="callout__actions">
+        <a class="btn btn--primary btn--sm" href="/#contacto">Contarnos qué necesitás</a>
+      </div>
+    </div>
+  </div>
+</section>

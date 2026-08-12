@@ -1,0 +1,41 @@
+{
+  "nombre": "Recta pespunteadora 1 aguja de alta velocidad",
+  "marca": "Siruba",
+  "categoria": "recta",
+  "orden": 2,
+  "ref": "REC-SIR",
+  "img": "Siruba-Recta.gif",
+  "resumen": "Para materiales finos y extra pesados —camisas, trajes, jeans, cuero— con corte de hilo automático.",
+  "chips": [
+    "Corte de hilo automático",
+    "Brazo y base ampliados"
+  ],
+  "specs": [
+    {
+      "k": "Tipo de puntada",
+      "v": "Pespunte"
+    },
+    {
+      "k": "Agujas",
+      "v": "1"
+    },
+    {
+      "k": "Corte de hilo",
+      "v": "Automático"
+    },
+    {
+      "k": "Materiales",
+      "v": "De finos a extra pesados"
+    },
+    {
+      "k": "Brazo y base",
+      "v": "Ampliados"
+    }
+  ],
+  "feats": [
+    "Para costura de materiales finos y extra pesados: camisas, trajes, jeans, plástico y cuero.",
+    "Mecanismo de costura superior.",
+    "Cortado de hilo automático, que da mayor eficiencia y reduce los tiempos de producción.",
+    "Mayor tamaño de brazo y base, que facilita la operación de la máquina."
+  ]
+}

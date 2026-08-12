@@ -1,0 +1,40 @@
+{
+  "nombre": "Interlock de base plana y alta velocidad",
+  "marca": "Siruba",
+  "categoria": "interlock",
+  "orden": 2,
+  "ref": "INT-SIR",
+  "img": "Siruba-Interlok.gif",
+  "resumen": "Base plana para costura general y dobladillado, con corta hilos neumático o eléctrico y rodillo de arrastre.",
+  "chips": [
+    "Corta hilos neumático/eléctrico",
+    "Rodillo de arrastre"
+  ],
+  "specs": [
+    {
+      "k": "Base",
+      "v": "Plana"
+    },
+    {
+      "k": "Aplicación",
+      "v": "Costura general y dobladillado"
+    },
+    {
+      "k": "Corta hilos",
+      "v": "Superior e inferior, neumático o eléctrico"
+    },
+    {
+      "k": "Arrastre",
+      "v": "Rodillo trasero"
+    },
+    {
+      "k": "Accesorios",
+      "v": "Ribeteador, alforzas, elásticos, pasacintos"
+    }
+  ],
+  "feats": [
+    "Base plana y alta velocidad, para costura general y dobladillado.",
+    "Corta hilos superior e inferior de tipo neumático o eléctrico (según modelo), y rodillo de arrastre trasero.",
+    "Excelente performance y posibilidad de adicionar accesorios: ribeteador de cintas, costuras laterales, alforzas, elásticos y pasacintos."
+  ]
+}

@@ -1,0 +1,38 @@
+---
+import { SITE, NAV_LINKS, waLink } from '../data/site';
+import Logo from './Logo.astro';
+import BrandIcon from './BrandIcon.astro';
+import ThemeToggle from './islands/ThemeToggle.tsx';
+import MobileMenu from './islands/MobileMenu.tsx';
+---
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a class="brand" href="/" aria-label="Casa Kira — ir al inicio">
+      <Logo />
+      <span class="brand__divider" aria-hidden="true"></span>
+      <span class="brand__text">
+        <span class="brand__tag">Máquinas de coser y bordar</span>
+        <span class="brand__since">Desde 1968</span>
+      </span>
+    </a>
+
+    <nav class="nav__links" aria-label="Navegación principal">
+      {NAV_LINKS.map((l) => <a class="nav__link" href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="nav__actions">
+      <ThemeToggle client:load />
+      <a class="btn btn--primary btn--sm nav__cta" href={waLink()} target="_blank" rel="noopener">
+        <BrandIcon name="whatsapp" size={16} />
+        WhatsApp
+      </a>
+      <MobileMenu
+        client:load
+        links={NAV_LINKS.map((l) => ({ href: l.href, label: l.label }))}
+        waHref={waLink()}
+        telHref={`tel:${SITE.tel}`}
+        telLabel={SITE.telCorto}
+      />
+    </div>
+  </div>
+</header>

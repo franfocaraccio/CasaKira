@@ -1,0 +1,35 @@
+{
+  "nombre": "Interlock de alta velocidad",
+  "marca": "Typical",
+  "categoria": "interlock",
+  "orden": 1,
+  "ref": "INT-TYP",
+  "img": "Typical-Interlok.gif",
+  "resumen": "Mecanismo avanzado de conducción y ajuste de precisión, para doble costura en hombros y mangas.",
+  "chips": [
+    "Ajuste de precisión"
+  ],
+  "specs": [
+    {
+      "k": "Aplicación",
+      "v": "Doble costura, hombros y mangas"
+    },
+    {
+      "k": "Ajuste",
+      "v": "De precisión, según el operador"
+    },
+    {
+      "k": "Conducción",
+      "v": "Mecanismo avanzado"
+    },
+    {
+      "k": "Materiales",
+      "v": "Todo tipo de soporte"
+    }
+  ],
+  "feats": [
+    "Mecanismo avanzado de conducción.",
+    "Las estructuras de los mecanismos de ajuste están realizadas con materiales de alta calidad y permiten el ajuste preciso según los requerimientos del operador.",
+    "Conveniente para todas las clases de costura y doble costura, en hombros y mangas de diferentes soportes."
+  ]
+}

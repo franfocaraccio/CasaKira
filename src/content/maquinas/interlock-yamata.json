@@ -1,0 +1,40 @@
+{
+  "nombre": "Interlock de alta velocidad",
+  "marca": "Yamata",
+  "categoria": "interlock",
+  "orden": 3,
+  "ref": "INT-YAM",
+  "img": "Yamata-Interlok.gif",
+  "resumen": "Ideal para ropa interior, deportiva y camisetas, con servomotor y dosificador automático de aceite.",
+  "chips": [
+    "Servomotor",
+    "Dosificador de aceite"
+  ],
+  "specs": [
+    {
+      "k": "Aplicación",
+      "v": "Ropa interior, deportiva y camisetas"
+    },
+    {
+      "k": "Motor",
+      "v": "Servomotor"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Dosificador automático"
+    },
+    {
+      "k": "Corte",
+      "v": "Dispositivo elevable"
+    },
+    {
+      "k": "Presión de pie",
+      "v": "Con función automática"
+    }
+  ],
+  "feats": [
+    "Ideal para coser ropa interior, ropa deportiva y camisetas.",
+    "Dosificador automático de aceite que mantiene el equipo limpio de impurezas.",
+    "Adopta servomotor: permite subir y bajar el dispositivo de corte, con función de presión de pie y sistema exacto de orientación. Fácil de operar."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "nombre": "Overlock de alta velocidad",
+  "marca": "Yamata",
+  "categoria": "overlock",
+  "orden": 3,
+  "ref": "OVE-YAM",
+  "img": "Yamata-oVERLOK.gif",
+  "resumen": "Para materiales de peso medio, con puntada bajo tensión óptima incluso a 6500 rpm.",
+  "chips": [
+    "6500 rpm",
+    "Lubricado automático"
+  ],
+  "specs": [
+    {
+      "k": "Velocidad máxima",
+      "v": "6500 rpm"
+    },
+    {
+      "k": "Materiales",
+      "v": "De peso medio"
+    },
+    {
+      "k": "Puntada",
+      "v": "Bajo tensión"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Automática"
+    }
+  ],
+  "feats": [
+    "Conveniente para materiales de peso medio.",
+    "Puntada de costura bajo tensión, con resultados óptimos incluso a altas velocidades (6500 rpm).",
+    "Lubricado automático de excelente funcionamiento."
+  ]
+}

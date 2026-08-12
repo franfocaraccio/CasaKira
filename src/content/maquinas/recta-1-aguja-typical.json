@@ -1,0 +1,40 @@
+{
+  "nombre": "Recta pespunteadora 1 aguja de alta velocidad",
+  "marca": "Typical",
+  "categoria": "recta",
+  "orden": 1,
+  "ref": "REC-TYP",
+  "img": "Typical-Recta.gif",
+  "resumen": "Pespunte de calidad superior hasta 5000 rpm, sin ruido ni vibraciones, con lubricación en aluminio.",
+  "chips": [
+    "5000 rpm",
+    "Lubricación en aluminio"
+  ],
+  "specs": [
+    {
+      "k": "Velocidad máxima",
+      "v": "5000 rpm (según modelo)"
+    },
+    {
+      "k": "Tipo de puntada",
+      "v": "Pespunte"
+    },
+    {
+      "k": "Agujas",
+      "v": "1"
+    },
+    {
+      "k": "Lubricación",
+      "v": "Automática, cuerpo en aluminio"
+    },
+    {
+      "k": "Alimentación",
+      "v": "Adelante y reversa"
+    }
+  ],
+  "feats": [
+    "Puntada de calidad superior, sin ruido ni vibraciones tanto a altas como a bajas velocidades, con un máximo de 5000 rpm (según modelo).",
+    "El mecanismo de alimentación reduce al mínimo la diferencia de longitud de puntada entre altas y bajas velocidades, y en alimentación hacia adelante o en reversa.",
+    "Sistema de lubricación realizado en aluminio, de máxima durabilidad y confiabilidad."
+  ]
+}
