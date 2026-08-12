@@ -10,6 +10,14 @@
 /casa-kira-prototipo.html
 /casa-kira-ficha-ejemplo.html
 
+# Astro
 node_modules/
+dist/
+.astro/
+
+# Legacy vanilla build artifacts (kept under legacy/ for reference)
+/legacy/maquinas/
+/legacy/sitemap.xml
+
 .DS_Store
 Thumbs.db

@@ -1,14 +1,25 @@
 {
   "name": "casakira",
-  "version": "0.1.0",
+  "type": "module",
+  "version": "0.2.0",
   "private": true,
   "description": "Casa Kira — industrial sewing machine dealer website (Buenos Aires, since 1968)",
   "scripts": {
-    "build": "node build.js && node check.js",
-    "check": "node check.js",
-    "bundle": "node build-single-file.js"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
   },
-  "engines": {
-    "node": ">=18"
+  "dependencies": {
+    "@astrojs/react": "^6.0.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4"
   }
 }

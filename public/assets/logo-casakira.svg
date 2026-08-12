@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 70" width="424" height="140" role="img" aria-label="Casa Kira">
+  <title>Casa Kira</title>
+  <desc>
+    Reconstrucción vectorial del logotipo de Casa Kira, derivada de un JPG de baja resolución.
+    Proporciones tomadas del original: el ancho de KIRA equivale a 3,05 veces el alto de
+    mayúscula, y CASA mide 0,93 de ese alto; textLength las fija de forma exacta.
+    Compuesto con Archivo Black, que aproxima el lettering pero NO es la tipografía original.
+    Para que se vea igual en cualquier equipo hay que convertir los textos a trazados.
+    Reemplazar por el vector original de la marca en cuanto esté disponible.
+  </desc>
+  <g fill="#C1272D" stroke="#1B1B1E" stroke-width="2.4" stroke-linejoin="round"
+     paint-order="stroke fill"
+     font-family="Archivo Black, Arial Black, Impact, sans-serif">
+    <text transform="translate(20.4 63.6) rotate(-90)" font-size="22.6"
+          textLength="55.8" lengthAdjust="spacingAndGlyphs">CASA</text>
+    <text x="23.1" y="65" font-size="88.2"
+          textLength="183" lengthAdjust="spacingAndGlyphs">KIRA</text>
+  </g>
+</svg>
