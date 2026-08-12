@@ -1,11 +1,15 @@
 ---
 import { waLink } from '../../data/site';
+import Icon from '../Icon.astro';
 
+// Servicios propios + lo que nos permite darlos (importación directa y taller
+// propio, que antes vivían en Nosotros).
 const servicios = [
-  { t: 'Presupuestos y asesoramiento sin cargo', d: 'Diagnosticamos y cotizamos antes de intervenir la máquina.' },
-  { t: 'Retiros y entregas a domicilio', d: 'No hace falta que muevas la máquina: la buscamos y la devolvemos.' },
-  { t: 'Trabajos para el interior del país', d: 'Atendemos talleres y fábricas fuera del AMBA.' },
-  { t: 'Retiros y envíos a todo el país', d: 'Coordinamos la logística de ida y vuelta.' },
+  { icon: 'file', t: 'Presupuestos y asesoramiento sin cargo', d: 'Diagnosticamos y cotizamos antes de intervenir la máquina.' },
+  { icon: 'pin', t: 'Trabajos para el interior del país', d: 'Atendemos talleres y fábricas fuera del AMBA.' },
+  { icon: 'truck', t: 'Retiros y envíos a todo el país', d: 'Coordinamos la logística de ida y vuelta.' },
+  { icon: 'box', t: 'Importador directo', d: 'Sin intermediarios: mejores precios y disponibilidad real de repuestos originales.' },
+  { icon: 'wrench', t: 'Servicio técnico propio', d: 'Personal altamente capacitado en máquinas industriales y hogareñas.' },
 ];
 ---
 <section class="section services" id="servicios">
@@ -22,18 +26,6 @@ const servicios = [
           mantenimiento apropiado.
         </p>
 
-        <ul class="svc-list">
-          {servicios.map((s, i) => (
-            <li>
-              <span class="svc-list__n">{String(i + 1).padStart(2, '0')}</span>
-              <span>
-                <span class="svc-list__t">{s.t}</span>
-                <span class="svc-list__d">{s.d}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-
         <div class="hero__cta" style="margin-top:var(--s-6)">
           <a class="btn btn--primary" href="/contacto">Pedir presupuesto</a>
           <a class="btn btn--ghost" href={waLink()} target="_blank" rel="noopener">Escribir por WhatsApp</a>
@@ -46,6 +38,16 @@ const servicios = [
           <span class="photo-panel__tag">Taller propio · Servicio técnico</span>
         </div>
       </div>
+    </div>
+
+    <div class="feature-cards reveal" style="margin-top:var(--s-7)">
+      {servicios.map((s) => (
+        <article class="f-card">
+          <span class="f-card__icon" aria-hidden="true"><Icon name={s.icon} size={20} /></span>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+        </article>
+      ))}
     </div>
   </div>
 </section>
