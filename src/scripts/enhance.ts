@@ -95,7 +95,7 @@
         const end = Number((e.target as HTMLElement).dataset.count);
         const t0 = performance.now();
         const step = (now: number) => {
-          const p = Math.min((now - t0) / 1100, 1);
+          const p = Math.min((now - t0) / 1800, 1);
           e.target.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
           if (p < 1) requestAnimationFrame(step);
         };
