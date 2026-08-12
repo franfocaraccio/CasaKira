@@ -401,19 +401,17 @@ input,textarea,select{font:inherit;color:inherit}
 .hero__lead{margin-top:var(--s-5)}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
 
-.stats{display:grid;grid-template-columns:repeat(2,1fr);margin-top:var(--s-7);border-top:1px solid var(--border)}
-@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
-/* column-reverse: el número se ve arriba, pero en el DOM el término precede a la definición.
-   Padding simétrico para que la línea separadora quede centrada entre columnas;
-   la primera pega a la izquierda y la última a la derecha. */
-.stat{padding:var(--s-5) var(--s-4) var(--s-4);border-right:1px solid var(--border);display:flex;flex-direction:column-reverse;justify-content:flex-end}
-.stat:first-child{padding-left:0}
-.stat:last-child{border-right:0;padding-right:0}
-@media(max-width:599px){
-  .stat:nth-child(odd){padding-left:0}
-  .stat:nth-child(even){border-right:0;padding-right:0}
-  .stat:nth-child(n+3){border-top:1px solid var(--border)}
+/* KPIs como tarjetas (mismo estilo que las .f-card de Nosotros). El número
+   conserva la animación de conteo por [data-count]. column-reverse: el número
+   se ve arriba, pero en el DOM el término precede a la definición. */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-3);margin-top:var(--s-7)}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr);gap:var(--s-4)}}
+.stat{
+  padding:var(--s-5) var(--s-4);border:1px solid var(--border);border-radius:var(--r-md);
+  background:var(--surface);display:flex;flex-direction:column-reverse;justify-content:flex-end;
+  transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
 }
+.stat:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shadow-md)}
 .stat__num{font-family:var(--font-display);font-size:clamp(1.75rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
 .stat__num small{font-size:.46em;font-weight:600;color:var(--accent);margin-left:.18em;letter-spacing:0}
 .stat__label{font-size:.8125rem;color:var(--text-muted);margin-top:.5rem;line-height:1.4;max-width:18ch}
