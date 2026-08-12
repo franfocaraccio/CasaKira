@@ -1,5 +1,6 @@
 ---
 import Icon from '../Icon.astro';
+import { MARCAS } from '../../data/site';
 
 const mosaico = [
   { img: 'Typical-Recta.gif', alt: 'Máquina recta pespunteadora de 1 aguja de alta velocidad Typical', cap: 'Recta 1 aguja · Typical', eager: true },
@@ -9,7 +10,7 @@ const mosaico = [
 ];
 const stats: { label: string; n: number; suf?: string; pre?: string }[] = [
   { label: 'De trayectoria ininterrumpida', n: 60, suf: 'años' },
-  { label: 'Representadas como importador', n: 10, suf: 'marcas' },
+  { label: 'Representadas como importador', n: MARCAS.length, suf: 'marcas' },
   { label: 'De máquina en catálogo', n: 7, suf: 'tipos' },
   { label: 'Colores en hilado para bordar', n: 300, pre: '+' },
 ];

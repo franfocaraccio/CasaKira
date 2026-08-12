@@ -1,6 +1,7 @@
 ---
 // Las tarjetas de "Importador directo" y "Servicio técnico propio" se mudaron
 // a la sección Servicios: hablan de lo que hacemos, no de quiénes somos.
+import { marcasEnProsa } from '../../data/site';
 ---
 <section class="section" id="nosotros">
   <div class="wrap">
@@ -23,7 +24,7 @@
         </p>
         <p>
           Somos <strong>importadores directos</strong> de las principales marcas de máquinas y sus
-          repuestos: Mirsew®, Jack, Feiyue, Tank, Typical, Yamata, Brother, Pegasus, Juki y Siruba.
+          repuestos: {marcasEnProsa()}.
         </p>
         <p>
           Ofrecemos garantía de excelencia en nuestro servicio de post venta y reparación de maquinarias,

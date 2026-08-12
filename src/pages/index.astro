@@ -3,10 +3,11 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/home/Hero.astro';
 import Brands from '../components/home/Brands.astro';
 import CatalogoTeaser from '../components/home/CatalogoTeaser.astro';
+import { marcasEnProsa } from '../data/site';
 
 const title = 'Casa Kira — Máquinas de coser y bordar industriales · Desde 1967';
 const description =
-  'Venta y reparación de máquinas de coser y bordar, industriales y familiares. Importador directo de Mirsew, Jack, Feiyue, Tank, Typical, Yamata, Brother, Pegasus, Juki y Siruba. Repuestos, hilados y accesorios. Servicio técnico propio en CABA desde 1967.';
+  `Venta y reparación de máquinas de coser y bordar, industriales y familiares. Importador directo de ${marcasEnProsa()}. Repuestos, hilados y accesorios. Servicio técnico propio en CABA desde 1967.`;
 ---
 <Base title={title} description={description}>
   <Hero />

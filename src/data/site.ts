@@ -30,6 +30,20 @@ export const SITE = {
   },
 } as const;
 
+/**
+ * Marcas que importamos. Fuente única: la usan el deslizable de la home, el
+ * texto de Nosotros, el KPI de marcas y la metadata. Agregar o quitar una acá
+ * actualiza todo el sitio.
+ */
+export const MARCAS = [
+  'Mirsew', 'Jack', 'Janome', 'Feiyue', 'Tank', 'Typical',
+  'Yamata', 'Brother', 'Pegasus', 'Juki', 'Siruba',
+] as const;
+
+/** Las marcas listadas para prosa: "A, B y C". */
+export const marcasEnProsa = (): string =>
+  `${MARCAS.slice(0, -1).join(', ')} y ${MARCAS[MARCAS.length - 1]}`;
+
 // Links de sección, root-relative para que funcionen desde cualquier página
 // (en la home scrollean; en una ficha navegan a la home y scrollean).
 export interface NavLink {
