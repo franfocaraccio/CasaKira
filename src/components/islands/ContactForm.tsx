@@ -72,7 +72,7 @@ export default function ContactForm({ whatsappHumano }: Props) {
 
         <div className="field">
           <label htmlFor="f-tel">Teléfono</label>
-          <input id="f-tel" name="telefono" type="tel" inputMode="tel" autoComplete="tel" placeholder="11 4069-2393" onBlur={onBlur} onInput={onInput} />
+          <input id="f-tel" name="telefono" type="tel" inputMode="tel" autoComplete="tel" placeholder="11 3198-6183" onBlur={onBlur} onInput={onInput} />
           <span className="field__help">Si preferís que te llamemos.</span>
         </div>
 
