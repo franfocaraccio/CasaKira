@@ -7,11 +7,11 @@ const mosaico = [
   { img: 'Yamata-Interlok.gif', alt: 'Máquina interlock de alta velocidad Yamata', cap: 'Interlock · Yamata' },
   { img: 'Yamata-Cortetela.gif', alt: 'Máquina recta para corte de tela Yamata', cap: 'Cortadora · Yamata' },
 ];
-const stats = [
+const stats: { label: string; n: number; suf?: string; pre?: string }[] = [
   { label: 'De trayectoria ininterrumpida', n: 59, suf: 'años' },
   { label: 'Representadas como importador', n: 6, suf: 'marcas' },
-  { label: 'Tipos de máquina en catálogo', n: 7, suf: 'tipos' },
-  { label: 'Colores en hilado para bordar', n: 300, suf: '+' },
+  { label: 'De máquina en catálogo', n: 7, suf: 'tipos' },
+  { label: 'Colores en hilado para bordar', n: 300, pre: '+' },
 ];
 ---
 <section class="hero" id="inicio">
@@ -35,7 +35,7 @@ const stats = [
           {stats.map((s) => (
             <div class="stat">
               <dt class="stat__label">{s.label}</dt>
-              <dd class="stat__num" style="margin:0"><span data-count={s.n}>{s.n}</span><small>{s.suf}</small></dd>
+              <dd class="stat__num" style="margin:0">{s.pre && <small style="margin:0 .06em 0 0">{s.pre}</small>}<span data-count={s.n}>{s.n}</span>{s.suf && <small>{s.suf}</small>}</dd>
             </div>
           ))}
         </dl>
