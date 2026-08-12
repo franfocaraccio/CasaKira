@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Contacto from '../components/home/Contacto.astro';
+
+const title = 'Contacto — Casa Kira · Av. Forest 888, CABA';
+const description =
+  'Escribinos o pasá por el local: Av. Forest 888, CABA. Teléfono, WhatsApp y e-mail de Casa Kira. Consultas y cotización de máquinas, repuestos y servicio técnico.';
+---
+<Base title={title} description={description}>
+  <Contacto />
+</Base>
+
+<script>
+  import '../scripts/enhance';
+</script>

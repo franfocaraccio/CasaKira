@@ -41,8 +41,8 @@ export interface NavLink {
 
 export const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Inicio' },
-  { href: '/#nosotros', label: 'Nosotros' },
-  { href: '/#servicios', label: 'Servicios' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/servicios', label: 'Servicios' },
   {
     href: '/catalogo',
     label: 'Catálogo',
@@ -51,7 +51,7 @@ export const NAV_LINKS: NavLink[] = [
       { href: '/catalogo#repuestos', label: 'Accesorios y repuestos' },
     ],
   },
-  { href: '/#contacto', label: 'Contacto' },
+  { href: '/contacto', label: 'Contacto' },
 ];
 
 /** Link de WhatsApp, con mensaje ya redactado si se pasa uno. */

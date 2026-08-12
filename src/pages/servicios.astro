@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Servicios from '../components/home/Servicios.astro';
+
+const title = 'Servicios — Post venta, mantenimiento y reparación · Casa Kira';
+const description =
+  'Servicio técnico propio de Casa Kira: post venta, mantenimiento y reparación de máquinas de coser y bordar, industriales y hogareñas. Repuestos originales. CABA.';
+---
+<Base title={title} description={description}>
+  <Servicios />
+</Base>
+
+<script>
+  import '../scripts/enhance';
+</script>

@@ -3,6 +3,17 @@ import { SITE, NAV_LINKS, waLink } from '../data/site';
 import Logo from './Logo.astro';
 import ThemeToggle from './islands/ThemeToggle.tsx';
 import MobileMenu from './islands/MobileMenu.tsx';
+
+// Resalta el link de la página actual. Sin anclas, no hay scrollspy: el estado
+// activo se decide en el servidor comparando la ruta.
+const path = (Astro.url.pathname.replace(/\/+$/, '') || '/');
+function isActive(href: string): boolean {
+  const base = (href.split('#')[0].replace(/\/+$/, '') || '/');
+  if (base === '/') return path === '/';
+  // Catálogo queda activo también en las fichas de máquina (/maquinas/...).
+  if (base === '/catalogo') return path === '/catalogo' || path.startsWith('/maquinas');
+  return path === base;
+}
 ---
 <header class="nav" id="nav">
   <div class="wrap nav__in">
@@ -18,7 +29,7 @@ import MobileMenu from './islands/MobileMenu.tsx';
       {NAV_LINKS.map((l) =>
         l.children ? (
           <div class="nav__item nav__item--drop">
-            <a class="nav__link nav__link--drop" href={l.href} aria-haspopup="true">
+            <a class="nav__link nav__link--drop" href={l.href} aria-haspopup="true" aria-current={isActive(l.href) ? 'true' : undefined}>
               {l.label}
               <svg class="nav__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
@@ -31,7 +42,7 @@ import MobileMenu from './islands/MobileMenu.tsx';
             </div>
           </div>
         ) : (
-          <a class="nav__link" href={l.href}>{l.label}</a>
+          <a class="nav__link" href={l.href} aria-current={isActive(l.href) ? 'true' : undefined}>{l.label}</a>
         )
       )}
     </nav>

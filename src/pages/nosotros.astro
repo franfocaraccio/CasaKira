@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Nosotros from '../components/home/Nosotros.astro';
+
+const title = 'Nosotros — Casa Kira · Máquinas de coser y bordar desde 1967';
+const description =
+  'Casa Kira: importador directo de máquinas de coser y bordar y servicio técnico propio en CABA desde 1967. 59 años equipando a la industria textil.';
+---
+<Base title={title} description={description}>
+  <Nosotros />
+</Base>
+
+<script>
+  import '../scripts/enhance';
+</script>
