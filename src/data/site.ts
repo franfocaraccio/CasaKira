@@ -3,7 +3,7 @@
 export const SITE = {
   nombre: 'Casa Kira',
   nombreLegal: 'Casa Kira S.R.L.',
-  desde: 1968,
+  desde: 1967,
   dominio: 'https://casakira.com.ar',
   direccion: 'Av. Forest 888',
   cp: '1427',
@@ -14,8 +14,9 @@ export const SITE = {
   whatsapp: '5491140692393',
   whatsappHumano: '(54 9 11) 4069-2393',
   email: 'casakirasrl@casakira.com.ar',
-  horario: 'Lunes a viernes de 9 a 12.30 y de 14 a 18 h',
+  horario: 'Lunes a viernes de 9 a 12 y de 14 a 17 h',
   horarioSab: 'Sábados de 9 a 12 h',
+  tiendaUrl: 'https://www.mercadolibre.com.ar/pagina/maquineriakira',
   instagram: 'https://www.instagram.com/maquineriacasakira/',
   instagramHandle: '@maquineriacasakira',
   facebook: 'https://www.facebook.com/casakirasrl',
@@ -31,14 +32,27 @@ export const SITE = {
 
 // Links de sección, root-relative para que funcionen desde cualquier página
 // (en la home scrollean; en una ficha navegan a la home y scrollean).
-export const NAV_LINKS = [
+export interface NavLink {
+  href: string;
+  label: string;
+  /** Si tiene hijos, en desktop se muestra como desplegable al pasar el mouse. */
+  children?: { href: string; label: string }[];
+}
+
+export const NAV_LINKS: NavLink[] = [
+  { href: '/', label: 'Inicio' },
   { href: '/#nosotros', label: 'Nosotros' },
-  { href: '/catalogo#maquinas', label: 'Máquinas' },
-  { href: '/catalogo#repuestos', label: 'Repuestos' },
   { href: '/#servicios', label: 'Servicios' },
-  { href: '/#tienda', label: 'Tienda online' },
+  {
+    href: '/catalogo',
+    label: 'Catálogo',
+    children: [
+      { href: '/catalogo#maquinas', label: 'Máquinas' },
+      { href: '/catalogo#repuestos', label: 'Accesorios y repuestos' },
+    ],
+  },
   { href: '/#contacto', label: 'Contacto' },
-] as const;
+];
 
 /** Link de WhatsApp, con mensaje ya redactado si se pasa uno. */
 export function waLink(texto?: string): string {

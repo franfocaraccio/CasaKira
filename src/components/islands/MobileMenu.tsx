@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 interface Link { href: string; label: string }
-interface Props { links: Link[]; waHref: string; telHref: string; telLabel: string }
+interface Props { links: Link[]; tiendaHref: string; waHref: string; telHref: string; telLabel: string }
 
 /**
  * Menú mobile (isla de React): el botón hamburguesa y la hoja a pantalla
  * completa. Cierra con Escape, bloquea el scroll de fondo y devuelve el foco.
  */
-export default function MobileMenu({ links, waHref, telHref, telLabel }: Props) {
+export default function MobileMenu({ links, tiendaHref, waHref, telHref, telLabel }: Props) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -83,7 +83,8 @@ export default function MobileMenu({ links, waHref, telHref, telLabel }: Props) 
         </div>
 
         <div className="wrap sheet__foot">
-          <a className="btn btn--primary btn--wide" href={waHref} target="_blank" rel="noopener">Consultar por WhatsApp</a>
+          <a className="btn btn--primary btn--wide" href={tiendaHref} target="_blank" rel="noopener" onClick={() => setOpen(false)}>Tienda online</a>
+          <a className="btn btn--ghost btn--wide" href={waHref} target="_blank" rel="noopener">Consultar por WhatsApp</a>
           <a className="btn btn--ghost btn--wide" href={telHref}>Llamar al {telLabel}</a>
         </div>
       </div>

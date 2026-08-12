@@ -11,19 +11,38 @@ import MobileMenu from './islands/MobileMenu.tsx';
       <span class="brand__divider" aria-hidden="true"></span>
       <span class="brand__text">
         <span class="brand__tag">Máquinas de coser y bordar</span>
-        <span class="brand__since">Desde 1968</span>
       </span>
     </a>
 
     <nav class="nav__links" aria-label="Navegación principal">
-      {NAV_LINKS.map((l) => <a class="nav__link" href={l.href}>{l.label}</a>)}
+      {NAV_LINKS.map((l) =>
+        l.children ? (
+          <div class="nav__item nav__item--drop">
+            <a class="nav__link nav__link--drop" href={l.href} aria-haspopup="true">
+              {l.label}
+              <svg class="nav__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+            <div class="nav__menu" role="menu">
+              {l.children.map((c) => (
+                <a class="nav__sublink" role="menuitem" href={c.href}>{c.label}</a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a class="nav__link" href={l.href}>{l.label}</a>
+        )
+      )}
     </nav>
 
     <div class="nav__actions">
+      <a class="nav__tienda" href={SITE.tiendaUrl} target="_blank" rel="noopener">Tienda online</a>
       <ThemeToggle client:load />
       <MobileMenu
         client:load
         links={NAV_LINKS.map((l) => ({ href: l.href, label: l.label }))}
+        tiendaHref={SITE.tiendaUrl}
         waHref={waLink()}
         telHref={`tel:${SITE.tel}`}
         telLabel={SITE.telCorto}

@@ -10,7 +10,7 @@ const secciones = [
   { href: '/catalogo#maquinas', label: 'Máquinas' },
   { href: '/catalogo#repuestos', label: 'Accesorios y repuestos' },
   { href: '/#servicios', label: 'Servicios' },
-  { href: '/#tienda', label: 'Tienda online' },
+  { href: SITE.tiendaUrl, label: 'Tienda online', external: true },
   { href: '/#contacto', label: 'Contacto' },
 ];
 ---
@@ -33,7 +33,7 @@ const secciones = [
 
       <div>
         <h4>Secciones</h4>
-        <ul>{secciones.map((s) => <li><a href={s.href}>{s.label}</a></li>)}</ul>
+        <ul>{secciones.map((s) => <li><a href={s.href} target={s.external ? '_blank' : undefined} rel={s.external ? 'noopener' : undefined}>{s.label}</a></li>)}</ul>
       </div>
 
       <div>
@@ -48,13 +48,13 @@ const secciones = [
           <li class="mono"><a href={`tel:${SITE.tel}`}>{SITE.telHumano}</a></li>
           <li class="mono"><a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener">{SITE.whatsappHumano}</a></li>
           <li><a href={`mailto:${SITE.email}`} set:html={SITE.email.replace('@', '@<wbr>')}></a></li>
-          <li>Lun a Vie 9–12.30 · 14–18 h<br />Sáb 9–12 h</li>
+          <li>Lun a Vie 9–12 · 14–17 h<br />Sáb 9–12 h</li>
         </ul>
       </div>
     </div>
 
     <div class="footer__bar">
-      <span>© <span class="mono">1968–2026</span> {SITE.nombreLegal} — Todos los derechos reservados.</span>
+      <span>© <span class="mono">1967–2026</span> {SITE.nombreLegal} — Todos los derechos reservados.</span>
       <div class="footer__legal">
         <a class="afip-badge" href={SITE.dataFiscal} target="_blank" rel="noopener">
           <Icon name="shield" size={13} /> Data fiscal ARCA
