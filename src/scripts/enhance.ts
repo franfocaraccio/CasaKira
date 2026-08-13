@@ -159,7 +159,7 @@
   const arrancar = () => {
     if (reduce) return; // con "reducir movimiento" no avanza solo
     detener();
-    timer = window.setInterval(() => mostrar(actual + 1), 3000);
+    timer = window.setInterval(() => mostrar(actual + 1), 4000);
   };
 
   dots.forEach((d, n) => d.addEventListener('click', () => { mostrar(n); arrancar(); }));
