@@ -1,0 +1,162 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   PROTOTIPO C — Carrusel a pantalla completa
+   Estilos exclusivos de /prototipo-c. No los usa el sitio real.
+   El hero es un carrusel de punta a punta: cada slide es una foto que ocupa
+   todo el ancho, con el texto encima. El resto de la página sigue al B.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero: carrusel full-bleed ───────────────────────────────────────────── */
+/* De punta a punta: la sección cuelga directo del <main>, que no lleva márgenes
+   (el .wrap interno es el que centra el texto). Nada de 100vw: incluiría el
+   ancho de la barra de scroll y la sección se pasaría de los bordes.
+   El margen negativo lo sube por detrás de la barra de menú, que queda flotando
+   encima con su transparencia (el nav tiene z-index mayor). */
+.pc-hero{
+  position:relative;overflow:hidden;background:var(--ink);
+  margin-top:calc(-1 * (var(--nav-h) + 1px));
+}
+.pc-viewport{position:relative;overflow:hidden}
+.pc-track{display:grid}
+.js .pc-track{display:flex;gap:0;transition:transform 620ms var(--ease);will-change:transform}
+
+.pc-slide{
+  position:relative;overflow:hidden;background:var(--ink);
+  /* Más alto que antes: ahora arranca detrás del menú, así que hay que sumarle
+     esa franja para que el área visible siga siendo la misma. */
+  min-height:clamp(520px,72svh,760px);
+  display:flex;align-items:center;
+}
+.js .pc-slide{flex:0 0 100%;min-width:0}
+.pc-slide img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  /* Nunca al ras del borde: si el desplazamiento cae en una fracción de píxel,
+     la foto igual lo tapa. */
+  transform:scale(1.04);
+}
+.js .pc-slide[data-active="true"] img{animation:pc-zoom 9s ease-out forwards}
+@keyframes pc-zoom{from{transform:scale(1.04)}to{transform:scale(1.13)}}
+
+/* Velo para que el texto se lea sobre cualquier foto */
+.pc-slide::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(95deg,rgba(10,10,11,.90) 0%,rgba(10,10,11,.74) 42%,rgba(10,10,11,.36) 72%,rgba(10,10,11,.30) 100%);
+}
+/* width:100%: como el slide es flex, sin esto el .wrap no se estira y el texto
+   queda pegado al borde en vez de respetar el margen del sitio.
+   El padding de arriba compensa la franja que queda debajo del menú, para que
+   el texto quede centrado en lo que realmente se ve. */
+.pc-slide__in{
+  position:relative;z-index:2;color:#fff;width:100%;
+  padding-top:calc(var(--s-8) + var(--nav-h));padding-bottom:var(--s-8);
+}
+.pc-slide__t{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.1rem,5vw,3.9rem);line-height:1.02;letter-spacing:-.04em;
+  max-width:19ch;text-wrap:balance;
+}
+.pc-slide__t em{font-style:normal;color:#F87171}
+.pc-slide__s{
+  margin-top:var(--s-5);max-width:52ch;
+  font-size:clamp(1rem,1.5vw,1.1875rem);line-height:1.65;color:rgba(255,255,255,.88);
+}
+/* Los botones de acción viven sólo en el cierre de la página, no en los slides. */
+.pc-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
+
+/* Texto que entra con la foto */
+.js .pc-slide__in > *{opacity:0;transform:translateY(18px)}
+.js .pc-slide[data-active="true"] .pc-slide__in > *{
+  opacity:1;transform:none;
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
+}
+.js .pc-slide[data-active="true"] .pc-slide__t{transition-delay:.12s}
+.js .pc-slide[data-active="true"] .pc-slide__s{transition-delay:.22s}
+html:not(.js) .pc-slide__in > *{opacity:1;transform:none}
+
+/* ── Controles: círculos y flechas, debajo del carrusel ──────────────────── */
+.pc-controls{
+  position:absolute;left:0;right:0;bottom:var(--s-5);z-index:3;
+  display:flex;align-items:center;justify-content:center;gap:var(--s-4);
+}
+.pc-dots{display:flex;gap:.5rem}
+.pc-dot{
+  width:11px;height:11px;border-radius:50%;padding:0;
+  background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.55);
+  transition:background-color var(--dur) var(--ease),transform var(--dur) var(--ease);
+}
+.pc-dot[aria-selected="true"]{background:#fff;transform:scale(1.25)}
+.pc-arrow{
+  width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.45);color:#fff;background:rgba(10,10,11,.32);
+  backdrop-filter:blur(8px);
+  transition:background-color var(--dur-fast),border-color var(--dur-fast);
+}
+.pc-arrow:hover{background:rgba(10,10,11,.6);border-color:#fff}
+
+/* ── Resto de la página (mismo criterio que el prototipo B) ──────────────── */
+.pc-glow{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pc-glow::before{
+  content:"";position:absolute;left:-15%;right:-15%;bottom:-45%;height:115%;
+  background:radial-gradient(ellipse 105% 52% at 50% 50%,rgba(193,39,45,.26),transparent 74%);
+  filter:blur(40px);
+  animation:pc-swell 20s ease-in-out infinite alternate;
+}
+@keyframes pc-swell{from{transform:scale(1)}to{transform:scale(1.14)}}
+
+.pc-section{padding-block:var(--s-9);position:relative;overflow:hidden}
+.pc-section > .wrap{position:relative;z-index:1}
+.pc-section .tech-grid{
+  z-index:0;
+  mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
+  -webkit-mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
+}
+.pc-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--s-4)}
+.pc-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+}
+.pc-eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
+.pc-h2{font-family:var(--font-display);font-size:clamp(1.9rem,4.2vw,2.9rem);font-weight:700;letter-spacing:-.035em;line-height:1.06;margin-top:var(--s-4);max-width:20ch}
+
+.pc-cards{display:grid;gap:var(--s-4);margin-top:var(--s-7)}
+@media(min-width:768px){.pc-cards{grid-template-columns:repeat(3,1fr)}}
+.pc-card{
+  position:relative;overflow:hidden;border-radius:var(--r-lg);
+  min-height:400px;display:flex;align-items:flex-end;
+  border:1px solid var(--border);background:var(--ink);
+  transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.pc-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.pc-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.pc-card:hover img{transform:scale(1.07)}
+.pc-card::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,10,11,.92) 0%,rgba(10,10,11,.55) 42%,rgba(10,10,11,.12) 100%);
+}
+.pc-card__body{position:relative;z-index:2;padding:var(--s-6);color:#fff;width:100%}
+.pc-card__n{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.pc-card h3{font-family:var(--font-display);font-size:clamp(1.3rem,2.4vw,1.6rem);font-weight:700;letter-spacing:-.03em;margin-top:.5rem;line-height:1.15}
+.pc-card__more{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows var(--dur-slow) var(--ease),opacity var(--dur-slow) var(--ease)}
+.pc-card:hover .pc-card__more,.pc-card:focus-visible .pc-card__more{grid-template-rows:1fr;opacity:1}
+.pc-card__more > div{overflow:hidden}
+.pc-card__more p{font-size:.875rem;line-height:1.6;color:rgba(255,255,255,.82);margin-top:.75rem;max-width:34ch}
+.pc-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.85rem}
+.pc-tag{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:4px;padding:.25rem .45rem}
+.pc-card__go{display:inline-flex;align-items:center;gap:.4rem;margin-top:var(--s-5);font-weight:600;font-size:.9375rem;color:#fff}
+.pc-card__go svg{transition:transform var(--dur) var(--ease)}
+.pc-card:hover .pc-card__go svg{transform:translate(4px,-4px)}
+
+.pc-close{background:var(--accent);color:#fff;padding-block:var(--s-8)}
+.pc-close__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-5)}
+.pc-close h2{font-family:var(--font-display);font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;max-width:18ch}
+.pc-close p{color:rgba(255,255,255,.85);margin-top:.6rem;max-width:44ch;line-height:1.6}
+.pc-close .btn--w{background:#fff;color:var(--accent)}
+.pc-close .btn--wg{border:1px solid rgba(255,255,255,.45);color:#fff}
+
+.js .pc-up{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .pc-up[data-in="true"]{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  .pc-glow::before,.js .pc-slide[data-active="true"] img{animation:none}
+  .js .pc-up{opacity:1;transform:none}
+  .js .pc-slide__in > *{opacity:1;transform:none}
+}

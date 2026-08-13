@@ -1,20 +1,234 @@
 ---
+/**
+ * Portada. Hero de carrusel a pantalla completa: cada slide es una foto que
+ * ocupa todo el ancho, con el texto encima, y la barra de menú queda flotando
+ * por delante.
+ *
+ * OJO: las fotos del carrusel (public/assets/proto/c-*.jpg) son de stock
+ * (Unsplash, licencia libre) y NO son del local de Casa Kira. Hay que
+ * reemplazarlas por fotos propias manteniendo los mismos nombres de archivo.
+ */
 import Base from '../layouts/Base.astro';
-import Hero from '../components/home/Hero.astro';
+import Icon from '../components/Icon.astro';
 import Brands from '../components/home/Brands.astro';
-import CatalogoTeaser from '../components/home/CatalogoTeaser.astro';
-import { marcasEnProsa } from '../data/site';
+import { SITE, marcasEnProsa } from '../data/site';
+import { CATEGORIAS } from '../data/categorias';
+import { getCollection } from 'astro:content';
+import '../styles/proto-c.css';
+
+const maquinas = await getCollection('maquinas');
 
 const title = 'Casa Kira — Máquinas de coser y bordar industriales · Desde 1967';
 const description =
   `Venta y reparación de máquinas de coser y bordar, industriales y familiares. Importador directo de ${marcasEnProsa()}. Repuestos, hilados y accesorios. Servicio técnico propio en CABA desde 1967.`;
+
+const slides = [
+  {
+    img: 'c-industria.jpg',
+    alt: 'Planta textil con operarios trabajando en máquinas industriales',
+    t: 'Asesoramos y proveemos a la industria textil desde 1967.',
+    s: 'Encuentre en nuestro sitio todo lo necesario para la industria textil.',
+  },
+  {
+    img: 'c-maquinas.jpg',
+    alt: 'Máquinas de coser industriales en el salón de ventas',
+    t: 'Venta y reparación de Máquinas de Coser y Bordar.',
+    s: 'Máquinas de broches y de cortar, hilos, repuestos y accesorios originales.',
+  },
+  {
+    img: 'c-servicio.jpg',
+    alt: 'Técnico trabajando sobre una máquina de coser en el taller',
+    t: 'Servicio técnico propio.',
+    s: 'Personal especializado en nuestros talleres, capacitados en máquinas industriales y hogareñas.',
+  },
+];
+
+const cards = [
+  {
+    n: '01', href: '/catalogo#maquinas', img: 'maquinas.jpg',
+    alt: 'Máquinas de coser industriales alineadas en un taller',
+    h: 'Máquinas de coser y bordar',
+    p: 'Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela. Industriales y familiares.',
+    tags: [`${CATEGORIAS.length} categorías`, `${maquinas.length} modelos`],
+    go: 'Ver máquinas',
+  },
+  {
+    n: '02', href: '/catalogo#repuestos', img: 'accesorios.jpg',
+    alt: 'Estantes de taller con accesorios y herramientas',
+    h: 'Accesorios y herramientas',
+    p: 'Prensatelas, guías, cuchillas, bobinas y chapas. Tijeras, cortantes, pinzas especiales y abridores de costura.',
+    tags: ['Originales', 'Nuevos y usados'],
+    go: 'Ver accesorios',
+  },
+  {
+    n: '03', href: '/catalogo#repuestos', img: 'hilos.png',
+    alt: 'Conos de hilo de distintos colores',
+    h: 'Repuestos e insumos',
+    p: 'Repuestos originales de las principales marcas e hilados 100% poliéster para coser y bordar.',
+    tags: ['+300 colores', 'Importación directa'],
+    go: 'Ver repuestos',
+  },
+];
 ---
 <Base title={title} description={description}>
-  <Hero />
+  <section class="pc-hero" data-carousel aria-roledescription="carrusel" aria-label="Casa Kira">
+    <div class="pc-viewport">
+      <div class="pc-track" data-track>
+        {slides.map((s, i) => (
+          <div
+            class="pc-slide"
+            data-slide
+            data-active={i === 0 ? 'true' : 'false'}
+            aria-hidden={i === 0 ? undefined : 'true'}
+            aria-roledescription="diapositiva"
+          >
+            <img src={`/assets/proto/${s.img}`} alt={s.alt} width="2400" height="1600" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+            <div class="wrap pc-slide__in">
+              <h1 class="pc-slide__t" set:html={s.t.replace('1967', '<em>1967</em>')} />
+              <p class="pc-slide__s">{s.s}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="pc-controls">
+      <button class="pc-arrow" type="button" data-prev aria-label="Anterior">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+      </button>
+      <div class="pc-dots" role="tablist" aria-label="Elegir diapositiva">
+        {slides.map((s, i) => (
+          <button class="pc-dot" type="button" role="tab" data-dot aria-selected={i === 0 ? 'true' : 'false'} aria-label={`Diapositiva ${i + 1}`}></button>
+        ))}
+      </div>
+      <button class="pc-arrow" type="button" data-next aria-label="Siguiente">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+      </button>
+    </div>
+  </section>
+
   <Brands />
-  <CatalogoTeaser />
+
+  <section class="pc-section">
+    <div class="pc-glow" aria-hidden="true"></div>
+    <div class="tech-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="pc-head pc-up">
+        <div>
+          <p class="pc-eyebrow">Catálogo</p>
+          <h2 class="pc-h2">Todo lo que el taller necesita.</h2>
+        </div>
+        <a class="link-arrow" href="/catalogo">Ver el catálogo completo <Icon name="arrowUpRight" size={15} /></a>
+      </div>
+
+      <div class="pc-cards">
+        {cards.map((c) => (
+          <a class="pc-card pc-up" href={c.href}>
+            <img src={`/assets/proto/${c.img}`} alt={c.alt} width="1600" height="1067" loading="lazy" />
+            <div class="pc-card__body">
+              <span class="pc-card__n">{c.n}</span>
+              <h3>{c.h}</h3>
+              <div class="pc-card__more">
+                <div>
+                  <p>{c.p}</p>
+                  <div class="pc-tags">{c.tags.map((t) => <span class="pc-tag">{t}</span>)}</div>
+                </div>
+              </div>
+              <span class="pc-card__go">{c.go} <Icon name="arrowUpRight" size={16} /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pc-close">
+    <div class="wrap pc-close__in">
+      <div>
+        <h2>¿Necesitás asesoramiento para tu taller?</h2>
+        <p>Contanos qué producís y te recomendamos la máquina que mejor se adapta.</p>
+      </div>
+      <div class="pc-cta">
+        <a class="btn btn--w" href="/contacto">Pedir presupuesto</a>
+        <a class="btn btn--wg" href={`tel:${SITE.tel}`}>{SITE.telHumano}</a>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <script>
-  import '../scripts/enhance';
+  // Aparición al scrollear (con salvavidas por si el observer nunca reporta).
+  const ups = [...document.querySelectorAll<HTMLElement>('.pc-up')];
+  let fired = false;
+  const io = new IntersectionObserver(
+    (entries, obs) => {
+      fired = true;
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        (e.target as HTMLElement).dataset.in = 'true';
+        obs.unobserve(e.target);
+      });
+    },
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+  );
+  ups.forEach((el) => io.observe(el));
+  setTimeout(() => {
+    if (!fired) ups.forEach((el) => (el.dataset.in = 'true'));
+  }, 1500);
+
+  // ── Carrusel del hero ──────────────────────────────────────────────────────
+  // Avanza cada 5s y no se detiene al pasar el mouse. Sí se detiene con el foco
+  // del teclado, para no mover el contenido bajo los pies de quien navega.
+  (() => {
+    const root = document.querySelector<HTMLElement>('[data-carousel]');
+    if (!root) return;
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+    if (!track || slides.length < 2) return;
+
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let actual = 0;
+    let timer = 0;
+
+    const mostrar = (i: number) => {
+      actual = (i + slides.length) % slides.length;
+      // En píxeles enteros: con anchos fraccionarios, el % deja una rendija por
+      // la que asoma el slide contiguo.
+      const paso = Math.round(slides[0].getBoundingClientRect().width);
+      track.style.transform = `translate3d(-${actual * paso}px,0,0)`;
+      slides.forEach((s, n) => {
+        const on = n === actual;
+        s.dataset.active = String(on);
+        if (on) s.removeAttribute('aria-hidden');
+        else s.setAttribute('aria-hidden', 'true');
+      });
+      dots.forEach((d, n) => d.setAttribute('aria-selected', String(n === actual)));
+    };
+    const detener = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = 0;
+      }
+    };
+    const arrancar = () => {
+      if (reduce) return;
+      detener();
+      timer = window.setInterval(() => mostrar(actual + 1), 5000);
+    };
+
+    dots.forEach((d, n) => d.addEventListener('click', () => { mostrar(n); arrancar(); }));
+    root.querySelector('[data-prev]')?.addEventListener('click', () => { mostrar(actual - 1); arrancar(); });
+    root.querySelector('[data-next]')?.addEventListener('click', () => { mostrar(actual + 1); arrancar(); });
+    root.addEventListener('focusin', detener);
+    root.addEventListener('focusout', arrancar);
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(() => mostrar(actual), 120);
+    });
+
+    mostrar(0);
+    arrancar();
+  })();
 </script>

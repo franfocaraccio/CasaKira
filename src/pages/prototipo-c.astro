@@ -1,0 +1,22 @@
+---
+/**
+ * PROTOTIPO C — Guarda el diseño de portada anterior (hero de texto + tira de
+ * marcas + carrusel del catálogo), por si hay que volver a él.
+ * Página de prueba: no enlazada, fuera del sitemap y con noindex.
+ */
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Brands from '../components/home/Brands.astro';
+import CatalogoTeaser from '../components/home/CatalogoTeaser.astro';
+---
+<Base title="Prototipo C — Casa Kira" description="Diseño de portada anterior. Página de prueba.">
+  <meta name="robots" content="noindex,nofollow" slot="head" />
+
+  <Hero />
+  <Brands />
+  <CatalogoTeaser />
+</Base>
+
+<script>
+  import '../scripts/enhance';
+</script>
