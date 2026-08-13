@@ -107,10 +107,10 @@
   nums.forEach((n) => cio.observe(n));
 })();
 
-// ── Spotlight de los KPIs: el resplandor rojo sigue al puntero. Sólo en hover
-//    (en táctil no dispara y no pasa nada). ────────────────────────────────────
+// ── Spotlight: el resplandor rojo sigue al puntero, en los KPIs del hero y en
+//    las tarjetas de servicios. Sólo en hover (en táctil no dispara). ──────────
 (() => {
-  const cards = [...document.querySelectorAll<HTMLElement>('.stat')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.stat, .f-card')];
   if (!cards.length) return;
   cards.forEach((card) => {
     card.addEventListener('pointermove', (e) => {

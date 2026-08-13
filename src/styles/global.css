@@ -409,20 +409,26 @@ input,textarea,select{font:inherit;color:inherit}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-3);margin-top:var(--s-7)}
 @media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr);gap:var(--s-4)}}
 .stat{
+  padding:var(--s-5) var(--s-4);
+  display:flex;flex-direction:column-reverse;justify-content:flex-end;
+}
+
+/* ── Spotlight: el resplandor rojo sigue al mouse (las coords --mx/--my las
+      fija el JS de enhance.ts). Lo comparten los KPIs y las tarjetas de
+      servicios, para que el efecto sea idéntico en las dos. ───────────────── */
+.stat,.f-card{
   position:relative;overflow:hidden;
-  padding:var(--s-5) var(--s-4);border:1px solid var(--border);border-radius:var(--r-md);
-  background:var(--surface);display:flex;flex-direction:column-reverse;justify-content:flex-end;
+  border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);
   transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
 }
-/* Spotlight: el resplandor sigue al mouse (las coords --mx/--my las fija el JS). */
-.stat::before{
+.stat::before,.f-card::before{
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:radial-gradient(200px circle at var(--mx,50%) var(--my,0%),var(--glow),transparent 70%);
   opacity:0;transition:opacity var(--dur) var(--ease);
 }
-.stat:hover::before{opacity:1}
-.stat > *{position:relative;z-index:1}
-.stat:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.stat:hover::before,.f-card:hover::before{opacity:1}
+.stat > *,.f-card > *{position:relative;z-index:1}
+.stat:hover,.f-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-md)}
 .stat__num{font-family:var(--font-display);font-size:clamp(1.75rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
 .stat__num small{font-size:.46em;font-weight:600;color:var(--accent);margin-left:.18em;letter-spacing:0}
 .stat__label{font-size:.8125rem;color:var(--text-muted);margin-top:.5rem;line-height:1.4;max-width:18ch}
@@ -508,11 +514,8 @@ input,textarea,select{font:inherit;color:inherit}
 .feature-cards{display:grid;gap:var(--s-4);margin-top:var(--s-6)}
 @media(min-width:640px){.feature-cards{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1024px){.feature-cards{grid-template-columns:repeat(3,1fr)}}
-.f-card{
-  padding:var(--s-5);border:1px solid var(--border);border-radius:var(--r-md);
-  background:var(--surface);transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
-}
-.f-card:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+/* El marco, el hover y el spotlight se definen junto a .stat (ver arriba). */
+.f-card{padding:var(--s-5)}
 .f-card__icon{
   width:40px;height:40px;border-radius:var(--r-sm);display:grid;place-items:center;
   background:var(--accent-soft);color:var(--accent-on-soft);margin-bottom:var(--s-4);
