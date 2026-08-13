@@ -4,26 +4,43 @@ import { CATEGORIAS } from '../../data/categorias';
 import Icon from '../Icon.astro';
 
 const maquinas = await getCollection('maquinas');
-const familias = [
+
+// Carrusel de acceso al catálogo. Las fotos son las del sitio viejo (chicas);
+// el slide las muestra en su propia columna para que no haya que ampliarlas de
+// más. Al reemplazarlas por fotos grandes no hay que tocar el layout.
+const slides = [
   {
     href: '/catalogo#maquinas',
     eyebrow: 'Máquinas',
+    titulo: 'Máquinas de coser y bordar',
+    texto:
+      'Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela. Industriales y familiares, de las principales marcas.',
+    meta: `${CATEGORIAS.length} categorías · ${maquinas.length} modelos`,
+    cta: 'Ver máquinas',
     img: 'Typical-Recta.gif',
     alt: 'Máquina recta pespunteadora de 1 aguja de alta velocidad Typical',
-    h: 'Máquinas de coser y bordar',
-    p: 'Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela. Industriales y familiares, de las principales marcas.',
-    go: 'Ver máquinas',
-    meta: `${CATEGORIAS.length} categorías · ${maquinas.length} modelos`,
   },
   {
     href: '/catalogo#repuestos',
-    eyebrow: 'Repuestos',
+    eyebrow: 'Accesorios',
+    titulo: 'Accesorios y herramientas',
+    texto:
+      'Prensatelas, guías, cuchillas, bobinas, chapas y aparejos. Tijeras, cortantes, pinzas especiales y abridores de costura.',
+    meta: 'Originales · Nuevos y usados',
+    cta: 'Ver accesorios',
+    img: 'Accesorio.gif',
+    alt: 'Accesorios y repuestos para máquinas de coser: prensatelas, bobinas, cuchillas y chapas',
+  },
+  {
+    href: '/catalogo#repuestos',
+    eyebrow: 'Repuestos e insumos',
+    titulo: 'Repuestos originales e insumos',
+    texto:
+      'Repuestos de las principales marcas e hilados 100% poliéster para coser y bordar, con más de 300 colores.',
+    meta: 'Importación directa',
+    cta: 'Ver repuestos e insumos',
     img: 'Hilos.gif',
     alt: 'Conos de hilado de poliéster de distintos colores para coser y bordar',
-    h: 'Accesorios, repuestos e insumos',
-    p: 'Hilados para coser y bordar, prensatelas, motores, soportes, herramientas y repuestos originales. Trabajos a medida para maquinaria discontinuada.',
-    go: 'Ver repuestos',
-    meta: '300+ colores en hilado · originales',
   },
 ];
 ---
@@ -35,29 +52,59 @@ const familias = [
           <p class="eyebrow">Catálogo</p>
           <h2 class="h-section" style="margin-top:var(--s-4)">Qué vas a encontrar.</h2>
         </div>
-        <span class="section-index">Máquinas · Repuestos</span>
+        <span class="section-index">Máquinas · Accesorios · Repuestos</span>
       </div>
-      <p class="lead">
-        Todo nuestro catálogo, con fichas técnicas de cada modelo, vive en una página aparte.
-        Entrá por la familia que te interese.
-      </p>
     </div>
 
-    <div class="cat-split">
-      {familias.map((f) => (
-        <a class="cat-card reveal" href={f.href}>
-          <div class="cat-card__media">
-            <img src={`/assets/maquinas/${f.img}`} alt={f.alt} width="700" height="394" loading="lazy" />
-          </div>
-          <div class="cat-card__body">
-            <p class="cat-card__eyebrow">{f.eyebrow}</p>
-            <h3>{f.h}</h3>
-            <p>{f.p}</p>
-            <span class="section-index" style="margin-top:var(--s-4)">{f.meta}</span>
-            <span class="cat-card__go">{f.go} <Icon name="arrowUpRight" size={16} /></span>
-          </div>
-        </a>
-      ))}
+    <!-- Carrusel: los 3 slides están en el HTML (SEO y sin JS se ven igual,
+         apilados). El script de enhance.ts sólo cablea el paso entre ellos. -->
+    <div class="carousel reveal" data-carousel aria-roledescription="carrusel" aria-label="Secciones del catálogo">
+      <div class="carousel__viewport">
+        {slides.map((s, i) => (
+          <a
+            class="carousel__slide"
+            href={s.href}
+            data-slide
+            aria-hidden={i === 0 ? undefined : 'true'}
+            aria-roledescription="diapositiva"
+            aria-label={`${s.titulo} — ${s.cta}`}
+          >
+            <div class="carousel__media">
+              <img src={`/assets/maquinas/${s.img}`} alt={s.alt} width="700" height="440" loading={i === 0 ? undefined : 'lazy'} />
+            </div>
+            <div class="carousel__body">
+              <p class="carousel__eyebrow">{s.eyebrow}</p>
+              <h3>{s.titulo}</h3>
+              <p class="carousel__text">{s.texto}</p>
+              <span class="section-index">{s.meta}</span>
+              <span class="carousel__cta">{s.cta} <Icon name="arrowUpRight" size={16} /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="carousel__controls">
+        <div class="carousel__dots" role="tablist" aria-label="Elegir sección">
+          {slides.map((s, i) => (
+            <button
+              class="carousel__dot"
+              type="button"
+              role="tab"
+              data-dot
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-label={s.titulo}
+            ></button>
+          ))}
+        </div>
+        <div class="carousel__arrows">
+          <button class="carousel__arrow" type="button" data-prev aria-label="Sección anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <button class="carousel__arrow" type="button" data-next aria-label="Sección siguiente">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
