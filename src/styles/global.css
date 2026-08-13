@@ -397,7 +397,7 @@ input,textarea,select{font:inherit;color:inherit}
 .hero__in{position:relative;z-index:var(--z-content)}
 /* Una sola columna: el título y la bajada llevan medida propia para no estirarse
    a lo ancho del container; los KPIs sí ocupan todo el ancho. */
-.hero h1{margin-top:var(--s-4);max-width:24ch}
+.hero h1{max-width:24ch}
 .hero h1 em{font-style:normal;color:var(--accent);white-space:nowrap}
 .hero__lead{margin-top:var(--s-5);max-width:62ch}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
