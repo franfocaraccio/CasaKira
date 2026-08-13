@@ -399,7 +399,10 @@ input,textarea,select{font:inherit;color:inherit}
    a lo ancho del container; los KPIs sí ocupan todo el ancho. */
 .hero h1{max-width:24ch}
 .hero h1 em{font-style:normal;color:var(--accent);white-space:nowrap}
-.hero__lead{margin-top:var(--s-5);max-width:62ch}
+/* Texto justificado: con guionado automático para que no se abran huecos
+   grandes entre palabras, sobre todo en pantallas angostas. */
+.hero__lead{margin-top:var(--s-5);max-width:62ch;text-align:justify;hyphens:auto}
+.hero__lead p + p{margin-top:.75rem}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
 
 /* KPIs como tarjetas (mismo estilo que las .f-card de Nosotros). El número
