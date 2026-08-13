@@ -1,0 +1,171 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   PROTOTIPO B — Vidriera
+   Estilos exclusivos de /prototipo-b. No los usa el sitio real.
+   Idea: la foto manda. Producto y lugar en grande, como una vidriera.
+   Las fotos son de stock (Unsplash) sólo para evaluar el diseño.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Atmósfera: una banda roja que ocupa todo el ancho y se va apagando.
+      En el hero nace arriba y baja; en la sección siguiente nace abajo, así el
+      medio (donde va el deslizable de marcas) queda limpio. ────────────────── */
+.pb-glow{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pb-glow::before{
+  content:"";position:absolute;left:-15%;right:-15%;top:-45%;height:115%;
+  /* elipse ancha (105%): el color llega a los dos costados en vez de quedar
+     concentrado en el centro. */
+  background:radial-gradient(ellipse 105% 52% at 50% 50%,rgba(193,39,45,.26),transparent 74%);
+  filter:blur(40px);
+  animation:pb-swell 20s ease-in-out infinite alternate;
+}
+@keyframes pb-swell{from{transform:scale(1)}to{transform:scale(1.14)}}
+/* Invertida: la banda entra desde abajo. */
+.pb-glow--flip::before{top:auto;bottom:-45%}
+
+/* Cuadrícula del sitio (.tech-grid), enmascarada para que nazca en el borde y
+   se desvanezca hacia el centro. Va encima del degradé, así se ve la trama
+   sobre el rojo. */
+.pb-hero .tech-grid,.pb-section .tech-grid{z-index:0}
+.pb-hero .tech-grid{
+  mask-image:linear-gradient(180deg,#000 0%,#000 38%,transparent 88%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 38%,transparent 88%);
+}
+.pb-section .tech-grid{
+  mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
+  -webkit-mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
+}
+
+/* ── Hero partido: texto | foto ──────────────────────────────────────────── */
+.pb-hero{position:relative;background:var(--bg-alt);overflow:hidden}
+.pb-hero__grid{display:grid;gap:var(--s-6);align-items:center;padding-block:var(--s-7);position:relative;z-index:1}
+@media(min-width:1024px){
+  .pb-hero__grid{grid-template-columns:1fr 1fr;gap:var(--s-8);padding-block:var(--s-8);min-height:76svh}
+}
+.pb-title{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.4rem,5.6vw,4.2rem);line-height:.98;letter-spacing:-.04em;
+}
+.pb-title em{font-style:normal;color:var(--accent)}
+.pb-lead{margin-top:var(--s-5);max-width:52ch;color:var(--text-muted);font-size:1.0625rem;line-height:1.7}
+.pb-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
+
+/* Foto del hero, con zoom lento permanente */
+.pb-shot{
+  position:relative;border-radius:var(--r-xl);overflow:hidden;
+  border:1px solid var(--border);box-shadow:var(--shadow-lg);background:var(--bg-alt);
+}
+.pb-shot img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;display:block;animation:pb-breathe 26s ease-in-out infinite alternate}
+@media(min-width:1024px){.pb-shot img{aspect-ratio:auto;min-height:520px}}
+@keyframes pb-breathe{from{transform:scale(1)}to{transform:scale(1.09)}}
+
+/* ── Carrusel del hero: una imagen por dato ─────────────────────────────────
+   Sin JS los slides quedan apilados y se ven los tres. Con JS se ponen en fila
+   y la fila se desliza. */
+.pb-carousel__track{display:grid;gap:var(--s-4)}
+/* gap:0 es imprescindible: el separador del modo apilado desalineaba el
+   desplazamiento y dejaba ver el slide contiguo. */
+.js .pb-carousel__track{display:flex;gap:0;transition:transform 560ms var(--ease);will-change:transform}
+/* Marco cuadrado: las fotos tienen proporciones distintas (algunas verticales)
+   y sin esto cada slide estiraba el carrusel a su propio alto.
+   El fondo oscuro y el recorte propio evitan que se vea una franja clara si el
+   desplazamiento cae en una fracción de píxel. */
+.pb-slide{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--ink)}
+.pb-carousel .pb-slide img{aspect-ratio:auto;height:100%;min-height:0}
+.js .pb-slide{flex:0 0 100%;min-width:0}
+/* El zoom arranca de nuevo con cada imagen que entra. Nunca baja de 1.05: así
+   la foto siempre desborda un poco su marco y no deja ver el borde. */
+.js .pb-slide img{animation:none;transform:scale(1.05)}
+.js .pb-slide[data-active="true"] img{animation:pb-zoom 11s ease-out forwards}
+@keyframes pb-zoom{from{transform:scale(1.05)}to{transform:scale(1.14)}}
+
+.pb-carousel__dots{
+  position:absolute;right:var(--s-5);bottom:var(--s-5);z-index:3;
+  display:flex;gap:.4rem;padding:.45rem .55rem;border-radius:999px;
+  background:rgba(10,10,11,.42);backdrop-filter:blur(8px);
+}
+.pb-carousel__dot{
+  width:26px;height:4px;border-radius:2px;padding:0;background:rgba(255,255,255,.45);
+  transition:background-color var(--dur) var(--ease),width var(--dur) var(--ease);
+}
+.pb-carousel__dot[aria-selected="true"]{background:#fff;width:38px}
+
+/* Chapita de datos flotando sobre la foto */
+.pb-badge{
+  position:absolute;left:var(--s-5);bottom:var(--s-5);
+  max-width:min(74%,320px);
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5);
+  padding:var(--s-4) var(--s-5);border-radius:var(--r-md);
+  /* .9 en vez de .82: sigue translúcida, pero la unidad roja mantiene
+     contraste AA aunque detrás haya una foto oscura. */
+  background:rgba(255,255,255,.90);backdrop-filter:blur(14px) saturate(1.3);
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:var(--shadow-md);
+}
+:root[data-theme="dark"] .pb-badge{background:rgba(23,23,25,.82);border-color:rgba(250,250,250,.16)}
+.pb-badge__n{font-family:var(--font-display);font-size:1.7rem;font-weight:700;line-height:1;letter-spacing:-.03em;color:var(--text)}
+.pb-badge__n small{font-size:.5em;color:var(--accent);margin-left:.2em}
+.pb-badge__l{font-size:.75rem;color:var(--text-muted);line-height:1.35;margin-top:.2rem}
+
+/* Debajo del hero va el marquee de marcas del sitio (componente Brands). */
+
+/* ── Categorías: la foto revela info al pasar el mouse ───────────────────── */
+.pb-section{padding-block:var(--s-9);position:relative;overflow:hidden}
+.pb-section > .wrap{position:relative;z-index:1}
+.pb-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--s-4)}
+.pb-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+}
+.pb-eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
+.pb-h2{font-family:var(--font-display);font-size:clamp(1.9rem,4.2vw,2.9rem);font-weight:700;letter-spacing:-.035em;line-height:1.06;margin-top:var(--s-4);max-width:20ch}
+
+.pb-cards{display:grid;gap:var(--s-4);margin-top:var(--s-7)}
+@media(min-width:768px){.pb-cards{grid-template-columns:repeat(3,1fr)}}
+.pb-card{
+  position:relative;overflow:hidden;border-radius:var(--r-lg);
+  min-height:400px;display:flex;align-items:flex-end;
+  border:1px solid var(--border);background:var(--ink);
+  transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.pb-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.pb-card img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s var(--ease),filter var(--dur-slow) var(--ease);
+}
+.pb-card:hover img{transform:scale(1.07)}
+.pb-card::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,10,11,.92) 0%,rgba(10,10,11,.55) 42%,rgba(10,10,11,.12) 100%);
+  transition:opacity var(--dur-slow) var(--ease);
+}
+.pb-card__body{position:relative;z-index:2;padding:var(--s-6);color:#fff;width:100%}
+.pb-card__n{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.pb-card h3{font-family:var(--font-display);font-size:clamp(1.3rem,2.4vw,1.6rem);font-weight:700;letter-spacing:-.03em;margin-top:.5rem;line-height:1.15}
+/* Lo que aparece recién al acercarse */
+.pb-card__more{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows var(--dur-slow) var(--ease),opacity var(--dur-slow) var(--ease);
+}
+.pb-card:hover .pb-card__more,.pb-card:focus-visible .pb-card__more{grid-template-rows:1fr;opacity:1}
+.pb-card__more > div{overflow:hidden}
+.pb-card__more p{font-size:.875rem;line-height:1.6;color:rgba(255,255,255,.82);margin-top:.75rem;max-width:34ch}
+.pb-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.85rem}
+.pb-tag{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:4px;padding:.25rem .45rem}
+.pb-card__go{display:inline-flex;align-items:center;gap:.4rem;margin-top:var(--s-5);font-weight:600;font-size:.9375rem;color:#fff}
+.pb-card__go svg{transition:transform var(--dur) var(--ease)}
+.pb-card:hover .pb-card__go svg{transform:translate(4px,-4px)}
+
+/* ── Cierre ──────────────────────────────────────────────────────────────── */
+.pb-close{background:var(--accent);color:#fff;padding-block:var(--s-8)}
+.pb-close__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-5)}
+.pb-close h2{font-family:var(--font-display);font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;max-width:18ch}
+.pb-close p{color:rgba(255,255,255,.85);margin-top:.6rem;max-width:44ch;line-height:1.6}
+.pb-close .btn--w{background:#fff;color:var(--accent)}
+.pb-close .btn--wg{border:1px solid rgba(255,255,255,.45);color:#fff}
+
+.js .pb-up{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .pb-up[data-in="true"]{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  .pb-shot img,.pb-glow::before{animation:none}
+  .js .pb-up{opacity:1;transform:none}
+}

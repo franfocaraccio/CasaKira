@@ -1,0 +1,185 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   PROTOTIPO A — Editorial industrial
+   Estilos exclusivos de /prototipo-a. No los usa el sitio real.
+   Idea: sin fotos. El peso lo llevan la tipografía, la atmósfera (resplandor
+   rojo que respira) y la jerarquía (un dato manda sobre el resto).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero a pantalla completa ─────────────────────────────────────────────── */
+.pa-hero{
+  position:relative;overflow:hidden;
+  min-height:calc(100svh - var(--nav-h));
+  display:flex;align-items:center;
+  padding-block:var(--s-8);
+  background:var(--bg-alt);
+}
+/* Atmósfera: dos manchas rojas muy tenues que se mueven lento. */
+.pa-glow{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pa-glow::before,.pa-glow::after{
+  content:"";position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;
+}
+.pa-glow::before{
+  width:46vw;height:46vw;left:-8vw;top:-14vw;
+  background:radial-gradient(circle,rgba(193,39,45,.30),transparent 70%);
+  animation:pa-drift 22s ease-in-out infinite alternate;
+}
+.pa-glow::after{
+  width:38vw;height:38vw;right:-6vw;bottom:-16vw;
+  background:radial-gradient(circle,rgba(193,39,45,.20),transparent 70%);
+  animation:pa-drift 28s ease-in-out infinite alternate-reverse;
+}
+@keyframes pa-drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(6vw,4vw,0) scale(1.18)}}
+
+/* Puntos de fondo, que se desvanecen hacia abajo */
+.pa-dots{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(var(--grid-line) 1.4px,transparent 1.4px);
+  background-size:26px 26px;
+  mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%);
+}
+.pa-hero__in{position:relative;z-index:var(--z-content);width:100%}
+
+.pa-title{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.8rem,8.4vw,7rem);line-height:.92;letter-spacing:-.045em;
+  max-width:16ch;
+}
+.pa-title em{font-style:normal;color:var(--accent)}
+/* Revelado palabra por palabra. Animación pura de CSS (sin depender del JS):
+   con `both` el texto queda visible sí o sí al terminar. */
+.pa-w{display:inline-block;overflow:hidden;vertical-align:bottom}
+.pa-w > span{display:inline-block;animation:pa-rise .85s cubic-bezier(.16,1,.3,1) both}
+@keyframes pa-rise{from{transform:translateY(106%);opacity:0}to{transform:none;opacity:1}}
+
+.pa-lead{
+  margin-top:var(--s-6);max-width:56ch;font-size:1.0625rem;line-height:1.75;color:var(--text-muted);
+}
+@media(min-width:768px){.pa-lead{font-size:1.1875rem}}
+.pa-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--s-6)}
+
+/* Botón con destello que lo recorre */
+.pa-shine{position:relative;overflow:hidden}
+.pa-shine::after{
+  content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);
+  animation:pa-shine 4.6s ease-in-out infinite;
+}
+@keyframes pa-shine{0%,62%{left:-120%}100%{left:130%}}
+
+/* ── KPIs con jerarquía: uno manda ───────────────────────────────────────── */
+.pa-stats{display:grid;gap:var(--s-3);margin-top:var(--s-8)}
+@media(min-width:640px){.pa-stats{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.pa-stats{grid-template-columns:1.5fr 1fr 1fr 1fr;gap:var(--s-4)}}
+.pa-stat{
+  position:relative;overflow:hidden;padding:var(--s-5) var(--s-4);
+  border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);
+  display:flex;flex-direction:column-reverse;justify-content:flex-end;
+  transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.pa-stat:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.pa-stat--hero{
+  grid-column:1/-1;
+  background:linear-gradient(145deg,var(--accent-soft),transparent 62%),var(--surface);
+  border-color:rgba(193,39,45,.30);
+}
+@media(min-width:640px){.pa-stat--hero{grid-column:span 3}}
+@media(min-width:1024px){.pa-stat--hero{grid-column:span 1;padding:var(--s-6) var(--s-5)}}
+.pa-stat__n{font-family:var(--font-display);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.pa-stat .pa-stat__n{font-size:clamp(1.9rem,3.6vw,2.4rem)}
+.pa-stat--hero .pa-stat__n{font-size:clamp(3.4rem,7vw,5.4rem)}
+.pa-stat__n small{font-size:.4em;font-weight:600;color:var(--accent);margin-left:.2em;letter-spacing:0}
+.pa-stat__l{font-size:.8125rem;color:var(--text-muted);margin-top:.6rem;line-height:1.45;max-width:20ch}
+.pa-stat--hero .pa-stat__l{font-size:.9375rem;max-width:24ch}
+
+/* ── Marquee grande ──────────────────────────────────────────────────────── */
+.pa-marquee{
+  padding-block:var(--s-6);border-block:1px solid var(--border);
+  background:var(--surface);overflow:hidden;
+}
+.pa-marquee__head{
+  display:flex;align-items:center;gap:var(--s-4);margin-bottom:var(--s-5);
+  font-family:var(--font-mono);font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-faint);
+}
+.pa-marquee__head::before,.pa-marquee__head::after{content:"";height:1px;background:var(--border-strong);flex:1}
+.pa-track{display:flex;width:max-content;animation:pa-scroll 34s linear infinite}
+.pa-marquee:hover .pa-track{animation-play-state:paused}
+.pa-brand{
+  display:flex;align-items:center;gap:1.4rem;padding-inline:1.4rem;
+  font-family:var(--font-display);font-size:clamp(2rem,5.2vw,3.6rem);font-weight:700;
+  letter-spacing:-.035em;color:var(--text-faint);white-space:nowrap;
+  transition:color var(--dur) var(--ease);
+}
+.pa-brand:hover{color:var(--accent)}
+.pa-brand::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.45;flex:none}
+@keyframes pa-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── Bento del catálogo ──────────────────────────────────────────────────── */
+.pa-section{padding-block:var(--s-9);position:relative}
+.pa-head{max-width:44ch}
+.pa-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+}
+.pa-eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
+.pa-h2{font-family:var(--font-display);font-size:clamp(1.9rem,4.4vw,3rem);font-weight:700;letter-spacing:-.035em;line-height:1.05;margin-top:var(--s-4)}
+
+.pa-bento{display:grid;gap:var(--s-4);margin-top:var(--s-7)}
+@media(min-width:900px){
+  .pa-bento{grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto}
+  .pa-tile--lg{grid-row:span 2}
+}
+.pa-tile{
+  position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:210px;padding:var(--s-6);
+  border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);
+  transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.pa-tile--lg{min-height:420px;background:linear-gradient(160deg,var(--accent-soft),transparent 55%),var(--surface)}
+.pa-tile:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.pa-tile::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),var(--glow),transparent 70%);
+  opacity:0;transition:opacity var(--dur) var(--ease);
+}
+.pa-tile:hover::before{opacity:1}
+.pa-tile > *{position:relative;z-index:1}
+.pa-tile__n{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.pa-tile h3{font-family:var(--font-display);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:.65rem;font-size:clamp(1.3rem,2.6vw,1.75rem)}
+.pa-tile--lg h3{font-size:clamp(1.8rem,4vw,2.75rem)}
+.pa-tile p{color:var(--text-muted);font-size:.9375rem;line-height:1.65;margin-top:.75rem;max-width:40ch}
+.pa-tile__go{display:inline-flex;align-items:center;gap:.45rem;margin-top:var(--s-5);font-weight:600;color:var(--accent)}
+.pa-tile:hover .pa-tile__go svg{transform:translate(4px,-4px)}
+.pa-tile__go svg{transition:transform var(--dur) var(--ease)}
+/* Número gigante de fondo, recortado por la tarjeta */
+.pa-tile__ghost{
+  position:absolute;right:-.08em;bottom:-.34em;z-index:0;
+  font-family:var(--font-display);font-weight:700;font-size:11rem;line-height:1;
+  color:var(--text);opacity:.035;pointer-events:none;
+}
+
+/* ── Cierre ──────────────────────────────────────────────────────────────── */
+.pa-close{
+  position:relative;overflow:hidden;background:var(--accent);color:#fff;
+  padding-block:var(--s-8);
+}
+.pa-close__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-5);position:relative;z-index:1}
+.pa-close h2{font-family:var(--font-display);font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;max-width:18ch}
+.pa-close p{color:rgba(255,255,255,.82);margin-top:.6rem;max-width:46ch;line-height:1.6}
+.pa-close .btn--w{background:#fff;color:var(--accent)}
+.pa-close .btn--wg{border:1px solid rgba(255,255,255,.45);color:#fff}
+.pa-close__grid{
+  position:absolute;inset:0;opacity:.14;
+  background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);
+  background-size:70px 70px;
+}
+
+/* Aparición al scrollear, propia del prototipo */
+.js .pa-up{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .pa-up[data-in="true"]{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  .pa-glow::before,.pa-glow::after,.pa-track,.pa-shine::after{animation:none}
+  .js .pa-up{opacity:1;transform:none}
+  .pa-w > span{animation:none;transform:none;opacity:1}
+}

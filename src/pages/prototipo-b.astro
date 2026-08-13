@@ -1,0 +1,236 @@
+---
+/**
+ * PROTOTIPO B — Vidriera. Página de prueba, no enlazada desde el sitio.
+ * Las fotos son de stock (Unsplash, licencia libre) y están sólo para ver cómo
+ * queda el diseño con imágenes de verdad. Hay que reemplazarlas por fotos del
+ * local, el taller y el depósito de Casa Kira.
+ */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Brands from '../components/home/Brands.astro';
+import { SITE, MARCAS } from '../data/site';
+import { CATEGORIAS } from '../data/categorias';
+import { getCollection } from 'astro:content';
+import '../styles/proto-b.css';
+
+const maquinas = await getCollection('maquinas');
+
+// Carrusel del hero: una imagen por dato. Reemplazar estas fotos por las del
+// depósito y los hilados de Casa Kira (mismos nombres de archivo).
+const heroSlides = [
+  {
+    img: 'hero-taller.jpg',
+    alt: 'Operario cosiendo en una máquina industrial en un taller textil',
+    n: 60, suf: 'años', l: 'De trayectoria<br />ininterrumpida',
+    aria: '60 años de trayectoria ininterrumpida',
+  },
+  {
+    img: 'cajas-importacion.png',
+    alt: 'Cajas de máquinas de coser industriales apiladas en el depósito',
+    n: MARCAS.length, suf: 'marcas', l: 'Como importador<br />directo',
+    aria: `${MARCAS.length} marcas como importador directo`,
+  },
+  {
+    img: 'hilos.png',
+    alt: 'Conos de hilo de poliéster de distintos colores',
+    n: 300, pre: '+', suf: 'colores', l: 'En hilado<br />para bordar',
+    aria: 'Más de 300 colores en hilado para bordar',
+  },
+];
+
+const cards = [
+  {
+    n: '01', href: '/catalogo#maquinas', img: 'maquinas.jpg',
+    alt: 'Máquinas de coser industriales alineadas en un taller',
+    h: 'Máquinas de coser y bordar',
+    p: 'Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela. Industriales y familiares.',
+    tags: [`${CATEGORIAS.length} categorías`, `${maquinas.length} modelos`],
+    go: 'Ver máquinas',
+  },
+  {
+    n: '02', href: '/catalogo#repuestos', img: 'accesorios.jpg',
+    alt: 'Estantes de taller con accesorios y herramientas',
+    h: 'Accesorios y herramientas',
+    p: 'Prensatelas, guías, cuchillas, bobinas y chapas. Tijeras, cortantes, pinzas especiales y abridores de costura.',
+    tags: ['Originales', 'Nuevos y usados'],
+    go: 'Ver accesorios',
+  },
+  {
+    n: '03', href: '/catalogo#repuestos', img: 'hilos.png',
+    alt: 'Conos de hilo de distintos colores apilados',
+    h: 'Repuestos e insumos',
+    p: 'Repuestos originales de las principales marcas e hilados 100% poliéster para coser y bordar.',
+    tags: ['+300 colores', 'Importación directa'],
+    go: 'Ver repuestos',
+  },
+];
+---
+<Base title="Prototipo B — Casa Kira" description="Prototipo de diseño B (vidriera). Página de prueba con fotos de stock.">
+  <meta name="robots" content="noindex,nofollow" slot="head" />
+
+  <section class="pb-hero">
+    <div class="pb-glow" aria-hidden="true"></div>
+    <div class="tech-grid" aria-hidden="true"></div>
+    <div class="wrap pb-hero__grid">
+      <div>
+        <h1 class="pb-title">Asesoramos y proveemos a la industria textil desde <em>1967</em>.</h1>
+        <p class="pb-lead">
+          Encuentre en nuestro sitio todo lo necesario para la industria textil. Venta y reparación
+          de Máquinas de Coser y Bordar. Máquinas de Broches y de Cortar. Planchas. Hilos.
+          Repuestos y accesorios originales.
+        </p>
+        <div class="pb-cta">
+          <a class="btn btn--primary" href="/catalogo">Ver catálogo <Icon name="arrow" size={17} /></a>
+          <a class="btn btn--ghost" href="/contacto">Pedir presupuesto sin cargo</a>
+        </div>
+      </div>
+
+      <div class="pb-shot pb-carousel" data-hero-carousel>
+        <div class="pb-carousel__track" data-track>
+          {heroSlides.map((s, i) => (
+            <div class="pb-slide" data-slide data-active={i === 0 ? 'true' : 'false'} aria-hidden={i === 0 ? undefined : 'true'}>
+              <img src={`/assets/proto/${s.img}`} alt={s.alt} width="1600" height="1067" loading={i === 0 ? undefined : 'lazy'} />
+              <div class="pb-badge">
+                <div>
+                  <p class="pb-badge__n">
+                    {s.pre && <small style="margin:0 .04em 0 0">{s.pre}</small>}{s.n}{s.suf && <small>{s.suf}</small>}
+                  </p>
+                  <p class="pb-badge__l" set:html={s.l} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="pb-carousel__dots" role="tablist" aria-label="Elegir imagen">
+          {heroSlides.map((s, i) => (
+            <button class="pb-carousel__dot" type="button" role="tab" data-dot aria-selected={i === 0 ? 'true' : 'false'} aria-label={s.aria}></button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Brands />
+
+  <section class="pb-section">
+    <div class="pb-glow pb-glow--flip" aria-hidden="true"></div>
+    <div class="tech-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="pb-head pb-up">
+        <div>
+          <p class="pb-eyebrow">Catálogo</p>
+          <h2 class="pb-h2">Todo lo que el taller necesita.</h2>
+        </div>
+        <a class="link-arrow" href="/catalogo">Ver el catálogo completo <Icon name="arrowUpRight" size={15} /></a>
+      </div>
+
+      <div class="pb-cards">
+        {cards.map((c) => (
+          <a class="pb-card pb-up" href={c.href}>
+            <img src={`/assets/proto/${c.img}`} alt={c.alt} width="1600" height="1067" loading="lazy" />
+            <div class="pb-card__body">
+              <span class="pb-card__n">{c.n}</span>
+              <h3>{c.h}</h3>
+              <div class="pb-card__more">
+                <div>
+                  <p>{c.p}</p>
+                  <div class="pb-tags">{c.tags.map((t) => <span class="pb-tag">{t}</span>)}</div>
+                </div>
+              </div>
+              <span class="pb-card__go">{c.go} <Icon name="arrowUpRight" size={16} /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-close">
+    <div class="wrap pb-close__in">
+      <div>
+        <h2>¿Necesitás asesoramiento para tu taller?</h2>
+        <p>Contanos qué producís y te recomendamos la máquina que mejor se adapta.</p>
+      </div>
+      <div class="pb-cta">
+        <a class="btn btn--w" href="/contacto">Pedir presupuesto</a>
+        <a class="btn btn--wg" href={`tel:${SITE.tel}`}>{SITE.telHumano}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const ups = [...document.querySelectorAll<HTMLElement>('.pb-up')];
+  let fired = false;
+  const io = new IntersectionObserver(
+    (entries, obs) => {
+      fired = true;
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        (e.target as HTMLElement).dataset.in = 'true';
+        obs.unobserve(e.target);
+      });
+    },
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+  );
+  ups.forEach((el) => io.observe(el));
+  // Salvavidas: si el observer nunca reporta, se muestra todo igual.
+  setTimeout(() => {
+    if (!fired) ups.forEach((el) => (el.dataset.in = 'true'));
+  }, 1500);
+
+  // ── Carrusel del hero: desliza una imagen (y su dato) cada 3 segundos ──────
+  (() => {
+    const root = document.querySelector<HTMLElement>('[data-hero-carousel]');
+    if (!root) return;
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+    if (!track || slides.length < 2) return;
+
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let actual = 0;
+    let timer = 0;
+
+    const mostrar = (i: number) => {
+      actual = (i + slides.length) % slides.length;
+      // En píxeles redondeados, no en %: con anchos fraccionarios el navegador
+      // dejaba una rendija de subpíxel por la que asomaba el slide vecino.
+      const paso = Math.round(slides[0].getBoundingClientRect().width);
+      track.style.transform = `translate3d(-${actual * paso}px,0,0)`;
+      slides.forEach((s, n) => {
+        const on = n === actual;
+        s.dataset.active = String(on);
+        if (on) s.removeAttribute('aria-hidden');
+        else s.setAttribute('aria-hidden', 'true');
+      });
+      dots.forEach((d, n) => d.setAttribute('aria-selected', String(n === actual)));
+    };
+    const detener = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = 0;
+      }
+    };
+    const arrancar = () => {
+      if (reduce) return;
+      detener();
+      timer = window.setInterval(() => mostrar(actual + 1), 4000);
+    };
+
+    dots.forEach((d, n) => d.addEventListener('click', () => { mostrar(n); arrancar(); }));
+    // Si cambia el ancho, el desplazamiento en píxeles hay que recalcularlo.
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(() => mostrar(actual), 120);
+    });
+    root.addEventListener('mouseenter', detener);
+    root.addEventListener('mouseleave', arrancar);
+    root.addEventListener('focusin', detener);
+    root.addEventListener('focusout', arrancar);
+
+    mostrar(0);
+    arrancar();
+  })();
+</script>
