@@ -64,7 +64,9 @@
   --shadow-lg:0 4px 8px rgba(24,24,27,.05),0 24px 48px -16px rgba(24,24,27,.16);
   --grid-line:rgba(24,24,27,.055);
   --photo-filter:saturate(.18) contrast(1.04);
-  --nav-bg:rgba(244,225,226,.9);   /* rosa suave de marca para la barra de menú */
+  /* Vidrio esmerilado. No bajar de .82: con el nav sobre una foto oscura, el
+     texto del menú deja de cumplir el contraste mínimo. */
+  --nav-bg:rgba(248,248,248,.82);
   color-scheme:light;
 
   /* Bandas rojas plenas (Servicios, cierre de ficha): mismo rojo de marca. */
@@ -233,14 +235,22 @@ input,textarea,select{font:inherit;color:inherit}
 /* ══════════════════════════════════════════════════════════════════════════
    Navegación
    ══════════════════════════════════════════════════════════════════════════ */
+/* Vidrio esmerilado: más translúcida que antes, pero con el desenfoque bien
+   subido para que el contenido que pasa por detrás se lea como textura y la
+   barra no quede plana. El borde inferior le da el corte contra la página. */
 .nav{
   position:sticky;top:0;z-index:var(--z-nav);
-  background:var(--nav-bg);backdrop-filter:blur(14px) saturate(1.4);
-  -webkit-backdrop-filter:blur(14px) saturate(1.4);
-  border-bottom:1px solid transparent;
+  background:var(--nav-bg);
+  backdrop-filter:blur(22px) saturate(1.8);
+  border-bottom:1px solid var(--border);
   transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
 }
-.nav[data-scrolled="true"]{border-bottom-color:var(--border);box-shadow:var(--shadow-sm)}
+.nav[data-scrolled="true"]{border-bottom-color:var(--border-strong);box-shadow:var(--shadow-sm)}
+/* En bloque aparte: si van juntas, el minificador deja sólo una de las dos.
+   Safari anterior a la 18 necesita el prefijo. */
+@supports (-webkit-backdrop-filter:blur(1px)){
+  .nav{-webkit-backdrop-filter:blur(22px) saturate(1.8)}
+}
 .nav__in{display:flex;align-items:center;justify-content:space-between;gap:var(--s-5);min-height:var(--nav-h)}
 
 .brand{display:flex;align-items:center;gap:.875rem;flex:none}
