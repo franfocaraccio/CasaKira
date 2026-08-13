@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 const ErrorMsg = ({ show, children }: { show: boolean; children: string }) => (
   <span className="field__error" role="alert" style={{ display: show ? 'flex' : 'none' }}>
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
       <circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" />
     </svg>
     {children}
@@ -89,7 +89,7 @@ export default function ContactForm() {
         <button className="btn btn--primary" type="submit" disabled={sending} style={sending ? { opacity: 0.6, cursor: 'wait' } : undefined}>
           {sending ? 'Enviando…' : 'Enviar consulta'}
           {!sending && (
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           )}
@@ -97,7 +97,7 @@ export default function ContactForm() {
       </div>
 
       <p className="form-status" role="status" aria-live="polite" data-show={String(sent)}>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M20 6 9 17l-5-5" />
         </svg>
         Recibimos tu consulta. Te respondemos dentro del horario de atención.
