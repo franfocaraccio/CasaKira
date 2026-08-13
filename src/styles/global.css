@@ -710,10 +710,7 @@ input,textarea,select{font:inherit;color:inherit}
    posicionamiento absoluto y el paso entre ellos.
    ══════════════════════════════════════════════════════════════════════════ */
 .carousel{margin-top:var(--s-6)}
-.carousel__viewport{
-  display:grid;gap:var(--s-4);position:relative;
-  border-radius:var(--r-lg);
-}
+.carousel__track{display:grid;gap:var(--s-4)}
 .carousel__slide{
   display:grid;gap:0;overflow:hidden;
   border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);
@@ -735,13 +732,21 @@ input,textarea,select{font:inherit;color:inherit}
 .carousel__slide:hover .carousel__cta svg{transform:translate(3px,-3px)}
 .carousel__cta svg{transition:transform var(--dur) var(--ease)}
 
-/* Con JS: un slide a la vez, con fundido entre ellos. */
-.js .carousel__viewport{display:block}
-.js .carousel__slide{
-  position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity var(--dur-slow) var(--ease),visibility var(--dur-slow);
+/* Con JS: los slides se ponen en fila y la fila se desliza por dentro. El marco
+   (borde y esquinas) pasa al viewport, que es lo único que queda quieto. */
+.js .carousel__viewport{
+  overflow:hidden;border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);
+  transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
 }
-.js .carousel__slide[data-active="true"]{position:relative;opacity:1;visibility:visible;pointer-events:auto}
+.js .carousel__viewport:hover{border-color:var(--accent);box-shadow:var(--shadow-lg)}
+.js .carousel__track{
+  display:flex;gap:0;
+  transition:transform 520ms var(--ease);
+  will-change:transform;
+}
+.js .carousel__slide{flex:0 0 100%;min-width:0;border:0;border-radius:0}
+.js .carousel__slide:hover{box-shadow:none}
+.js .carousel__slide[data-active="false"]{pointer-events:none}
 
 .carousel__controls{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);margin-top:var(--s-5)}
 .carousel__dots{display:flex;gap:.4rem}

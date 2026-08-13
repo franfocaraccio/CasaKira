@@ -60,6 +60,7 @@ const slides = [
          apilados). El script de enhance.ts sólo cablea el paso entre ellos. -->
     <div class="carousel reveal" data-carousel aria-roledescription="carrusel" aria-label="Secciones del catálogo">
       <div class="carousel__viewport">
+        <div class="carousel__track" data-track>
         {slides.map((s, i) => (
           <a
             class="carousel__slide"
@@ -81,6 +82,7 @@ const slides = [
             </div>
           </a>
         ))}
+        </div>
       </div>
 
       <div class="carousel__controls">

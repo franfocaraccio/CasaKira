@@ -121,15 +121,16 @@
   });
 })();
 
-// ── Carrusel del catálogo: pasa de un slide a otro con fundido. Los slides ya
+// ── Carrusel del catálogo: la fila de slides se desliza de a uno. Los slides ya
 //    vienen en el HTML; acá sólo se decide cuál se muestra. Avanza solo, y se
 //    detiene mientras el visitante tiene el mouse o el foco encima. ────────────
 (() => {
   const root = document.querySelector<HTMLElement>('[data-carousel]');
   if (!root) return;
+  const track = root.querySelector<HTMLElement>('[data-track]');
   const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
   const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-dot]')];
-  if (slides.length < 2) return;
+  if (!track || slides.length < 2) return;
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let actual = 0;
@@ -137,10 +138,11 @@
 
   function mostrar(i: number) {
     actual = (i + slides.length) % slides.length;
+    track!.style.transform = `translateX(-${actual * 100}%)`;
     slides.forEach((s, n) => {
       const on = n === actual;
       s.dataset.active = String(on);
-      // El slide oculto sale del orden de tabulación y del árbol accesible.
+      // El slide fuera de vista sale del orden de tabulación y del árbol accesible.
       if (on) s.removeAttribute('aria-hidden');
       else s.setAttribute('aria-hidden', 'true');
       s.tabIndex = on ? 0 : -1;
@@ -157,7 +159,7 @@
   const arrancar = () => {
     if (reduce) return; // con "reducir movimiento" no avanza solo
     detener();
-    timer = window.setInterval(() => mostrar(actual + 1), 5000);
+    timer = window.setInterval(() => mostrar(actual + 1), 3000);
   };
 
   dots.forEach((d, n) => d.addEventListener('click', () => { mostrar(n); arrancar(); }));
