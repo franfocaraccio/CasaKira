@@ -8,8 +8,10 @@ sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 - Dominio **casakira.com.ar**, registrado en **NIC Argentina**.
 - Acceso a NIC por **TAD** (CUIT + Clave Fiscal nivel 2): organismo *NIC Argentina* →
   *Operaciones sobre dominios* → **Delegación de DNS**. — conseguido
-- Sitio y correo viven en el **mismo hosting** (proveedor **wiroos**, panel cPanel,
-  webmail en el puerto 2095).
+- Sitio y correo viven en el **mismo hosting** (proveedor **wiroos**, servidor
+  `wo50.wiroos.host`, panel cPanel, webmail en el puerto 2095).
+- **No hay acceso al panel del hosting.** No hace falta para mover el DNS: la delegación se
+  cambia en TAD. Sí condiciona tres cosas — ver Fase 0, Fase 2 (TTL) y Fase 5 (la baja).
 - Certificado TLS **vencido** (el sitio no abre por HTTPS).
 - Casilla en uso: **casakirasrl@casakira.com.ar** (está en el sitio, en facturas y en
   manos de clientes).
@@ -55,13 +57,15 @@ correo. **Nada del hosting viejo se cancela hasta que las dos cosas estén verif
       del CUIT, y que la operación *Delegación de DNS* está disponible.
 - [ ] Verificar de paso la **fecha de vencimiento** del dominio. Un vencimiento en medio
       de la migración es el peor escenario posible.
-- [ ] **Exportar la zona DNS completa** desde el panel de wiroos (Zone Editor). La tabla
-      de arriba es lo que se ve desde afuera; puede haber registros internos, subdominios
-      o TXT de verificación que no se detectan por consulta pública.
-- [ ] **Listar todas las casillas y reenvíos** que existen hoy en el cPanel. No asumir que
-      `casakirasrl@` es la única: cada casilla y cada alias hay que recrearlos en Zoho.
-- [ ] Bajar los **TTL a 300 segundos** en wiroos y esperar 24–48 h antes de la Fase 2.
-      Sin esto, cualquier rollback tarda un día en surtir efecto.
+- [ ] **Pedirle a Casa Kira la lista completa de casillas y reenvíos** en uso. Es el único
+      dato que no se puede averiguar desde afuera, y si falta uno, esa dirección deja de
+      recibir en la Fase 4. No asumir que `casakirasrl@` es la única.
+- [ ] Conseguir la **contraseña de cada casilla** (no el panel: la clave con la que leen su
+      correo). Es lo que necesita Zoho para copiar el historial por IMAP.
+- [ ] Reconstruir la zona a partir de la tabla de arriba más el escaneo de Cloudflare.
+      Antes del cambio, probar a mano los subdominios habituales por si hay alguno en uso
+      que no figure (`mail`, `webmail`, `cpanel`, `ftp`, `autodiscover`, `_dmarc`,
+      `default._domainkey`).
 - [x] Repo en GitHub con build reproducible (`npm run build`).
 - [ ] Deploy en Cloudflare Pages verificado en la URL provisoria `*.pages.dev`
       (preset **Astro**, build `npm run build`, output `dist`), todavía sin dominio.
@@ -97,12 +101,17 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 - [ ] Dejar el **A del apex en `149.56.87.21` y en DNS only (nube gris)**. En esta fase el
       sitio viejo tiene que seguir sirviéndose igual.
 - [ ] **Desacoplar el MX del apex** (el punto crítico):
-      - `mail.casakira.com.ar` → registro **A** `149.56.87.21`, **DNS only**
-        (hoy es un CNAME al apex y no sirve para esto).
-      - **MX** `casakira.com.ar` → `mail.casakira.com.ar`, prioridad 0.
-      A partir de acá el correo ya no depende del A del apex.
+      **MX** `casakira.com.ar` → **`wo50.wiroos.host`**, prioridad 0. Es el nombre real de
+      la máquina del hosting (resuelve a `149.56.87.21`, la misma IP que sirve la web y el
+      correo hoy). Apuntar al nombre y no a la IP: si el proveedor mueve el servidor, el
+      correo lo sigue solo. A partir de acá el correo ya no depende del A del apex.
 - [ ] Dejar en **DNS only** `mail`, `webmail`, `cpanel` y `ftp`. Proxiados no funcionan:
       el webmail va por el puerto 2095, que Cloudflare no proxea.
+- [ ] Tener presente que **no se pudieron bajar los TTL** (requerían el panel del hosting,
+      al que no hay acceso). Los de la web y el correo son de **4 h**: después del cambio
+      puede haber hasta ese lapso de convivencia entre lo viejo y lo nuevo, y un eventual
+      rollback tarda lo mismo. No es motivo de alarma, pero conviene hacer el cambio
+      temprano en el día y no un viernes.
 - [ ] En **TAD** → NIC Argentina → *Delegación de DNS*: cargar los dos nameservers que da
       Cloudflare. El plan gratuito no admite otra vía (no hay setup por CNAME).
 - [ ] Esperar a que Cloudflare marque la zona como **Active** y verificar que **el sitio
@@ -144,7 +153,9 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 ## Fase 5 — Cierre (sólo con todo verificado y estable)
 
 - [ ] Confirmar sitio (HTTPS) y correo (enviar/recibir) funcionando **varios días**.
-- [ ] **Dar de baja el hosting viejo.** Es el paso más caro si se adelanta.
+- [ ] **Dar de baja el hosting viejo.** Es el paso más caro si se adelanta. Nadie del
+      equipo tiene acceso al panel de wiroos: la baja la tiene que gestionar quien paga la
+      factura, con el proveedor. Es trámite comercial, no técnico.
 - [ ] Recién ahí borrar del DNS `mail`, `webmail`, `cpanel`, `ftp` y el DKIM viejo.
 
 ---
