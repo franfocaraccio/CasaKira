@@ -3,6 +3,16 @@
 Guía operativa para publicar el sitio en Cloudflare Pages y mudar el correo a Zoho
 sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 
+## Próximos tres pasos
+
+Los tres son seguros: ninguno cambia dónde está la web ni a dónde llega el correo.
+
+1. Contratar **Zoho Mail Lite** y crear la casilla (Fase 1).
+2. Entrar a **TAD** y confirmar que el dominio figura bajo el CUIT, y su vencimiento (Fase 0).
+3. Crear la cuenta de **Cloudflare** y verificar el sitio en la URL `*.pages.dev` (Fase 0).
+
+Dato que falta: la **contraseña de la casilla**, para la migración IMAP.
+
 ## Estado actual
 
 - Dominio **casakira.com.ar**, registrado en **NIC Argentina**.
