@@ -166,10 +166,10 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 - [ ] En el Worker → *Settings* → *Domains & Routes*, agregar `casakira.com.ar` y
       `www.casakira.com.ar`. Al estar la zona en la misma cuenta, Cloudflare reescribe los
       registros solo.
-- [ ] Elegir el canónico y agregar una **Redirect Rule** del otro hacia él.
-- [ ] Si el canónico pasa a ser `www`, actualizar **las dos** declaraciones del dominio en
-      el repo — `astro.config.mjs` (`site`) y `src/data/site.ts` (`SITE.dominio`) — y
-      volver a buildear. Alimentan el sitemap, los `canonical` y el JSON-LD.
+- [x] **Canónico decidido: `casakira.com.ar`, sin `www`** (2026-08-14). Es lo que ya
+      declaran `astro.config.mjs` (`site`) y `src/data/site.ts` (`SITE.dominio`), y lo que
+      usa el sitio viejo: no hay nada que cambiar en el repo.
+- [ ] Agregar una **Redirect Rule** de `www.casakira.com.ar` al apex.
 - [ ] Verificar HTTPS y que el certificado lo emitió Cloudflare.
 - [ ] Verificar que **el correo sigue funcionando** después del cambio.
 
