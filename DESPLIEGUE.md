@@ -156,8 +156,18 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 > hasta que la zona esté cargada y revisada en Cloudflare: si se delega antes, Cloudflare
 > no tiene qué responder y **se caen el sitio y el correo a la vez**, con hasta 4 h de
 > espera para volver atrás.
-- [ ] Esperar a que Cloudflare marque la zona como **Active** y verificar que **el sitio
-      viejo sigue abriendo y el correo sigue entrando y saliendo**. No avanzar si algo falla.
+- [x] **Delegación aplicada** el 2026-08-14. NIC tardó 20 minutos en publicarla (el primer
+      *Ejecutar cambios* devolvió un error genérico `null`; salió al segundo intento).
+- [x] **Verificado contra los nameservers de Cloudflare**: apex y `webmail` → `149.56.87.21`;
+      `www` y `mail` → CNAME al apex; **MX → `wo50.wiroos.host` prioridad 0**; SPF, DKIM y
+      DMARC intactos. El sitio viejo responde HTTP 200. Los puertos 993, 587, 465 y 2095 del
+      servidor de correo responden. (El 25 da timeout desde la máquina de desarrollo: es el
+      bloqueo de salida habitual de las conexiones domiciliarias, no un problema del
+      servidor.)
+- [ ] **Prueba real de correo, la única que falta**: mandar un mail a
+      `casakirasrl@casakira.com.ar` desde una cuenta externa y confirmar con el cliente que
+      llegó; que el cliente mande uno hacia afuera desde el webmail. Sin esto no se avanza
+      a la Fase 2.
 
 ---
 
