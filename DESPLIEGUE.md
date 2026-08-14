@@ -108,23 +108,35 @@ fase y no se avanza a la siguiente.
 El objetivo de esta fase es que, al terminar, **nada haya cambiado para el usuario**:
 mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
-- [ ] Agregar el dominio en Cloudflare y dejar que escanee la zona.
-- [ ] **Revisar registro por registro** contra la tabla del relevamiento. El escaneo suele
-      perderse el DKIM y algún TXT. Los faltantes se cargan a mano.
-- [ ] Dejar el **A del apex en `149.56.87.21` y en DNS only (nube gris)**. En esta fase el
-      sitio viejo tiene que seguir sirviéndose igual.
-- [ ] **Desacoplar el MX del apex** (el punto crítico):
-      **MX** `casakira.com.ar` → **`wo50.wiroos.host`**, prioridad 0. Es el nombre real de
-      la máquina del hosting (resuelve a `149.56.87.21`, la misma IP que sirve la web y el
-      correo hoy). Apuntar al nombre y no a la IP: si el proveedor mueve el servidor, el
-      correo lo sigue solo. A partir de acá el correo ya no depende del A del apex.
-- [ ] Dejar en **DNS only** `mail`, `webmail`, `cpanel` y `ftp`. Proxiados no funcionan:
-      el webmail va por el puerto 2095, que Cloudflare no proxea.
+- [x] **Zona cargada y revisada en Cloudflare** (2026-08-14). El escaneo trajo los 25
+      registros, **incluido el DKIM**. Aparecieron seis subdominios del panel de hosting
+      que no se veían desde afuera: `autoconfig`, `autodiscover`, `cpcalendars`,
+      `cpcontacts`, `webdisk`, `whm`. El cliente confirmó que **no usa ninguna otra
+      dirección web**, así que la lista está completa.
+      Quedó así: los 10 A, el CNAME `mail` y el CNAME `www` en **DNS only**; MX
+      `casakira.com.ar` → `wo50.wiroos.host` prioridad 0; los 5 SRV y los 7 TXT (SPF,
+      DKIM, DMARC y los cuatro de caldav/carddav) sin tocar.
+      Dos correcciones que hubo que hacer sobre lo que propuso el escaneo, las dos
+      imprescindibles:
+      1. Cloudflare deja **todo en Proxied** por defecto. Proxiados, `webmail` (puerto
+         2095), `cpanel` (2083), `whm`, `ftp` y `mail` **dejan de funcionar**: el proxy
+         sólo entiende tráfico web. Van todos en **DNS only**. El apex y `www` también,
+         para que en esta fase el sitio viejo se sirva igual que siempre.
+      2. **Desacoplar el MX del apex**: contenido `wo50.wiroos.host` en vez de
+         `casakira.com.ar`. Es el nombre real de la máquina del hosting (resuelve a
+         `149.56.87.21`). Apuntar al nombre y no a la IP: si el proveedor mueve el
+         servidor, el correo lo sigue solo. **Ojo con el campo Name**: va
+         `casakira.com.ar`, el servidor va en *Content*. Si se cambia el Name, el dominio
+         queda sin MX y el correo no tiene a dónde llegar.
+- [ ] **No borrar ningún registro** todavía. Los `cpanel`, `whm`, `ftp` y compañía no los
+      usamos, pero mientras el hosting viejo siga vivo tienen que estar. Se limpian en la
+      Fase 5.
 - [ ] Tener presente que **no se pudieron bajar los TTL** (requerían el panel del hosting,
       al que no hay acceso). Los de la web y el correo son de **4 h**: después del cambio
       puede haber hasta ese lapso de convivencia entre lo viejo y lo nuevo, y un eventual
-      rollback tarda lo mismo. No es motivo de alarma, pero conviene hacer el cambio
-      temprano en el día y no un viernes.
+      rollback tarda lo mismo. Por eso la delegación se hace **temprano y a principio de
+      semana**, nunca un viernes a la tarde: el local abre los sábados de 9 a 12 y un
+      correo caído el fin de semana no lo ve nadie hasta el lunes.
 - [ ] En **TAD** → NIC Argentina → *Delegar* → pantalla **Delegaciones**: hay dos filas,
       `ns1.wiroos.com` y `ns2.wiroos.com`, sin IPs (correcto, no hace falta glue). **Editar
       esas dos filas** reemplazando el texto por los nameservers de Cloudflare y recién ahí
