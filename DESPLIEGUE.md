@@ -10,8 +10,10 @@ Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega e
 1. ~~Entrar a **TAD** y confirmar el acceso al dominio.~~ — hecho el 2026-08-14.
 2. ~~Publicar el sitio en Cloudflare y verificarlo en su URL provisoria.~~ — hecho el
    2026-08-14: `https://casakira.francisco-focaraccio.workers.dev`.
-3. **Cargar la zona en Cloudflare y delegar los nameservers en TAD** (Fase 1). Es el
-   siguiente, y el primer paso con riesgo real.
+3. ~~Cargar y revisar la zona en Cloudflare.~~ — hecha el 2026-08-14, esperando delegación.
+4. **Delegar en TAD** a `eloise.ns.cloudflare.com` y `rene.ns.cloudflare.com` (Fase 1).
+   Es el siguiente, y el único paso que puede dejar el correo caído.
+   **Hacerlo un lunes o martes a la mañana**, con el día por delante.
 
 Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
 
@@ -137,11 +139,18 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
       rollback tarda lo mismo. Por eso la delegación se hace **temprano y a principio de
       semana**, nunca un viernes a la tarde: el local abre los sábados de 9 a 12 y un
       correo caído el fin de semana no lo ve nadie hasta el lunes.
+- [x] **DNSSEC verificado apagado** (2026-08-14): el dominio no tiene DS ni DNSKEY. Si
+      hubiera estado activo, delegar sin desactivarlo primero deja el dominio sin resolver.
+      Nada que hacer.
+- [x] Nameservers asignados por Cloudflare: **`eloise.ns.cloudflare.com`** y
+      **`rene.ns.cloudflare.com`**.
 - [ ] En **TAD** → NIC Argentina → *Delegar* → pantalla **Delegaciones**: hay dos filas,
       `ns1.wiroos.com` y `ns2.wiroos.com`, sin IPs (correcto, no hace falta glue). **Editar
-      esas dos filas** reemplazando el texto por los nameservers de Cloudflare y recién ahí
+      esas dos filas** reemplazando el texto por los dos de Cloudflare y recién ahí
       *Ejecutar cambios*. No hace falta agregar ni borrar filas, ni usar *Autodelegar*.
       El plan gratuito no admite otra vía (no hay setup por CNAME).
+      Ignorar la recomendación de Cloudflare de *"permitir sólo IPs de Cloudflare en el
+      origen"*: es para quien tiene servidor propio detrás del proxy, no es nuestro caso.
 
 > **Esta pantalla es el punto de no retorno de la fase.** No entrar a ejecutar cambios
 > hasta que la zona esté cargada y revisada en Cloudflare: si se delega antes, Cloudflare
