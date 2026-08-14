@@ -13,8 +13,8 @@ sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 - **No hay acceso al panel del hosting.** No hace falta para mover el DNS: la delegación se
   cambia en TAD. Sí condiciona tres cosas — ver Fase 0, Fase 2 (TTL) y Fase 5 (la baja).
 - Certificado TLS **vencido** (el sitio no abre por HTTPS).
-- Casilla en uso: **casakirasrl@casakira.com.ar** (está en el sitio, en facturas y en
-  manos de clientes).
+- Única casilla en uso: **casakirasrl@casakira.com.ar** (está en el sitio, en facturas y
+  en manos de clientes).
 
 ### DNS relevado el 2026-08-14 (consultado contra 1.1.1.1)
 
@@ -57,10 +57,10 @@ correo. **Nada del hosting viejo se cancela hasta que las dos cosas estén verif
       del CUIT, y que la operación *Delegación de DNS* está disponible.
 - [ ] Verificar de paso la **fecha de vencimiento** del dominio. Un vencimiento en medio
       de la migración es el peor escenario posible.
-- [ ] **Pedirle a Casa Kira la lista completa de casillas y reenvíos** en uso. Es el único
-      dato que no se puede averiguar desde afuera, y si falta uno, esa dirección deja de
-      recibir en la Fase 4. No asumir que `casakirasrl@` es la única.
-- [ ] Conseguir la **contraseña de cada casilla** (no el panel: la clave con la que leen su
+- [x] Casillas en uso: **una sola, `casakirasrl@casakira.com.ar`** (confirmado por el
+      cliente el 2026-08-14). Sin reenvíos declarados. Si aparece algún alias más adelante
+      hay que sumarlo antes de la Fase 4, o esa dirección deja de recibir.
+- [ ] Conseguir la **contraseña de la casilla** (no el panel: la clave con la que leen su
       correo). Es lo que necesita Zoho para copiar el historial por IMAP.
 - [ ] Reconstruir la zona a partir de la tabla de arriba más el escaneo de Cloudflare.
       Antes del cambio, probar a mano los subdominios habituales por si hay alguno en uso
@@ -76,11 +76,15 @@ correo. **Nada del hosting viejo se cancela hasta que las dos cosas estén verif
 
 Todo esto se hace **sin tocar los MX**: el correo sigue entrando al hosting viejo.
 
-- [ ] Crear la cuenta en **Zoho Mail** y agregar el dominio.
+- [ ] Contratar **Zoho Mail Lite** (~USD 1/casilla al mes, sólo facturación anual → unos
+      USD 12/año por la única casilla). **El plan gratuito no sirve acá**: no incluye
+      IMAP/POP ni la herramienta de migración, así que no se podría copiar el historial ni
+      leer el correo desde Outlook o el celular, sólo desde la web de Zoho.
+- [ ] Crear la cuenta y agregar el dominio.
 - [ ] **Verificar la titularidad** con el TXT que pide Zoho (se agrega en wiroos; es
       inocuo, no cambia el ruteo).
-- [ ] Recrear **todas** las casillas y alias relevados en la Fase 0, con las **mismas
-      direcciones**. `casakirasrl@casakira.com.ar` idéntica, no una nueva.
+- [ ] Crear **`casakirasrl@casakira.com.ar` idéntica**, no una dirección nueva. Está en el
+      sitio, en las facturas y en manos de clientes.
 - [ ] **Primera pasada de migración IMAP** desde el cPanel con la herramienta de migración
       de Zoho. Si el historial no se copia, queda atrapado en el hosting viejo y se pierde
       al darlo de baja.
