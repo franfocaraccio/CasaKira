@@ -8,9 +8,10 @@ sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega el correo.
 
 1. ~~Entrar a **TAD** y confirmar el acceso al dominio.~~ — hecho el 2026-08-14.
-2. Crear la cuenta de **Cloudflare** y verificar el sitio en la URL `*.pages.dev`.
-3. Cargar la zona en Cloudflare y delegar los nameservers en TAD (**Fase 1**, el primer
-   paso con riesgo real).
+2. ~~Publicar el sitio en Cloudflare y verificarlo en su URL provisoria.~~ — hecho el
+   2026-08-14: `https://casakira.francisco-focaraccio.workers.dev`.
+3. **Cargar la zona en Cloudflare y delegar los nameservers en TAD** (Fase 1). Es el
+   siguiente, y el primer paso con riesgo real.
 
 Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
 
@@ -52,8 +53,8 @@ hacer una vez que la zona esté en Cloudflare.
 
 ## Objetivo
 
-- Sitio en **Cloudflare Pages** (plan gratuito, **uso comercial permitido**, ancho de
-  banda ilimitado para estáticos, TLS automático y renovado solo).
+- Sitio en **Cloudflare** (Workers con assets estáticos; plan gratuito, **uso comercial
+  permitido**, TLS automático y renovado solo).
 - Correo en **Zoho Mail** (~USD 1/casilla).
 - DNS administrado en **Cloudflare**.
 - Dar de baja el hosting viejo al final → se termina pagando menos que hoy.
@@ -88,8 +89,12 @@ fase y no se avanza a la siguiente.
       que no figure (`mail`, `webmail`, `cpanel`, `ftp`, `autodiscover`, `_dmarc`,
       `default._domainkey`).
 - [x] Repo en GitHub con build reproducible (`npm run build`).
-- [ ] Deploy en Cloudflare Pages verificado en la URL provisoria `*.pages.dev`
-      (preset **Astro**, build `npm run build`, output `dist`), todavía sin dominio.
+- [x] **Deploy en Cloudflare funcionando** (2026-08-14) en
+      `https://casakira.francisco-focaraccio.workers.dev`. Verificadas las 6 páginas, una
+      ficha de máquina y el sitemap: todas 200, imágenes OK.
+      Ojo con el nombre: Cloudflare manda los proyectos nuevos a **Workers**, no a Pages,
+      así que la URL provisoria es `*.workers.dev` y el dominio propio se agrega en el
+      Worker → *Settings* → *Domains & Routes*. Para servir estáticos es equivalente.
 
 ---
 
@@ -137,8 +142,9 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
 ## Fase 2 — Publicar el sitio (el correo no se toca)
 
-- [ ] En **Pages** → *Custom domains*, agregar `casakira.com.ar` y `www.casakira.com.ar`.
-      Al estar la zona en la misma cuenta, Cloudflare reescribe los registros solo.
+- [ ] En el Worker → *Settings* → *Domains & Routes*, agregar `casakira.com.ar` y
+      `www.casakira.com.ar`. Al estar la zona en la misma cuenta, Cloudflare reescribe los
+      registros solo.
 - [ ] Elegir el canónico y agregar una **Redirect Rule** del otro hacia él.
 - [ ] Si el canónico pasa a ser `www`, actualizar **las dos** declaraciones del dominio en
       el repo — `astro.config.mjs` (`site`) y `src/data/site.ts` (`SITE.dominio`) — y
