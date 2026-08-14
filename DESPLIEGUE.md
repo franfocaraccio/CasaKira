@@ -3,15 +3,20 @@
 Guía operativa para publicar el sitio en Cloudflare Pages y mudar el correo a Zoho
 sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 
-## Próximos tres pasos
+## Próximos pasos
 
-Los tres son seguros: ninguno cambia dónde está la web ni a dónde llega el correo.
+Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega el correo.
 
-1. Contratar **Zoho Mail Lite** y crear la casilla (Fase 1).
-2. Entrar a **TAD** y confirmar que el dominio figura bajo el CUIT, y su vencimiento (Fase 0).
-3. Crear la cuenta de **Cloudflare** y verificar el sitio en la URL `*.pages.dev` (Fase 0).
+1. Entrar a **TAD** y confirmar que el dominio figura bajo el CUIT, y su vencimiento.
+2. Crear la cuenta de **Cloudflare** y verificar el sitio en la URL `*.pages.dev`.
+3. Cargar la zona en Cloudflare y delegar los nameservers en TAD (**Fase 1**, el primer
+   paso con riesgo real).
 
-Dato que falta: la **contraseña de la casilla**, para la migración IMAP.
+Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
+
+**Orden de las fases: DNS → sitio → Zoho → corte del correo.** Zoho va después del DNS
+porque su verificación de dominio necesita cargar un registro, y eso hoy sólo se puede
+hacer una vez que la zona esté en Cloudflare.
 
 ## Estado actual
 
@@ -59,6 +64,9 @@ Dato que falta: la **contraseña de la casilla**, para la migración IMAP.
 Primero se mueve el DNS sin cambiar nada de lo que sirve; después el sitio; después el
 correo. **Nada del hosting viejo se cancela hasta que las dos cosas estén verificadas.**
 
+Cada fase termina con una verificación. Si esa verificación falla, se vuelve atrás en esa
+fase y no se avanza a la siguiente.
+
 ---
 
 ## Fase 0 — Preparación (no toca nada en producción)
@@ -82,36 +90,19 @@ correo. **Nada del hosting viejo se cancela hasta que las dos cosas estén verif
 
 ---
 
-## Fase 1 — Preparar Zoho (el correo viejo sigue funcionando)
+## Fase 1 — DNS a Cloudflare (sin cambiar lo que sirve)
 
-Todo esto se hace **sin tocar los MX**: el correo sigue entrando al hosting viejo.
-
-- [ ] Contratar **Zoho Mail Lite** (~USD 1/casilla al mes, sólo facturación anual → unos
-      USD 12/año por la única casilla). **El plan gratuito no sirve acá**: no incluye
-      IMAP/POP ni la herramienta de migración, así que no se podría copiar el historial ni
-      leer el correo desde Outlook o el celular, sólo desde la web de Zoho.
-- [ ] Crear la cuenta y agregar el dominio.
-- [ ] **Verificar la titularidad** con el TXT que pide Zoho (se agrega en wiroos; es
-      inocuo, no cambia el ruteo).
-- [ ] Crear **`casakirasrl@casakira.com.ar` idéntica**, no una dirección nueva. Está en el
-      sitio, en las facturas y en manos de clientes.
-- [ ] **Primera pasada de migración IMAP** desde el cPanel con la herramienta de migración
-      de Zoho. Si el historial no se copia, queda atrapado en el hosting viejo y se pierde
-      al darlo de baja.
-- [ ] Anotar los valores que da el panel de Zoho: **MX, SPF y DKIM**. Los MX suelen ser
-      `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), pero **cambian según el
-      data center** (`.com` / `.eu`): usar siempre los que muestre la consola, no estos.
-
----
-
-## Fase 2 — DNS a Cloudflare (sin cambiar lo que sirve)
+> **Por qué esta fase va primero.** Zoho verifica la titularidad del dominio con un
+> registro DNS (TXT o CNAME) o subiendo un archivo al sitio. Las dos vías necesitan el
+> panel del hosting, al que no hay acceso. Recién con el DNS en Cloudflare se puede
+> agregar ese registro, así que Zoho no puede arrancar antes.
 
 El objetivo de esta fase es que, al terminar, **nada haya cambiado para el usuario**:
 mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
 - [ ] Agregar el dominio en Cloudflare y dejar que escanee la zona.
-- [ ] **Revisar registro por registro** contra la exportación de la Fase 0. El escaneo
-      suele perderse el DKIM y algún TXT. Faltantes se cargan a mano.
+- [ ] **Revisar registro por registro** contra la tabla del relevamiento. El escaneo suele
+      perderse el DKIM y algún TXT. Los faltantes se cargan a mano.
 - [ ] Dejar el **A del apex en `149.56.87.21` y en DNS only (nube gris)**. En esta fase el
       sitio viejo tiene que seguir sirviéndose igual.
 - [ ] **Desacoplar el MX del apex** (el punto crítico):
@@ -133,7 +124,7 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
 ---
 
-## Fase 3 — Publicar el sitio (el correo no se toca)
+## Fase 2 — Publicar el sitio (el correo no se toca)
 
 - [ ] En **Pages** → *Custom domains*, agregar `casakira.com.ar` y `www.casakira.com.ar`.
       Al estar la zona en la misma cuenta, Cloudflare reescribe los registros solo.
@@ -146,9 +137,31 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
 ---
 
+## Fase 3 — Preparar Zoho (el correo viejo sigue funcionando)
+
+Nada de esto toca los MX: el correo sigue entrando al hosting viejo.
+
+- [ ] Contratar **Zoho Mail Lite** (~USD 1/casilla al mes, sólo facturación anual → unos
+      USD 12/año por la única casilla). **El plan gratuito no sirve acá**: no incluye
+      IMAP/POP ni la herramienta de migración, así que no se podría copiar el historial ni
+      leer el correo desde Outlook o el celular, sólo desde la web de Zoho.
+- [ ] Crear la cuenta y agregar el dominio.
+- [ ] **Verificar la titularidad** con el registro que pida Zoho, cargado **en Cloudflare**.
+      Es inocuo: no cambia el ruteo del correo.
+- [ ] Crear **`casakirasrl@casakira.com.ar` idéntica**, no una dirección nueva. Está en el
+      sitio, en las facturas y en manos de clientes.
+- [ ] **Primera pasada de migración IMAP** con la herramienta de Zoho, contra
+      `wo50.wiroos.host`, usando la dirección completa y su contraseña. Si el historial no
+      se copia, queda atrapado en el hosting viejo y se pierde al darlo de baja.
+- [ ] Anotar los valores que da el panel de Zoho: **MX, SPF y DKIM**. Los MX suelen ser
+      `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), pero **cambian según el
+      data center** (`.com` / `.eu`): usar siempre los que muestre la consola, no estos.
+
+---
+
 ## Fase 4 — Cambiar el correo a Zoho
 
-- [ ] **Segunda pasada IMAP** (delta) para traer lo que llegó desde la Fase 1.
+- [ ] **Segunda pasada IMAP** (delta) para traer lo que llegó desde la Fase 3.
 - [ ] Cambiar los **MX** a los de Zoho y **borrar el MX viejo**. Deben quedar sólo los de
       Zoho.
 - [ ] **Reemplazar el SPF, no agregarle nada**: sólo puede haber **un** registro SPF. El de
