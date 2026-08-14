@@ -7,7 +7,7 @@ sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 
 Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega el correo.
 
-1. Entrar a **TAD** y confirmar que el dominio figura bajo el CUIT, y su vencimiento.
+1. ~~Entrar a **TAD** y confirmar el acceso al dominio.~~ — hecho el 2026-08-14.
 2. Crear la cuenta de **Cloudflare** y verificar el sitio en la URL `*.pages.dev`.
 3. Cargar la zona en Cloudflare y delegar los nameservers en TAD (**Fase 1**, el primer
    paso con riesgo real).
@@ -71,10 +71,13 @@ fase y no se avanza a la siguiente.
 
 ## Fase 0 — Preparación (no toca nada en producción)
 
-- [ ] Entrar a **TAD** y confirmar que `casakira.com.ar` figura en el listado de dominios
-      del CUIT, y que la operación *Delegación de DNS* está disponible.
-- [ ] Verificar de paso la **fecha de vencimiento** del dominio. Un vencimiento en medio
-      de la migración es el peor escenario posible.
+- [x] **Acceso al dominio confirmado en TAD** (2026-08-14). Titular **Eduardo Victor
+      Dworetz** (una persona, no la SRL: el control depende de esa Clave Fiscal). Alta
+      28/02/2007, **vencimiento 28/02/2027**, estado *Registrado*, *Delegado: SI*.
+      Sin riesgo de vencimiento durante la migración.
+- [x] La acción **DELEGAR** está disponible: es la que se usa en la Fase 1 para cargar los
+      nameservers de Cloudflare. **No usar TRANSFERIR**, que cambia el titular a otro CUIT
+      y desarma el acceso.
 - [x] Casillas en uso: **una sola, `casakirasrl@casakira.com.ar`** (confirmado por el
       cliente el 2026-08-14). Sin reenvíos declarados. Si aparece algún alias más adelante
       hay que sumarlo antes de la Fase 4, o esa dirección deja de recibir.
@@ -117,8 +120,16 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
       puede haber hasta ese lapso de convivencia entre lo viejo y lo nuevo, y un eventual
       rollback tarda lo mismo. No es motivo de alarma, pero conviene hacer el cambio
       temprano en el día y no un viernes.
-- [ ] En **TAD** → NIC Argentina → *Delegación de DNS*: cargar los dos nameservers que da
-      Cloudflare. El plan gratuito no admite otra vía (no hay setup por CNAME).
+- [ ] En **TAD** → NIC Argentina → *Delegar* → pantalla **Delegaciones**: hay dos filas,
+      `ns1.wiroos.com` y `ns2.wiroos.com`, sin IPs (correcto, no hace falta glue). **Editar
+      esas dos filas** reemplazando el texto por los nameservers de Cloudflare y recién ahí
+      *Ejecutar cambios*. No hace falta agregar ni borrar filas, ni usar *Autodelegar*.
+      El plan gratuito no admite otra vía (no hay setup por CNAME).
+
+> **Esta pantalla es el punto de no retorno de la fase.** No entrar a ejecutar cambios
+> hasta que la zona esté cargada y revisada en Cloudflare: si se delega antes, Cloudflare
+> no tiene qué responder y **se caen el sitio y el correo a la vez**, con hasta 4 h de
+> espera para volver atrás.
 - [ ] Esperar a que Cloudflare marque la zona como **Active** y verificar que **el sitio
       viejo sigue abriendo y el correo sigue entrando y saliendo**. No avanzar si algo falla.
 
