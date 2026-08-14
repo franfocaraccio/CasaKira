@@ -147,41 +147,34 @@ input,textarea,select{font:inherit;color:inherit}
 .wrap{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--s-5)}
 @media(min-width:768px){.wrap{padding-inline:var(--s-6)}}
 @media(min-width:1024px){.wrap{padding-inline:var(--s-7)}}
-.section{padding-block:var(--s-8);position:relative;overflow:hidden}
+.section{padding-block:var(--s-8);position:relative}
 @media(min-width:768px){.section{padding-block:var(--s-9)}}
+.section > .wrap{position:relative;z-index:1}
 
-/* ── Atmósfera de fondo, igual que en la portada ─────────────────────────────
-   Dos capas detrás del contenido: la cuadrícula, que nace abajo y se desvanece
-   hacia arriba, y un degradé rojo que sube desde el borde inferior. Van como
-   pseudo-elementos para no tener que agregar divs en cada componente.
-   La lleva toda .section; .atmos es para envolver lo que no es una sección
-   (por ejemplo el cuerpo de una ficha de máquina). */
-.atmos{position:relative;overflow:hidden}
-.section::before,.section::after,
-.atmos::before,.atmos::after{content:"";position:absolute;z-index:0;pointer-events:none}
-.section::before,.atmos::before{
+/* ── Atmósfera de fondo ──────────────────────────────────────────────────────
+   Va UNA sola vez por página, detrás de todo el contenido: la cuadrícula
+   cubriendo el alto completo, y un degradé rojo que sube desde el pie.
+   Aplicado por sección se dibujaba una vez por cada una y se veían los cortes
+   entre ellas. */
+#main{position:relative;isolation:isolate}
+#main::before,#main::after{content:"";position:absolute;z-index:-1;pointer-events:none}
+#main::before{
   inset:0;
   background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),
                    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
   background-size:64px 64px;
-  mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
 }
-.section::after,.atmos::after{
-  left:-15%;right:-15%;bottom:-45%;height:115%;
-  background:radial-gradient(ellipse 105% 52% at 50% 50%,rgba(193,39,45,.26),transparent 74%);
+/* Sin desbordar a los costados: el main no puede recortar (el hero de la
+   portada sube por detrás del menú con margen negativo), así que la elipse se
+   ensancha en vez de estirar la caja. */
+#main::after{
+  left:0;right:0;bottom:0;height:min(70vh,900px);
+  background:radial-gradient(ellipse 135% 52% at 50% 100%,rgba(193,39,45,.26),transparent 74%);
   filter:blur(40px);
   animation:atmos-swell 20s ease-in-out infinite alternate;
 }
-@keyframes atmos-swell{from{transform:scale(1)}to{transform:scale(1.14)}}
-/* El contenido va por encima de las dos capas. */
-.section > .wrap,.atmos > .wrap{position:relative;z-index:1}
-/* Prefijo aparte: si van juntas, el minificador conserva sólo una. */
-@supports (-webkit-mask-image:linear-gradient(#000,#000)){
-  .section::before,.atmos::before{-webkit-mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%)}
-}
-@media(prefers-reduced-motion:reduce){
-  .section::after,.atmos::after{animation:none}
-}
+@keyframes atmos-swell{from{transform:scale(1)}to{transform:scale(1.1)}}
+@media(prefers-reduced-motion:reduce){#main::after{animation:none}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .skip-link{position:absolute;top:-100px;left:var(--s-4);z-index:var(--z-modal);background:var(--accent);color:var(--accent-fg);padding:.75rem 1.25rem;border-radius:var(--r-sm);font-weight:600;transition:top var(--dur-fast)}
 .skip-link:focus{top:var(--s-4)}
@@ -702,7 +695,7 @@ input,textarea,select{font:inherit;color:inherit}
 /* ══════════════════════════════════════════════════════════════════════════
    Servicios — sección clara (mismo fondo que Contacto)
    ══════════════════════════════════════════════════════════════════════════ */
-.services{background:var(--bg-alt);position:relative;overflow:hidden;border-block:1px solid var(--border)}
+.services{position:relative;border-block:1px solid var(--border)}
 /* el eyebrow es un <p>: sin esto, .services p le ganaría en especificidad */
 .services .eyebrow{color:var(--accent)}
 .services__grid{display:grid;gap:var(--s-7);position:relative;z-index:var(--z-content)}

@@ -93,22 +93,9 @@ html:not(.js) .pc-slide__in > *{opacity:1;transform:none}
 .pc-arrow:hover{background:rgba(10,10,11,.6);border-color:#fff}
 
 /* ── Resto de la página (mismo criterio que el prototipo B) ──────────────── */
-.pc-glow{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.pc-glow::before{
-  content:"";position:absolute;left:-15%;right:-15%;bottom:-45%;height:115%;
-  background:radial-gradient(ellipse 105% 52% at 50% 50%,rgba(193,39,45,.26),transparent 74%);
-  filter:blur(40px);
-  animation:pc-swell 20s ease-in-out infinite alternate;
-}
-@keyframes pc-swell{from{transform:scale(1)}to{transform:scale(1.14)}}
 
-.pc-section{padding-block:var(--s-9);position:relative;overflow:hidden}
+.pc-section{padding-block:var(--s-9);position:relative}
 .pc-section > .wrap{position:relative;z-index:1}
-.pc-section .tech-grid{
-  z-index:0;
-  mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
-  -webkit-mask-image:linear-gradient(0deg,#000 0%,#000 38%,transparent 88%);
-}
 .pc-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--s-4)}
 .pc-eyebrow{
   display:inline-flex;align-items:center;gap:.5rem;
@@ -156,7 +143,7 @@ html:not(.js) .pc-slide__in > *{opacity:1;transform:none}
 .js .pc-up[data-in="true"]{opacity:1;transform:none}
 
 @media(prefers-reduced-motion:reduce){
-  .pc-glow::before,.js .pc-slide[data-active="true"] img{animation:none}
+  .js .pc-slide[data-active="true"] img{animation:none}
   .js .pc-up{opacity:1;transform:none}
   .js .pc-slide__in > *{opacity:1;transform:none}
 }
