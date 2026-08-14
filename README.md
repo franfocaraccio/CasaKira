@@ -235,3 +235,16 @@ rojo se aclara.
 6. Confirmar con el cliente: CUIT para el pie, si Singer sigue vigente como marca,
    y si "planchas" y "máquinas de broches" (mencionadas en el home viejo) siguen en venta —
    no tienen sección propia en el sitio actual.
+
+## Pendientes de contenido y funcionalidad
+
+Pedidos del cliente, sin empezar. No hay orden de prioridad todavía.
+
+- **MercadoShop.** Investigar cómo integrarlo al sitio. Hoy la tienda es un enlace
+  externo a la página de Mercado Libre (`SITE.tiendaUrl`); hay que ver qué ofrece
+  MercadoShop y si conviene embeber, enlazar distinto o replicar el catálogo.
+- **Logos de marcas.** Reemplazar el marquee tipográfico por los logos oficiales de las
+  11 marcas (ver punto 2 de la lista de arriba, es el mismo trabajo).
+- **Sección del certificado.** Darle un lugar propio en el sitio.
+- **"Motores bajo consumo" en el catálogo.** Categoría o sección nueva en `/catalogo`.
+- **Opiniones de clientes.** Un bloque con la experiencia de quienes ya compraron.
