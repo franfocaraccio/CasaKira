@@ -247,4 +247,4 @@ Pedidos del cliente, sin empezar. No hay orden de prioridad todavía.
   11 marcas (ver punto 2 de la lista de arriba, es el mismo trabajo).
 - **Sección del certificado.** Darle un lugar propio en el sitio.
 - **"Motores bajo consumo" en el catálogo.** Categoría o sección nueva en `/catalogo`.
-- **Opiniones de clientes.** Un bloque con la experiencia de quienes ya compraron.
+- **Poner un item con la opinion y experiencia que tuvieron con nuestra empresa.**
