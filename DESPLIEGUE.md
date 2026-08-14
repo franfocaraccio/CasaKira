@@ -1,97 +1,158 @@
 # Puesta en producción — Casa Kira
 
-Guía operativa para publicar el sitio y dejar el dominio y el correo sanos.
-Documento vivo: marcar cada casilla a medida que se completa.
+Guía operativa para publicar el sitio en Cloudflare Pages y mudar el correo a Zoho
+sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 
-## Estado actual (relevado el 2026-08-12)
+## Estado actual
 
 - Dominio **casakira.com.ar**, registrado en **NIC Argentina**.
-- Sitio y correo viven en el **mismo hosting cPanel** (webmail en el puerto 2095).
-- Los registros **MX del dominio apuntan a ese cPanel** → sitio y mail están acoplados.
+- Acceso a NIC por **TAD** (CUIT + Clave Fiscal nivel 2): organismo *NIC Argentina* →
+  *Operaciones sobre dominios* → **Delegación de DNS**. — conseguido
+- Sitio y correo viven en el **mismo hosting** (proveedor **wiroos**, panel cPanel,
+  webmail en el puerto 2095).
 - Certificado TLS **vencido** (el sitio no abre por HTTPS).
-- Casilla en uso: **casakirasrl@casakira.com.ar** (está en el sitio, en facturas y en manos de clientes).
+- Casilla en uso: **casakirasrl@casakira.com.ar** (está en el sitio, en facturas y en
+  manos de clientes).
+
+### DNS relevado el 2026-08-14 (consultado contra 1.1.1.1)
+
+| Registro | Valor |
+|---|---|
+| NS | `ns1.wiroos.com`, `ns2.wiroos.com` |
+| A `casakira.com.ar` | `149.56.87.21` |
+| CNAME `www` | → `casakira.com.ar` |
+| **MX** | **→ `casakira.com.ar`, prioridad 0** |
+| CNAME `mail` | → `casakira.com.ar` |
+| A `webmail`, `cpanel`, `ftp` | `149.56.87.21` |
+| TXT SPF | `v=spf1 ip4:192.95.22.212 ip4:62.210.31.59 ip4:163.172.113.163 include:spf-a1.wo50.wiroos.host ~all` |
+| TXT `default._domainkey` | DKIM de wiroos (RSA) |
+| TXT `_dmarc` | `v=DMARC1; p=none` |
+
+> **El MX apunta al apex, no a un host propio.** O sea: el correo se entrega a la misma
+> IP que sirve el sitio. Si se mueve el registro A del apex a Cloudflare Pages sin tocar
+> nada más, **el correo se corta en el acto**. Resolver esto (Fase 2) es condición para
+> publicar el sitio.
 
 ## Objetivo
 
-- Sitio en **Cloudflare Pages** (plan gratuito, **uso comercial permitido**, ancho de banda ilimitado para estáticos, TLS automático).
-- Correo en **Zoho Mail** (~USD 1/casilla) o **Google Workspace** (más caro, suma Drive/Calendar/Meet).
-- Dar de baja el cPanel viejo al final → probablemente se termine pagando menos que hoy.
+- Sitio en **Cloudflare Pages** (plan gratuito, **uso comercial permitido**, ancho de
+  banda ilimitado para estáticos, TLS automático y renovado solo).
+- Correo en **Zoho Mail** (~USD 1/casilla).
+- DNS administrado en **Cloudflare**.
+- Dar de baja el hosting viejo al final → se termina pagando menos que hoy.
 
 ## Principio rector
 
 **Sitio y correo son dos migraciones independientes. No se hacen juntas.**
-Primero se mueve el sitio dejando el correo intacto; después se migra el correo como
-proyecto aparte. **Nada del hosting viejo se cancela hasta que las dos cosas estén
-verificadas funcionando.**
+Primero se mueve el DNS sin cambiar nada de lo que sirve; después el sitio; después el
+correo. **Nada del hosting viejo se cancela hasta que las dos cosas estén verificadas.**
 
 ---
 
-## Prerrequisito bloqueante — arrancar YA
+## Fase 0 — Preparación (no toca nada en producción)
 
-Lleva tiempo y frena todo lo demás, por eso va primero.
-
-- [ ] Conseguir el **acceso a NIC Argentina** del titular del dominio (usuario/clave o CUIT del titular). En PyMEs de esta antigüedad suele estar a nombre de alguien que no trabaja más; destrabarlo lleva días.
-- [ ] **Relevar el DNS actual completo** antes de tocar nada: registros **MX**, **TXT/SPF**, **DKIM**, y cualquier **subdominio** en uso (correo, webmail, algún panel). Guardar una copia.
-- [ ] Conseguir el acceso al **panel del hosting cPanel** (para la migración IMAP del correo más adelante).
-
----
-
-## Vía A — Sitio web (Cloudflare Pages)
-
-No toca el correo en ningún paso.
-
-- [x] Repo en GitHub con build reproducible (`npm run build`). — hecho
-- [ ] Crear cuenta en **Cloudflare**.
-- [ ] En **Pages**, conectar el repo `franfocaraccio/CasaKira`.
-  - Framework preset: **Astro**
-  - Build command: `npm run build`
-  - Output directory: `dist`
-  - (el sitio es Astro + React + Tailwind; genera estático en `dist/`)
-- [ ] Verificar el deploy en la URL provisoria `*.pages.dev` (sin tocar el dominio todavía): navegar las 6 secciones, las 13 fichas, el toggle de tema y el menú mobile.
-- [ ] **(Se completa en la Vía C)** apuntar el dominio.
+- [ ] Entrar a **TAD** y confirmar que `casakira.com.ar` figura en el listado de dominios
+      del CUIT, y que la operación *Delegación de DNS* está disponible.
+- [ ] Verificar de paso la **fecha de vencimiento** del dominio. Un vencimiento en medio
+      de la migración es el peor escenario posible.
+- [ ] **Exportar la zona DNS completa** desde el panel de wiroos (Zone Editor). La tabla
+      de arriba es lo que se ve desde afuera; puede haber registros internos, subdominios
+      o TXT de verificación que no se detectan por consulta pública.
+- [ ] **Listar todas las casillas y reenvíos** que existen hoy en el cPanel. No asumir que
+      `casakirasrl@` es la única: cada casilla y cada alias hay que recrearlos en Zoho.
+- [ ] Bajar los **TTL a 300 segundos** en wiroos y esperar 24–48 h antes de la Fase 2.
+      Sin esto, cualquier rollback tarda un día en surtir efecto.
+- [x] Repo en GitHub con build reproducible (`npm run build`).
+- [ ] Deploy en Cloudflare Pages verificado en la URL provisoria `*.pages.dev`
+      (preset **Astro**, build `npm run build`, output `dist`), todavía sin dominio.
 
 ---
 
-## Vía B — Correo (Zoho Mail o Google Workspace)
+## Fase 1 — Preparar Zoho (el correo viejo sigue funcionando)
 
-Proyecto aparte, se hace con el correo viejo todavía activo.
+Todo esto se hace **sin tocar los MX**: el correo sigue entrando al hosting viejo.
 
-- [ ] Elegir proveedor (recomendado **Zoho Mail** si sólo se necesita correo profesional).
-- [ ] Crear la cuenta y **verificar la titularidad del dominio** (registro TXT que pide el proveedor).
-- [ ] Recrear la casilla **casakirasrl@casakira.com.ar idéntica** (misma dirección, no una nueva).
-- [ ] **Migrar el historial por IMAP** desde el cPanel: copiar todos los mails viejos a la casilla nueva. Si esto no se hace, el historial queda atrapado en el hosting viejo y se pierde al darlo de baja.
-- [ ] Preparar los valores de **MX + SPF + DKIM + DMARC** del proveedor nuevo (los da el proveedor; copiar y pegar). Si SPF/DKIM quedan mal, los mails de Casa Kira caen en spam.
-
----
-
-## Vía C — Cambio de DNS (donde las dos vías se encuentran)
-
-Recién acá se tocan los nameservers. Necesita el acceso a NIC.ar del prerrequisito.
-
-- [ ] Mover la administración de DNS a **Cloudflare**, **importando primero TODOS los registros actuales**, incluidos los MX que apuntan al cPanel. Así el sitio se puede publicar sin que el correo se entere.
-- [ ] Apuntar el **dominio al sitio de Cloudflare Pages** (Vía A). Verificar `casakira.com.ar` por HTTPS.
-- [ ] **Cuando la Vía B esté lista y verificada**, recién ahí **cambiar los MX** (y SPF/DKIM/DMARC) al proveedor de correo nuevo.
-- [ ] Probar correo en las dos direcciones: enviar desde la casilla nueva y recibir un mail externo en ella.
+- [ ] Crear la cuenta en **Zoho Mail** y agregar el dominio.
+- [ ] **Verificar la titularidad** con el TXT que pide Zoho (se agrega en wiroos; es
+      inocuo, no cambia el ruteo).
+- [ ] Recrear **todas** las casillas y alias relevados en la Fase 0, con las **mismas
+      direcciones**. `casakirasrl@casakira.com.ar` idéntica, no una nueva.
+- [ ] **Primera pasada de migración IMAP** desde el cPanel con la herramienta de migración
+      de Zoho. Si el historial no se copia, queda atrapado en el hosting viejo y se pierde
+      al darlo de baja.
+- [ ] Anotar los valores que da el panel de Zoho: **MX, SPF y DKIM**. Los MX suelen ser
+      `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), pero **cambian según el
+      data center** (`.com` / `.eu`): usar siempre los que muestre la consola, no estos.
 
 ---
 
-## Cierre — sólo cuando A, B y C están verificadas
+## Fase 2 — DNS a Cloudflare (sin cambiar lo que sirve)
 
-- [ ] Confirmar que sitio (HTTPS) y correo (enviar/recibir) funcionan por al menos unos días.
-- [ ] **Dar de baja el hosting cPanel viejo.** Es el paso más caro si se hace antes de tiempo: no adelantarlo.
-- [ ] El certificado TLS deja de ser un tema: Cloudflare lo emite y renueva solo.
+El objetivo de esta fase es que, al terminar, **nada haya cambiado para el usuario**:
+mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
+
+- [ ] Agregar el dominio en Cloudflare y dejar que escanee la zona.
+- [ ] **Revisar registro por registro** contra la exportación de la Fase 0. El escaneo
+      suele perderse el DKIM y algún TXT. Faltantes se cargan a mano.
+- [ ] Dejar el **A del apex en `149.56.87.21` y en DNS only (nube gris)**. En esta fase el
+      sitio viejo tiene que seguir sirviéndose igual.
+- [ ] **Desacoplar el MX del apex** (el punto crítico):
+      - `mail.casakira.com.ar` → registro **A** `149.56.87.21`, **DNS only**
+        (hoy es un CNAME al apex y no sirve para esto).
+      - **MX** `casakira.com.ar` → `mail.casakira.com.ar`, prioridad 0.
+      A partir de acá el correo ya no depende del A del apex.
+- [ ] Dejar en **DNS only** `mail`, `webmail`, `cpanel` y `ftp`. Proxiados no funcionan:
+      el webmail va por el puerto 2095, que Cloudflare no proxea.
+- [ ] En **TAD** → NIC Argentina → *Delegación de DNS*: cargar los dos nameservers que da
+      Cloudflare. El plan gratuito no admite otra vía (no hay setup por CNAME).
+- [ ] Esperar a que Cloudflare marque la zona como **Active** y verificar que **el sitio
+      viejo sigue abriendo y el correo sigue entrando y saliendo**. No avanzar si algo falla.
 
 ---
 
-## Pendiente de producto independiente de todo esto
+## Fase 3 — Publicar el sitio (el correo no se toca)
 
-- [ ] **Backend del formulario de contacto.** Hoy no envía nada. Opciones: una Pages Function de Cloudflare, un servicio tipo Formspree, o —lo más simple y probablemente lo que mejor convierte acá— que el formulario abra WhatsApp con los datos ya cargados, igual que las fichas de producto.
+- [ ] En **Pages** → *Custom domains*, agregar `casakira.com.ar` y `www.casakira.com.ar`.
+      Al estar la zona en la misma cuenta, Cloudflare reescribe los registros solo.
+- [ ] Elegir el canónico y agregar una **Redirect Rule** del otro hacia él.
+- [ ] Si el canónico pasa a ser `www`, actualizar **las dos** declaraciones del dominio en
+      el repo — `astro.config.mjs` (`site`) y `src/data/site.ts` (`SITE.dominio`) — y
+      volver a buildear. Alimentan el sitemap, los `canonical` y el JSON-LD.
+- [ ] Verificar HTTPS y que el certificado lo emitió Cloudflare.
+- [ ] Verificar que **el correo sigue funcionando** después del cambio.
 
-## Orden recomendado de ejecución
+---
 
-1. Prerrequisito (NIC.ar + relevar DNS) — arranca ya, es lento.
-2. Vía A hasta `*.pages.dev` — seguro, no toca DNS ni correo.
-3. Vía C: DNS a Cloudflare preservando todo + dominio al sitio.
-4. Vía B: migración de correo como proyecto aparte.
-5. Vía C: cambiar MX al correo nuevo y verificar.
-6. Cierre: dar de baja el cPanel.
+## Fase 4 — Cambiar el correo a Zoho
+
+- [ ] **Segunda pasada IMAP** (delta) para traer lo que llegó desde la Fase 1.
+- [ ] Cambiar los **MX** a los de Zoho y **borrar el MX viejo**. Deben quedar sólo los de
+      Zoho.
+- [ ] **Reemplazar el SPF, no agregarle nada**: sólo puede haber **un** registro SPF. El de
+      wiroos se va entero y entra el de Zoho (`v=spf1 include:zoho.com ~all` o el que
+      indique la consola según el data center).
+- [ ] Cargar el **DKIM de Zoho** con su selector propio. El `default._domainkey` actual es
+      de wiroos: se borra recién cuando el correo viejo ya no se usa.
+- [ ] Dejar el **DMARC en `p=none`** por ahora. Endurecerlo a `quarantine` sólo después de
+      unas semanas sin rebotes.
+- [ ] Probar en las dos direcciones: enviar desde la casilla nueva a un Gmail externo y
+      recibir un mail externo en ella. Revisar que no caiga en spam y que el encabezado
+      muestre SPF y DKIM en `pass`.
+
+---
+
+## Fase 5 — Cierre (sólo con todo verificado y estable)
+
+- [ ] Confirmar sitio (HTTPS) y correo (enviar/recibir) funcionando **varios días**.
+- [ ] **Dar de baja el hosting viejo.** Es el paso más caro si se adelanta.
+- [ ] Recién ahí borrar del DNS `mail`, `webmail`, `cpanel`, `ftp` y el DKIM viejo.
+
+---
+
+## Pendiente de producto, independiente de todo esto
+
+- [ ] **Backend del formulario de contacto.** Hoy no envía nada. Opciones: una Pages
+      Function de Cloudflare, un servicio tipo Formspree, o —lo más simple y probablemente
+      lo que mejor convierte acá— que el formulario abra WhatsApp con los datos ya
+      cargados, igual que las fichas de producto. Ojo: tener casilla en Zoho no resuelve
+      esto por sí solo, hace falta algo que envíe.
