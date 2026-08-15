@@ -164,10 +164,11 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
       servidor de correo responden. (El 25 da timeout desde la máquina de desarrollo: es el
       bloqueo de salida habitual de las conexiones domiciliarias, no un problema del
       servidor.)
-- [ ] **Prueba real de correo, la única que falta**: mandar un mail a
-      `casakirasrl@casakira.com.ar` desde una cuenta externa y confirmar con el cliente que
-      llegó; que el cliente mande uno hacia afuera desde el webmail. Sin esto no se avanza
-      a la Fase 2.
+- [x] **Prueba real de correo OK** (2026-08-15): el cliente recibe y responde con
+      normalidad. **Fase 1 cerrada.**
+- [x] Beneficio colateral: los TTL pasaron de 4 h a **300 s** (Cloudflare los pone en
+      Auto). De acá en adelante los cambios —y las vueltas atrás— se ven en minutos. El
+      corte del correo de la Fase 4 es bastante menos riesgoso por esto.
 
 ---
 
