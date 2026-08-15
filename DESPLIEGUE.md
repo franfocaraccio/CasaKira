@@ -10,10 +10,10 @@ Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega e
 1. ~~Entrar a **TAD** y confirmar el acceso al dominio.~~ — hecho el 2026-08-14.
 2. ~~Publicar el sitio en Cloudflare y verificarlo en su URL provisoria.~~ — hecho el
    2026-08-14: `https://casakira.francisco-focaraccio.workers.dev`.
-3. ~~Cargar y revisar la zona en Cloudflare.~~ — hecha el 2026-08-14, esperando delegación.
-4. **Delegar en TAD** a `eloise.ns.cloudflare.com` y `rene.ns.cloudflare.com` (Fase 1).
-   Es el siguiente, y el único paso que puede dejar el correo caído.
-   **Hacerlo un lunes o martes a la mañana**, con el día por delante.
+3. ~~Cargar la zona en Cloudflare y delegar en TAD.~~ — Fase 1 cerrada el 2026-08-15.
+4. ~~Publicar el sitio en el dominio.~~ — Fase 2 cerrada el 2026-08-15.
+   **`https://casakira.com.ar` ya sirve el sitio nuevo.**
+5. **Zoho** (Fase 3). Falta la contraseña de la casilla para la migración IMAP.
 
 Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
 
@@ -174,15 +174,31 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
 ## Fase 2 — Publicar el sitio (el correo no se toca)
 
-- [ ] En el Worker → *Settings* → *Domains & Routes*, agregar `casakira.com.ar` y
-      `www.casakira.com.ar`. Al estar la zona en la misma cuenta, Cloudflare reescribe los
-      registros solo.
-- [x] **Canónico decidido: `casakira.com.ar`, sin `www`** (2026-08-14). Es lo que ya
-      declaran `astro.config.mjs` (`site`) y `src/data/site.ts` (`SITE.dominio`), y lo que
-      usa el sitio viejo: no hay nada que cambiar en el repo.
-- [ ] Agregar una **Redirect Rule** de `www.casakira.com.ar` al apex.
-- [ ] Verificar HTTPS y que el certificado lo emitió Cloudflare.
-- [ ] Verificar que **el correo sigue funcionando** después del cambio.
+**Hecha el 2026-08-15. El sitio nuevo está publicado en `casakira.com.ar`.**
+
+- [x] **Canónico: `casakira.com.ar`, sin `www`.** Es lo que ya declaran `astro.config.mjs`
+      (`site`) y `src/data/site.ts` (`SITE.dominio`): no hubo que tocar el repo.
+- [x] **Antes de nada, convertir `mail` de CNAME a registro A** → `149.56.87.21`, DNS only.
+      Era un CNAME al apex, así que al mover el apex al Worker habría empezado a apuntar al
+      sitio web. El MX ya no dependía de él, pero **cualquier cliente de correo configurado
+      contra `mail.casakira.com.ar` (Outlook, el celular) habría dejado de funcionar**.
+- [x] **Borrar el A del apex** (`149.56.87.21`). Cloudflare no deja conectar el dominio al
+      Worker mientras exista: *"Hostname already has externally managed DNS records"*. Entre
+      el borrado y el alta el sitio queda caído, así que van seguidos.
+- [x] En el Worker → *Domains* → **+ Add Domain** (el botón azul, **no** el *Edit* del menú
+      `...` de la fila, que mueve el dominio existente en vez de agregar uno). Subdominio
+      vacío para el apex; `www` para el otro, borrando antes su CNAME.
+- [x] **Redirect Rule `www` → apex**, desde la plantilla *Redirect from WWW to root*
+      (`https://www.*` → `https://${1}`, 301) con **Preserve query string** tildado.
+      Cloudflare avisa que *"la regla puede no aplicarse porque www no está proxeado"*: es
+      un falso positivo, no reconoce los dominios conectados a un Worker. *Ignore and deploy*.
+- [x] **Verificado**: las 6 páginas, una ficha, `robots.txt` y el sitemap dan 200 en el
+      dominio real; sin prototipos en el sitemap; HTTP redirige a HTTPS en apex y en `www`;
+      `www/catalogo` termina en `casakira.com.ar/catalogo/` conservando la query string.
+      Certificado emitido por Cloudflare (Google Trust Services, vence 13/11/2026, se
+      renueva solo) — el certificado vencido del hosting viejo dejó de ser un tema.
+- [x] **Correo intacto tras el cambio**: MX en `wo50.wiroos.host`, `mail` y `webmail` en
+      `149.56.87.21`.
 
 ---
 
