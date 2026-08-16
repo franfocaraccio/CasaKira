@@ -13,7 +13,11 @@ Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega e
 3. ~~Cargar la zona en Cloudflare y delegar en TAD.~~ — Fase 1 cerrada el 2026-08-15.
 4. ~~Publicar el sitio en el dominio.~~ — Fase 2 cerrada el 2026-08-15.
    **`https://casakira.com.ar` ya sirve el sitio nuevo.**
-5. **Zoho** (Fase 3). Falta la contraseña de la casilla para la migración IMAP.
+5. **Zoho**: dominio verificado, casilla creada y DKIM activo. **Migración del historial en
+   curso** desde el 2026-08-16.
+6. **El corte** (Fase 4): cuando la copia termine, segunda pasada y cambio de MX y SPF.
+   Elegir un **martes o miércoles a la mañana** y avisarle antes al cliente: ese día le
+   cambia el webmail y hay que reconfigurarle el correo del celular si lo usa.
 
 Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
 
@@ -212,21 +216,41 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
 
 Nada de esto toca los MX: el correo sigue entrando al hosting viejo.
 
-- [ ] Contratar **Zoho Mail Lite** (~USD 1/casilla al mes, sólo facturación anual → unos
+**En curso desde el 2026-08-16.** Data center **US** (`mailadmin.zoho.com`), así que los
+valores son los `.com`.
+
+> **Regla que se aplicó en cada pantalla: nunca usar las opciones "Configure
+> automatically" / "Log in to my DNS" de Zoho.** Piden acceso al DNS y cargan
+> verificación, MX, SPF y DKIM de una sola vez. Eso cortaría el correo antes de terminar
+> de copiar el historial. Todo se carga a mano en Cloudflare, en el orden que decidimos.
+
+- [x] Contratar **Zoho Mail Lite** (~USD 1/casilla al mes, sólo facturación anual → unos
       USD 12/año por la única casilla). **El plan gratuito no sirve acá**: no incluye
       IMAP/POP ni la herramienta de migración, así que no se podría copiar el historial ni
       leer el correo desde Outlook o el celular, sólo desde la web de Zoho.
-- [ ] Crear la cuenta y agregar el dominio.
-- [ ] **Verificar la titularidad** con el registro que pida Zoho, cargado **en Cloudflare**.
-      Es inocuo: no cambia el ruteo del correo.
-- [ ] Crear **`casakirasrl@casakira.com.ar` idéntica**, no una dirección nueva. Está en el
-      sitio, en las facturas y en manos de clientes.
-- [ ] **Primera pasada de migración IMAP** con la herramienta de Zoho, contra
-      `wo50.wiroos.host`, usando la dirección completa y su contraseña. Si el historial no
-      se copia, queda atrapado en el hosting viejo y se pierde al darlo de baja.
-- [ ] Anotar los valores que da el panel de Zoho: **MX, SPF y DKIM**. Los MX suelen ser
-      `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), pero **cambian según el
-      data center** (`.com` / `.eu`): usar siempre los que muestre la consola, no estos.
+- [x] Crear la cuenta y agregar el dominio.
+- [x] **Verificación de titularidad**: TXT en el apex,
+      `zoho-verification=zb00062311.zmverify.zoho.com`. Convive sin problema con el SPF
+      viejo (varios TXT pueden coexistir; el único que debe ser único es el SPF).
+- [x] Casilla **`casakirasrl@casakira.com.ar`** creada, idéntica a la de siempre. Queda como
+      **Super Administrador** de la organización: quien tenga esa contraseña administra
+      toda la cuenta de Zoho.
+- [x] **DKIM adelantado** (no hace falta esperar al corte): selector **`zmail._domainkey`**,
+      TXT de 234 caracteres, verificado y activado. Convive con el `default._domainkey` de
+      wiroos porque son selectores distintos. Cada mail se firma con el del servidor que lo
+      envía.
+- [ ] **Primera pasada de migración IMAP** — *en progreso desde el 2026-08-16*. Parámetros:
+      IMAP, `wo50.wiroos.host`, puerto 993 SSL, **sin** *Skip certificate check* (ese host
+      tiene un Let's Encrypt válido; el certificado vencido de 2021 es el del webmail, otro
+      servicio). Todas las carpetas menos `Spam`, todos los mails. Límite de 5 conexiones
+      —bajar a 2 o 3 si el hosting rechaza por exceso— y pausa automática al 80% de la
+      cuota. Si el historial no se copia, queda atrapado en el hosting viejo y se pierde al
+      darlo de baja.
+      **Ojo con la cuota**: Mail Lite trae 5 GB. Si la casilla es más grande, la migración
+      pausa en vez de fallar, y se resuelve subiendo el plan.
+- [ ] Anotar de la consola de Zoho los **tres MX y el SPF** (el DKIM ya está hecho). Suelen
+      ser `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), pero **usar siempre
+      los que muestre la consola**.
 
 ---
 
@@ -238,8 +262,8 @@ Nada de esto toca los MX: el correo sigue entrando al hosting viejo.
 - [ ] **Reemplazar el SPF, no agregarle nada**: sólo puede haber **un** registro SPF. El de
       wiroos se va entero y entra el de Zoho (`v=spf1 include:zoho.com ~all` o el que
       indique la consola según el data center).
-- [ ] Cargar el **DKIM de Zoho** con su selector propio. El `default._domainkey` actual es
-      de wiroos: se borra recién cuando el correo viejo ya no se usa.
+- [x] ~~Cargar el DKIM de Zoho.~~ Hecho por adelantado en la Fase 3. El
+      `default._domainkey` de wiroos se borra recién cuando el correo viejo ya no se usa.
 - [ ] Dejar el **DMARC en `p=none`** por ahora. Endurecerlo a `quarantine` sólo después de
       unas semanas sin rebotes.
 - [ ] Probar en las dos direcciones: enviar desde la casilla nueva a un Gmail externo y
