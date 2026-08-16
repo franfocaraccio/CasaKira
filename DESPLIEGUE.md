@@ -256,18 +256,33 @@ valores son los `.com`.
       | 20 | `mx2.zoho.com` |
       | 50 | `mx3.zoho.com` |
 
+- [x] **SPF adelantado también** (2026-08-16), en su versión combinada: autoriza a los dos
+      proveedores a la vez, así que se puede aplicar antes del corte sin romper el envío
+      actual. El registro quedó:
+
+      ```
+      v=spf1 include:zohomail.com ip4:192.95.22.212 ip4:62.210.31.59 ip4:163.172.113.163 include:spf-a1.wo50.wiroos.host ~all
+      ```
+
+      El include de Zoho es **`zohomail.com`**, no `zoho.com`. Se **reemplazó** el TXT
+      existente, no se agregó otro: con dos registros SPF los dos se invalidan y todo el
+      correo del dominio pasa a ser sospechoso.
+      Consultas DNS: 3 de las 10 permitidas (`zohomail.com` → `spf.zohomail.com`, más el
+      include de wiroos; los dos terminan en listas de IPs). Hay margen de sobra.
+      Al dar de baja el hosting se recorta a `v=spf1 include:zohomail.com ~all`.
+
 ---
 
 ## Fase 4 — Cambiar el correo a Zoho
 
+Con el DKIM y el SPF adelantados en la Fase 3, **el corte se reduce a los MX**.
+Martes o miércoles a la mañana.
+
 - [ ] **Segunda pasada IMAP** (delta) para traer lo que llegó desde la Fase 3.
-- [ ] Cambiar los **MX** a los de Zoho y **borrar el MX viejo**. Deben quedar sólo los de
-      Zoho.
-- [ ] **Reemplazar el SPF, no agregarle nada**: sólo puede haber **un** registro SPF. El de
-      wiroos se va entero y entra el de Zoho (`v=spf1 include:zoho.com ~all` o el que
-      indique la consola según el data center).
-- [x] ~~Cargar el DKIM de Zoho.~~ Hecho por adelantado en la Fase 3. El
-      `default._domainkey` de wiroos se borra recién cuando el correo viejo ya no se usa.
+- [ ] Cambiar los **MX** a los tres de Zoho y **borrar el de `wo50.wiroos.host`**. Tienen
+      que quedar sólo los de Zoho.
+- [x] ~~SPF~~ y ~~DKIM~~: hechos por adelantado. El SPF ya autoriza a los dos proveedores;
+      el `default._domainkey` de wiroos se borra recién cuando el correo viejo no se use.
 - [ ] Dejar el **DMARC en `p=none`** por ahora. Endurecerlo a `quarantine` sólo después de
       unas semanas sin rebotes.
 - [ ] Probar en las dos direcciones: enviar desde la casilla nueva a un Gmail externo y
