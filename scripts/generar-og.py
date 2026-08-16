@@ -32,9 +32,9 @@ base = Image.composite(Image.new("RGB", (W, H), ROJO), base, glow)
 #   CASA  rotado -90, textLength 55.8, alto de fuente 22.6
 #   KIRA  x=23.1 y=65, textLength 183, alto de fuente 88.2
 FUENTE = r"C:\Windows\Fonts\ariblk.ttf"
-# WhatsApp recorta la previsualizacion a un cuadrado centrado: todo lo que importe
-# tiene que entrar en los 630 px centrales. 212 * 2.45 = 520 px, con margen.
-ESCALA = 2.45
+# WhatsApp recorta la previsualizacion a un cuadrado centrado: el logo tiene que
+# entrar entero en los 630 px centrales. 212 * 2.75 = 583 px, con margen a los lados.
+ESCALA = 2.75
 S = 6                 # supermuestreo para bordes limpios
 
 
@@ -56,26 +56,20 @@ def texto_estirado(txt, px_alto, ancho_objetivo):
 kira = texto_estirado("KIRA", 88.2 * ESCALA, 183 * ESCALA)
 casa = texto_estirado("CASA", 22.6 * ESCALA, 55.8 * ESCALA).rotate(90, expand=True)
 
-logo_w = int(212 * ESCALA)
-logo_h = kira.height + 4
+# El lienzo toma la altura de la pieza MAS ALTA, no la de KIRA: CASA rotada puede
+# ser más alta y se le cortaba la última A por arriba.
+logo_w = int(212 * ESCALA) + 8
+logo_h = max(kira.height, casa.height) + 8
 logo = Image.new("RGBA", (logo_w, logo_h), (0, 0, 0, 0))
-logo.paste(casa, (0, logo_h - casa.height), casa)
-logo.paste(kira, (int(23.1 * ESCALA), 0), kira)
+# Las dos apoyadas en la misma línea de base, como en el SVG del logo.
+logo.paste(casa, (4, logo_h - 4 - casa.height), casa)
+logo.paste(kira, (int(23.1 * ESCALA), logo_h - 4 - kira.height), kira)
 logo = logo.crop(logo.getbbox())
 
+# Solo el logo, centrado en los dos ejes. Sin bajadas ni texto de apoyo.
 lx = (W - logo.width) // 2
-ly = int(H * 0.30)
+ly = (H - logo.height) // 2
 base.paste(logo, (lx, ly), logo)
-
-# --- Bajada -----------------------------------------------------------------
-d = ImageDraw.Draw(base)
-f_sub = ImageFont.truetype(r"C:\Windows\Fonts\arialbd.ttf", 30)
-d.text((W // 2, ly + logo.height + 52), "MÁQUINAS DE COSER Y BORDAR",
-       font=f_sub, fill=TINTA, anchor="mm")
-
-f_pie = ImageFont.truetype(r"C:\Windows\Fonts\arial.ttf", 25)
-d.text((W // 2, ly + logo.height + 96), "Importador directo desde 1967",
-       font=f_pie, fill=(96, 96, 102), anchor="mm")
 
 base.save(r"C:\repos\casakira\public\assets\og-casakira.jpg", quality=92, optimize=True)
 print("listo:", base.size)
