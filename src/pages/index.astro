@@ -5,12 +5,21 @@
  * por delante.
  */
 import Base from '../layouts/Base.astro';
+import { Picture } from 'astro:assets';
 import Icon from '../components/Icon.astro';
 import Brands from '../components/home/Brands.astro';
 import { SITE, marcasEnProsa } from '../data/site';
 import { CATEGORIAS } from '../data/categorias';
 import { getCollection } from 'astro:content';
 import '../styles/proto-c.css';
+
+// Las fotos del carrusel viven en src/assets (no en public/) para que Astro las
+// procese al buildear: genera AVIF y WebP en varios anchos, y el navegador baja
+// el que le sirve. La primera es la que mide Google como LCP, así que su peso
+// es lo que más impacta en el puntaje del sitio en celulares.
+import imgIndustria from '../assets/hero/c-industria.jpg';
+import imgMaquinas from '../assets/hero/c-maquinas.jpg';
+import imgServicio from '../assets/hero/c-servicio.jpg';
 
 const maquinas = await getCollection('maquinas');
 
@@ -20,19 +29,19 @@ const description =
 
 const slides = [
   {
-    img: 'c-industria.jpg',
+    img: imgIndustria,
     alt: 'Planta textil con operarios trabajando en máquinas industriales',
     t: 'Asesoramos y proveemos a la industria textil desde 1967.',
     s: 'Encuentre en nuestro sitio todo lo necesario para la industria textil.',
   },
   {
-    img: 'c-maquinas.jpg',
+    img: imgMaquinas,
     alt: 'Máquinas de coser industriales en el salón de ventas',
     t: 'Venta y reparación de Máquinas de Coser y Bordar.',
     s: 'Máquinas de broches y de cortar, hilos, repuestos y accesorios originales.',
   },
   {
-    img: 'c-servicio.jpg',
+    img: imgServicio,
     alt: 'Técnico trabajando sobre una máquina de coser en el taller',
     t: 'Servicio técnico propio.',
     s: 'Personal especializado en nuestros talleres, capacitados en máquinas industriales y hogareñas.',
@@ -78,7 +87,15 @@ const cards = [
             aria-hidden={i === 0 ? undefined : 'true'}
             aria-roledescription="diapositiva"
           >
-            <img src={`/assets/proto/${s.img}`} alt={s.alt} width="2400" height="1600" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+            <Picture
+              src={s.img}
+              alt={s.alt}
+              formats={['avif', 'webp']}
+              widths={[640, 960, 1280, 1920, 2400]}
+              sizes="100vw"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
+            />
             <div class="wrap pc-slide__in">
               <h1 class="pc-slide__t" set:html={s.t.replace('1967', '<em>1967</em>')} />
               <p class="pc-slide__s">{s.s}</p>
