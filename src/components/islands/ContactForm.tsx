@@ -59,7 +59,7 @@ export default function ContactForm() {
         body: JSON.stringify({
           ...datos,
           access_key: SITE.formKey,
-          subject: 'Consulta desde el sitio web CASA KIRA',
+          subject: 'Consulta desde la web CASA KIRA',
           from_name: 'Sitio Casa Kira',
         }),
       });
