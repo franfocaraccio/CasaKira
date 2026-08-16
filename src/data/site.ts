@@ -28,10 +28,12 @@ export const SITE = {
   facebookHandle: 'casakirasrl',
   dataFiscal:
     'https://servicios1.afip.gov.ar/clavefiscal/qr/mobilePublicInfo.aspx?req=e1ttZXRob2Q9Z2V0UHVibGljSW5mb11bcGVyc29uYT0yMDM1MzY3MjczOV1bdGlwb2RvbWljaWxpbz0wXVtzZWN1ZW5jaWE9MF1bdXJsPWh0dHA6Ly93d3cuY2FzYWtpcmEuY29tLmFyXX0=',
+  // Mercado Shops cerró el 31/12/2025 y Mercado Libre migró las tiendas a
+  // "Mi Página", que es la de `tiendaUrl`. Por eso acá ya no hay una entrada
+  // de mercadoshops: el subdominio amaq2009.mercadoshops.com.ar dejó de existir.
   tiendas: {
     mercadoLibre: 'https://listado.mercadolibre.com.ar/_CustId_36984787',
     eshop: 'https://eshops.mercadolibre.com.ar/amaq2009/',
-    mercadoShop: 'https://amaq2009.mercadoshops.com.ar/',
   },
 } as const;
 
