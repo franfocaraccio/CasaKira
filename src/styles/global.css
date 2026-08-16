@@ -850,10 +850,12 @@ input,textarea,select{font:inherit;color:inherit}
 .field[data-invalid="true"] .field__error{display:flex}
 .form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4);margin-top:var(--s-6)}
 .form-foot__note{font-size:.75rem;color:var(--text-faint);max-width:34ch;line-height:1.5}
+/* Verde y no rojo: el rojo de la marca acá se leía como error justo cuando el
+   envío salió bien. */
 .form-status{
   display:none;align-items:center;gap:.6rem;margin-top:var(--s-5);padding:.875rem 1rem;
-  border-radius:var(--r-sm);background:var(--accent-soft);border:1px solid var(--accent);
-  font-size:.875rem;font-weight:500;color:var(--accent);
+  border-radius:var(--r-sm);background:#F0FDF4;border:1px solid #16A34A;
+  font-size:.875rem;font-weight:500;color:#15803D;
 }
 .form-status[data-show="true"]{display:flex}
 /* Variante de error: si el envío falla, el mismo bloque en tono de alerta con
