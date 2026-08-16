@@ -248,9 +248,13 @@ valores son los `.com`.
       darlo de baja.
       **Ojo con la cuota**: Mail Lite trae 5 GB. Si la casilla es más grande, la migración
       pausa en vez de fallar, y se resuelve subiendo el plan.
-- [ ] Anotar de la consola de Zoho los **tres MX y el SPF** (el DKIM ya está hecho). Suelen
-      ser `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), pero **usar siempre
-      los que muestre la consola**.
+- [x] **MX de destino, confirmados en la consola** (data center US):
+
+      | Prioridad | Servidor |
+      |---|---|
+      | 10 | `mx.zoho.com` |
+      | 20 | `mx2.zoho.com` |
+      | 50 | `mx3.zoho.com` |
 
 ---
 
