@@ -312,8 +312,11 @@ Para que el cliente no tenga que entrar por `zoho.com`, se usó el **White Label
 Zoho (*Admin Console → Organization → White Labeling*): un CNAME `mail` →
 `mail.cs.zohohost.com`, **en DNS only** (proxeado, Cloudflare corta la conexión y Zoho no
 puede emitir su certificado), y después *Generate the certificate* en esa misma pantalla.
-Zoho admite hasta 48 h para emitirlo. La página de login queda servida bajo el dominio de
-Casa Kira, no es un simple rebote.
+Zoho admite hasta 48 h para emitirlo; **en este caso tardó 78 minutos**. La página de login
+queda servida bajo el dominio de Casa Kira, no es un simple rebote.
+
+Verificado el 2026-08-16: responde 200 por HTTPS, con certificado de Let's Encrypt emitido
+para `mail.casakira.com.ar` y renovación a cargo de Zoho.
 
 Idioma, zona horaria (GMT-03:00 Buenos Aires) y formato de fecha se configuran **por
 usuario**, desde la casilla misma (*Configuración → General*), no desde la consola de
