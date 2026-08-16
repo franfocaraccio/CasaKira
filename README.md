@@ -222,14 +222,16 @@ rojo se aclara.
 
 ## Pendientes antes de producción
 
-1. **Fotografía nueva.** Las imágenes actuales son de 250×167 px. Alcanzan para maquetar,
-   no para publicar. Es lo primero que hay que resolver.
+1. **Fotografía nueva.** Las fotos de las fichas de máquina son de 250×167 px: alcanzan
+   para maquetar, no para publicar. (Las tres del carrusel de la portada ya están en alta
+   resolución y las optimiza Astro; viven en `src/assets/hero/`, no en `public/`.)
 2. **El vector original del logo de Casa Kira** (ver arriba) y los logos oficiales de las
    marcas que representa: faltan Juki, Brother, Pegasus y Feiyute; hoy el marquee usa las
    marcas escritas en tipografía. Los de Typical, Siruba y Yamata están en `public/assets/`
    pero en baja resolución.
-3. **Backend del formulario.** Hoy el submit solo simula el envío (`ContactForm.tsx`).
-4. **Certificado TLS** y redirección de HTTP a HTTPS.
+3. ~~**Backend del formulario.**~~ Resuelto el 2026-08-16 con Web3Forms; ver `DESPLIEGUE.md`.
+4. ~~**Certificado TLS** y redirección de HTTP a HTTPS.~~ Resueltos al publicar en
+   Cloudflare: el certificado se emite y renueva solo, y HTTP redirige a HTTPS.
 5. **Precios y stock.** El sitio delega en Mercado Libre. Las fichas declaran `InStock` en el
    JSON-LD sin precio: hay que confirmar con Casa Kira que la disponibilidad es real, o quitarlo.
 6. Confirmar con el cliente: CUIT para el pie, si Singer sigue vigente como marca,

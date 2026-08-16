@@ -398,10 +398,23 @@ limpieza en el momento, sin el período de espera que preveía este documento.
 
 ---
 
-## Pendiente de producto, independiente de todo esto
+## Formulario de contacto
 
-- [ ] **Backend del formulario de contacto.** Hoy no envía nada. Opciones: una Pages
-      Function de Cloudflare, un servicio tipo Formspree, o —lo más simple y probablemente
-      lo que mejor convierte acá— que el formulario abra WhatsApp con los datos ya
-      cargados, igual que las fichas de producto. Ojo: tener casilla en Zoho no resuelve
-      esto por sí solo, hace falta algo que envíe.
+**Resuelto el 2026-08-16 con Web3Forms**, y probado de punta a punta.
+
+El formulario postea a `api.web3forms.com/submit` y ellos reenvían la consulta por mail a
+`casakirasrl@casakira.com.ar`, con asunto fijo *"Consulta desde la web CASA KIRA"*. Se
+eligió esto sobre montar un endpoint propio porque el sitio es un **Worker de sólo
+archivos estáticos**: recibir el formulario ahí adentro obligaba a convertirlo en un
+Worker con código y variables de entorno, mucha maquinaria para el volumen de consultas
+de una PyME.
+
+- La **clave** vive en `SITE.formKey` (`src/data/site.ts`). Es **pública por diseño**:
+  viaja en el HTML del sitio y sólo indica a qué casilla entregar. No es un secreto y no
+  da acceso a nada.
+- Si el envío falla, el formulario **lo dice** y ofrece el mail y el WhatsApp. Antes
+  esperaba 900 ms y afirmaba que la consulta había llegado sin haber mandado nada.
+- Trampa antispam por **honeypot** (campo `botcheck` invisible), sin captcha ni fricción.
+- El plan gratuito guarda las consultas **30 días** en el panel de Web3Forms. Los mails
+  reenviados a Zoho quedan para siempre; esa retención es sólo de su copia.
+- Al registrarse se acepta recibir mails de marketing de Web3Forms.
