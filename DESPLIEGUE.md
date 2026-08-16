@@ -13,8 +13,12 @@ Las cinco fases se completaron entre el **14 y el 16 de agosto de 2026**.
 - **DNS** administrado en Cloudflare, delegado desde NIC.
 - **Hosting viejo** dado de baja y sus registros borrados de la zona.
 
-Lo que queda son dos decisiones abiertas, ninguna urgente: `includeSubDomains` en HSTS y
-subir el DMARC a `quarantine`. Están al final, en la Fase 5.
+Queda un solo pendiente: **subir el DMARC a `p=quarantine`**, agendado para el 2026-08-30.
+Está al final, en la Fase 5.
+
+Además se agregó `mail.casakira.com.ar` como URL de acceso al correo (login propio de Zoho
+bajo el dominio de Casa Kira, vía White Labeling), para que el cliente no tenga que entrar
+por `zoho.com`.
 
 Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
 
@@ -302,6 +306,23 @@ la ventana de riesgo era mínima.
 > refresca sola; se limpia entrando a *Email Configuration → MX* y pulsando *Verify*. No
 > indica ningún problema real: contrastar siempre contra una consulta DNS.
 
+### Acceso al correo — `mail.casakira.com.ar`
+
+Para que el cliente no tenga que entrar por `zoho.com`, se usó el **White Labeling** de
+Zoho (*Admin Console → Organization → White Labeling*): un CNAME `mail` →
+`mail.cs.zohohost.com`, **en DNS only** (proxeado, Cloudflare corta la conexión y Zoho no
+puede emitir su certificado), y después *Generate the certificate* en esa misma pantalla.
+Zoho admite hasta 48 h para emitirlo. La página de login queda servida bajo el dominio de
+Casa Kira, no es un simple rebote.
+
+Idioma, zona horaria (GMT-03:00 Buenos Aires) y formato de fecha se configuran **por
+usuario**, desde la casilla misma (*Configuración → General*), no desde la consola de
+administración.
+
+**La casilla `casakirasrl@` es Super Administrador de la organización**: quien tenga esa
+contraseña administra la cuenta entera, incluida la facturación. Definir con el cliente
+quién la maneja.
+
 ---
 
 ## Fase 5 — Cierre
@@ -323,10 +344,24 @@ limpieza en el momento, sin el período de espera que preveía este documento.
 
 ### Queda pendiente
 
-- [ ] **`includeSubDomains` en HSTS**: ahora sí es viable, porque no queda ningún
-      subdominio fuera de Cloudflare. Es un compromiso de 6 meses difícil de revertir —
-      decisión de Fran, sin resolver.
-- [ ] Con el correo estable unas semanas, subir el **DMARC a `p=quarantine`**.
+- [ ] **DMARC a `p=quarantine`** — agendado para el **2026-08-30** (tarea programada
+      `casakira-dmarc-quarantine`). Hoy está en `p=none`, que significa "observar sin
+      hacer nada": **cualquiera puede mandar correo haciéndose pasar por
+      `casakirasrl@casakira.com.ar`** y llega a la bandeja de entrada del destinatario.
+      Para una empresa que factura es un riesgo real —el fraude típico es una factura
+      falsa con datos bancarios cambiados, firmada con la dirección de Casa Kira—, así que
+      conviene endurecerlo. Se esperan dos semanas sólo para confirmar que ningún
+      remitente legítimo quedó sin autorizar: con SPF o DKIM incompletos, el correo bueno
+      también cae en spam. Valor a poner:
+
+      ```
+      v=DMARC1; p=quarantine; rua=mailto:casakirasrl@casakira.com.ar
+      ```
+
+- [x] **`includeSubDomains` en HSTS: descartado** (decisión de Fran, 2026-08-16). Sólo hay
+      un subdominio, `mail.`, que apunta a Zoho y ya funciona únicamente por HTTPS: el
+      agujero que taparía es prácticamente inexistente, y a cambio compromete seis meses
+      irreversibles. El HSTS del dominio principal queda activo igual.
 
 ---
 
