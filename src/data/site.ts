@@ -17,6 +17,11 @@ export const SITE = {
   horario: 'Lunes a viernes de 9 a 12 y de 14 a 17 h',
   horarioSab: 'Sábados de 9 a 12 h',
   tiendaUrl: 'https://www.mercadolibre.com.ar/pagina/maquineriakira',
+  // Clave de Web3Forms, el servicio que recibe el formulario de contacto y lo
+  // reenvía por mail a `email`. Es pública por diseño: viaja en el HTML del
+  // sitio y no da acceso a nada, sólo identifica a dónde entregar la consulta.
+  // Se pide en https://web3forms.com con la casilla de destino.
+  formKey: '9c554eda-ea57-45df-a81f-d45d2af10342',
   instagram: 'https://www.instagram.com/maquineriacasakira/',
   instagramHandle: '@maquineriacasakira',
   facebook: 'https://www.facebook.com/casakirasrl',

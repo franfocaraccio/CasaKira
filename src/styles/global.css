@@ -856,6 +856,12 @@ input,textarea,select{font:inherit;color:inherit}
   font-size:.875rem;font-weight:500;color:var(--accent);
 }
 .form-status[data-show="true"]{display:flex}
+/* Variante de error: si el envío falla, el mismo bloque en tono de alerta con
+   las vías alternativas de contacto. */
+.form-status--error{
+  background:#FEF2F2;border-color:#DC2626;color:#991B1B;align-items:flex-start;
+}
+.form-status--error svg{flex:none;margin-top:.15rem}
 
 /* ══════════════════════════════════════════════════════════════════════════
    Footer

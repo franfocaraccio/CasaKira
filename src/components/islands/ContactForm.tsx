@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { SITE } from '../../data/site';
 
 const ErrorMsg = ({ show, children }: { show: boolean; children: string }) => (
   <span className="field__error" role="alert" style={{ display: show ? 'flex' : 'none' }}>
@@ -11,14 +12,17 @@ const ErrorMsg = ({ show, children }: { show: boolean; children: string }) => (
 
 /**
  * Formulario de consulta (isla de React). Valida al salir del campo, muestra el
- * error debajo y enfoca el primero que falla. Prototipo: sin backend todavía,
- * sólo muestra el estado de éxito (ver DESPLIEGUE.md, pendiente de backend).
+ * error debajo y enfoca el primero que falla.
+ *
+ * El envío va a Web3Forms, que reenvía la consulta por mail a SITE.email. Así el
+ * sitio sigue siendo estático: no hace falta servidor propio ni claves privadas.
  */
 export default function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [invalid, setInvalid] = useState<Record<string, boolean>>({});
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
 
   const check = (el: HTMLInputElement | HTMLTextAreaElement) => {
     const ok = el.checkValidity();
@@ -35,20 +39,59 @@ export default function ContactForm() {
     if (invalid[el.name]) check(el);
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = formRef.current!;
-    const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')];
+    // El honeypot no se valida: lo llenan los bots, las personas no lo ven.
+    const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')]
+      .filter((f) => f.name !== 'botcheck');
     const bad = fields.filter((f) => !check(f));
     if (bad.length) { bad[0].focus(); return; }
+
+    setError('');
     setSending(true);
-    setTimeout(() => { setSending(false); setSent(true); form.reset(); setInvalid({}); }, 900);
+    const datos = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          ...datos,
+          access_key: SITE.formKey,
+          subject: `Consulta desde el sitio — ${datos.nombre || 'sin nombre'}`,
+          from_name: 'Sitio Casa Kira',
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.success) throw new Error(json.message || 'Falló el envío');
+      setSent(true);
+      form.reset();
+      setInvalid({});
+    } catch {
+      // Nunca dejar al visitante sin salida: si el envío falla, que sepa que
+      // puede escribir igual, y por dónde.
+      setError(`No pudimos enviar la consulta. Escribinos a ${SITE.email} o por WhatsApp al ${SITE.whatsappHumano}.`);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
     <form className="form-card" ref={formRef} onSubmit={onSubmit} noValidate>
       <h3>Consultas y cotización</h3>
       <p className="form-card__sub">Contanos qué máquina o repuesto necesitás y te respondemos a la brevedad.</p>
+
+      {/* Trampa para bots: invisible y fuera del recorrido del teclado. Si viene
+          con algo cargado, Web3Forms descarta el envío. */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ display: 'none' }}
+      />
 
       <div className="form-grid">
         <div className="field" data-invalid={String(!!invalid.nombre)}>
@@ -101,6 +144,13 @@ export default function ContactForm() {
           <path d="M20 6 9 17l-5-5" />
         </svg>
         Recibimos tu consulta. Te respondemos dentro del horario de atención.
+      </p>
+
+      <p className="form-status form-status--error" role="alert" data-show={String(!!error)}>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" />
+        </svg>
+        {error}
       </p>
     </form>
   );
