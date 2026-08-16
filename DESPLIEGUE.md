@@ -323,6 +323,33 @@ administración.
 contraseña administra la cuenta entera, incluida la facturación. Definir con el cliente
 quién la maneja.
 
+### Configurar el correo en un celular o en Outlook
+
+Lo más simple es la **app Zoho Mail** (App Store / Play Store): se entra con la dirección
+y la contraseña, no hay nada que configurar, y maneja sola la verificación en dos pasos.
+
+Para la **app de correo nativa del teléfono o para Outlook**, los datos son:
+
+| | Servidor | Puerto | Seguridad |
+|---|---|---|---|
+| Entrante (IMAP) | `imappro.zoho.com` | 993 | SSL |
+| Saliente (SMTP) | `smtppro.zoho.com` | 465 (SSL) o 587 (TLS) | autenticación obligatoria |
+
+Usuario: la **dirección completa**, `casakirasrl@casakira.com.ar`, no sólo `casakirasrl`.
+
+Tres cosas que hacen fallar esto y cuestan un rato de averiguar:
+
+1. **Son los servidores `pro`.** La mayoría de los tutoriales dicen `imap.zoho.com` /
+   `smtp.zoho.com`: esos son para cuentas gratuitas personales. Con dominio propio hay que
+   usar los `pro` o la autenticación falla.
+2. **Con verificación en dos pasos activada, la contraseña normal no sirve** en clientes
+   nativos: hay que generar una *contraseña específica de aplicación* desde el perfil de
+   Zoho. La app de Zoho Mail no tiene este problema.
+3. **El acceso IMAP tiene que estar habilitado** en la casilla:
+   *Configuración → Cuentas de correo → `casakirasrl@casakira.com.ar` → sección IMAP →*
+   tildar **Acceso IMAP**. Si aparece bloqueado, lo restringe una política de organización
+   y se destraba desde la consola de administración.
+
 ---
 
 ## Fase 5 — Cierre
