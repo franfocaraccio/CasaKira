@@ -3,21 +3,18 @@
 Guía operativa para publicar el sitio en Cloudflare Pages y mudar el correo a Zoho
 sin cortar nada. Documento vivo: marcar cada casilla a medida que se completa.
 
-## Próximos pasos
+## Estado: migración terminada
 
-Los dos primeros son seguros: no cambian dónde está la web ni a dónde llega el correo.
+Las cinco fases se completaron entre el **14 y el 16 de agosto de 2026**.
 
-1. ~~Entrar a **TAD** y confirmar el acceso al dominio.~~ — hecho el 2026-08-14.
-2. ~~Publicar el sitio en Cloudflare y verificarlo en su URL provisoria.~~ — hecho el
-   2026-08-14: `https://casakira.francisco-focaraccio.workers.dev`.
-3. ~~Cargar la zona en Cloudflare y delegar en TAD.~~ — Fase 1 cerrada el 2026-08-15.
-4. ~~Publicar el sitio en el dominio.~~ — Fase 2 cerrada el 2026-08-15.
-   **`https://casakira.com.ar` ya sirve el sitio nuevo.**
-5. **Zoho**: dominio verificado, casilla creada y DKIM activo. **Migración del historial en
-   curso** desde el 2026-08-16.
-6. **El corte** (Fase 4): cuando la copia termine, segunda pasada y cambio de MX y SPF.
-   Elegir un **martes o miércoles a la mañana** y avisarle antes al cliente: ese día le
-   cambia el webmail y hay que reconfigurarle el correo del celular si lo usa.
+- **Sitio** en `https://casakira.com.ar`, servido por Cloudflare, con certificado que se
+  renueva solo. El del hosting viejo estaba vencido.
+- **Correo** en Zoho Mail Lite, con el historial completo migrado, SPF y DKIM en `pass`.
+- **DNS** administrado en Cloudflare, delegado desde NIC.
+- **Hosting viejo** dado de baja y sus registros borrados de la zona.
+
+Lo que queda son dos decisiones abiertas, ninguna urgente: `includeSubDomains` en HSTS y
+subir el DMARC a `quarantine`. Están al final, en la Fase 5.
 
 Dato que falta: la **contraseña de la casilla**, para la migración IMAP de la Fase 3.
 
@@ -307,24 +304,29 @@ la ventana de riesgo era mínima.
 
 ---
 
-## Fase 5 — Cierre (sólo con todo verificado y estable)
+## Fase 5 — Cierre
 
-- [ ] Confirmar sitio (HTTPS) y correo (enviar/recibir) funcionando **varios días**.
-- [ ] **Dar de baja el hosting viejo.** Es el paso más caro si se adelanta. Nadie del
-      equipo tiene acceso al panel de wiroos: la baja la tiene que gestionar quien paga la
-      factura, con el proveedor. Es trámite comercial, no técnico.
-      Antes de darlo de baja, **confirmar que no quede nada que sólo viva ahí**: la casilla
-      vieja ya está copiada, pero puede haber archivos subidos por FTP o algo del sitio
-      anterior que nadie recuerde.
-- [ ] Recién ahí, limpiar el DNS: borrar `mail`, `webmail`, `cpanel`, `ftp`, `whm`,
-      `webdisk`, `autoconfig`, `autodiscover`, `cpcalendars`, `cpcontacts`, los 5 SRV y los
-      4 TXT de caldav/carddav, más el DKIM viejo `default._domainkey`. Todos son del panel
-      de hosting y no los usa nada nuestro.
-- [ ] Recortar el SPF a `v=spf1 include:zohomail.com ~all` (sacar las IPs y el include de
-      wiroos, que ya no manda nada).
-- [ ] Reevaluar **`includeSubDomains` en HSTS**: una vez que no quede ningún subdominio
-      fuera de Cloudflare, se puede activar. Hoy rompería el webmail viejo.
-- [ ] Con el correo estable, subir el **DMARC a `p=quarantine`**.
+**Hecha el 2026-08-16.** Fran decidió dar el hosting viejo por terminado y ejecutar la
+limpieza en el momento, sin el período de espera que preveía este documento.
+
+- [x] **Baja del hosting viejo**: decisión tomada. Es trámite comercial de quien paga la
+      factura; nadie del equipo tiene acceso al panel de wiroos.
+- [x] **DNS limpio**: borrados los 10 registros A del panel (`mail`, `webmail`, `cpanel`,
+      `ftp`, `whm`, `webdisk`, `autoconfig`, `autodiscover`, `cpcalendars`, `cpcontacts`),
+      los 5 SRV y los 4 TXT de caldav/carddav, y el DKIM viejo `default._domainkey`.
+      Se conservó el TXT `zoho-verification`, que Zoho sigue usando.
+- [x] **SPF recortado** a `v=spf1 include:zohomail.com ~all`. Bajó de 3 consultas DNS a 2,
+      y deja de autorizar IPs que ya no envían nada en nombre del dominio.
+- [x] **Verificado después de la limpieza**: las 6 páginas, una ficha, `robots.txt` y el
+      sitemap dan 200; HTTP y `www` siguen redirigiendo al canónico; MX, SPF, DKIM y la
+      verificación de Zoho intactos.
+
+### Queda pendiente
+
+- [ ] **`includeSubDomains` en HSTS**: ahora sí es viable, porque no queda ningún
+      subdominio fuera de Cloudflare. Es un compromiso de 6 meses difícil de revertir —
+      decisión de Fran, sin resolver.
+- [ ] Con el correo estable unas semanas, subir el **DMARC a `p=quarantine`**.
 
 ---
 
