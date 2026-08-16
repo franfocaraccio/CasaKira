@@ -275,19 +275,35 @@ valores son los `.com`.
 
 ## Fase 4 — Cambiar el correo a Zoho
 
-Con el DKIM y el SPF adelantados en la Fase 3, **el corte se reduce a los MX**.
-Martes o miércoles a la mañana.
+**Hecha el 2026-08-16. El correo está en Zoho.**
 
-- [ ] **Segunda pasada IMAP** (delta) para traer lo que llegó desde la Fase 3.
-- [ ] Cambiar los **MX** a los tres de Zoho y **borrar el de `wo50.wiroos.host`**. Tienen
-      que quedar sólo los de Zoho.
-- [x] ~~SPF~~ y ~~DKIM~~: hechos por adelantado. El SPF ya autoriza a los dos proveedores;
-      el `default._domainkey` de wiroos se borra recién cuando el correo viejo no se use.
+Con el DKIM y el SPF adelantados en la Fase 3, el corte se redujo a los MX. Se hizo el
+mismo día en vez de esperar a un martes: el cliente no estaba usando la casilla, así que
+la ventana de riesgo era mínima.
+
+- [x] **Los MX se cambiaron sin esperar a que terminara la migración**, y conviene dejar
+      escrito por qué se puede: la copia IMAP se conecta a `wo50.wiroos.host` **por su
+      nombre**, que resuelve en la zona de wiroos, no en la nuestra. Cambiar el MX de
+      `casakira.com.ar` no la interrumpe. Y cortando antes se evita que sigan entrando
+      mails al servidor viejo, que después habría que traer en una segunda pasada.
+- [x] MX en `10 mx.zoho.com`, `20 mx2.zoho.com`, `50 mx3.zoho.com`, y borrado el de
+      `wo50.wiroos.host`. Verificado contra Cloudflare y contra los resolvedores de Google,
+      Quad9 y OpenDNS: propagó en minutos gracias al TTL de 300 s.
+- [x] ~~SPF~~ y ~~DKIM~~: hechos por adelantado en la Fase 3.
+- [x] **Migración terminada al 100%, 0 fallidas.** Como los MX ya estaban cambiados cuando
+      terminó, **no hizo falta la segunda pasada**: no quedó ventana de mails sin copiar.
+- [x] **Probado en las dos direcciones**: entra correo externo, sale correo desde Zoho, no
+      cae en spam, y el encabezado muestra **SPF `pass` y DKIM `pass`**.
+- [x] **Historial verificado a ojo** en la bandeja de Zoho: están las decenas de carpetas
+      del cliente y el correo viejo de meses anteriores. Y entró correo real de terceros
+      el mismo día del corte.
 - [ ] Dejar el **DMARC en `p=none`** por ahora. Endurecerlo a `quarantine` sólo después de
       unas semanas sin rebotes.
-- [ ] Probar en las dos direcciones: enviar desde la casilla nueva a un Gmail externo y
-      recibir un mail externo en ella. Revisar que no caiga en spam y que el encabezado
-      muestre SPF y DKIM en `pass`.
+
+> **Aviso conocido de Zoho:** la consola puede seguir mostrando *"The MX Records of your
+> domain are not pointed to Zoho"* después del corte. Es una notificación vieja que no se
+> refresca sola; se limpia entrando a *Email Configuration → MX* y pulsando *Verify*. No
+> indica ningún problema real: contrastar siempre contra una consulta DNS.
 
 ---
 
@@ -297,7 +313,18 @@ Martes o miércoles a la mañana.
 - [ ] **Dar de baja el hosting viejo.** Es el paso más caro si se adelanta. Nadie del
       equipo tiene acceso al panel de wiroos: la baja la tiene que gestionar quien paga la
       factura, con el proveedor. Es trámite comercial, no técnico.
-- [ ] Recién ahí borrar del DNS `mail`, `webmail`, `cpanel`, `ftp` y el DKIM viejo.
+      Antes de darlo de baja, **confirmar que no quede nada que sólo viva ahí**: la casilla
+      vieja ya está copiada, pero puede haber archivos subidos por FTP o algo del sitio
+      anterior que nadie recuerde.
+- [ ] Recién ahí, limpiar el DNS: borrar `mail`, `webmail`, `cpanel`, `ftp`, `whm`,
+      `webdisk`, `autoconfig`, `autodiscover`, `cpcalendars`, `cpcontacts`, los 5 SRV y los
+      4 TXT de caldav/carddav, más el DKIM viejo `default._domainkey`. Todos son del panel
+      de hosting y no los usa nada nuestro.
+- [ ] Recortar el SPF a `v=spf1 include:zohomail.com ~all` (sacar las IPs y el include de
+      wiroos, que ya no manda nada).
+- [ ] Reevaluar **`includeSubDomains` en HSTS**: una vez que no quede ningún subdominio
+      fuera de Cloudflare, se puede activar. Hoy rompería el webmail viejo.
+- [ ] Con el correo estable, subir el **DMARC a `p=quarantine`**.
 
 ---
 
