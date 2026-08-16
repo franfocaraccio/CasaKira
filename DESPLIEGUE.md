@@ -199,6 +199,12 @@ mismo sitio viejo, mismo correo. Sólo cambia quién responde el DNS.
       renueva solo) — el certificado vencido del hosting viejo dejó de ser un tema.
 - [x] **Correo intacto tras el cambio**: MX en `wo50.wiroos.host`, `mail` y `webmail` en
       `149.56.87.21`.
+- [x] **HSTS activado** el 2026-08-16: `max-age=15552000` (6 meses) más `nosniff`.
+      **`includeSubDomains` queda APAGADO** y no se toca hasta dar de baja el hosting viejo:
+      el certificado de `webmail.casakira.com.ar` (emitido por cPanel) **venció el
+      17/11/2021**. Con la opción activada el navegador del cliente le bloquearía el acceso
+      al webmail sin posibilidad de saltear el aviso, y el bloqueo duraría los 6 meses
+      aunque se desactivara. Reevaluar en la Fase 5.
 
 ---
 
