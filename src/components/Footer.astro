@@ -7,8 +7,7 @@ import Icon from './Icon.astro';
 
 const secciones = [
   { href: '/nosotros', label: 'Quiénes somos' },
-  { href: '/catalogo#maquinas', label: 'Máquinas' },
-  { href: '/catalogo#repuestos', label: 'Accesorios y repuestos' },
+  { href: '/catalogo', label: 'Catálogo' },
   { href: '/servicios', label: 'Servicios' },
   { href: SITE.tiendaUrl, label: 'Tienda online', external: true },
   { href: '/contacto', label: 'Contacto' },
@@ -38,7 +37,8 @@ const secciones = [
 
       <div>
         <h4>Máquinas</h4>
-        <ul>{CATEGORIAS.map((c) => <li><a href="/catalogo#maquinas">{c.nombre}</a></li>)}</ul>
+        <!-- Cada categoría entra al catálogo ya filtrada por ella. -->
+        <ul>{CATEGORIAS.map((c) => <li><a href={`/catalogo?cat=${c.id}`}>{c.nombre}</a></li>)}</ul>
       </div>
 
       <div>

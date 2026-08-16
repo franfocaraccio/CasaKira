@@ -617,6 +617,166 @@ input,textarea,select{font:inherit;color:inherit}
 .callout__actions{display:flex;flex-wrap:wrap;gap:.5rem}
 
 /* ══════════════════════════════════════════════════════════════════════════
+   Catálogo con barra lateral (/catalogo) — opción B
+   Una sola grilla con máquinas y repuestos, y los filtros en columna al
+   costado, como en una tienda online.
+   ══════════════════════════════════════════════════════════════════════════ */
+/* Arranca pegado al menú: la página no lleva encabezado, el primer contenido
+   son los productos. Sin esto quedaban 6 rem de aire vacío arriba de todo. */
+.section--catalogo{padding-top:var(--s-6)}
+
+.cat-b{display:grid;gap:var(--s-6);align-items:start}
+@media(min-width:900px){.cat-b{grid-template-columns:15rem minmax(0,1fr);gap:var(--s-7)}}
+/* Sin barra de conteo arriba: la primera fila de tarjetas arranca a la misma
+   altura que la caja de filtros. `align-items:start` en .cat-b hace el resto. */
+.cat-b__main{min-width:0}
+
+/* La columna acompaña el scroll, pero con su propio alto máximo: la lista de
+   filtros es más larga que la pantalla y si no, el final queda inalcanzable. */
+@media(min-width:900px){
+  .cat-side{
+    position:sticky;top:calc(var(--nav-h) + var(--s-5));
+    max-height:calc(100dvh - var(--nav-h) - var(--s-6));overflow-y:auto;
+    scrollbar-width:thin;overscroll-behavior:contain;
+  }
+}
+.cat-side__caja{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:var(--s-4);
+}
+.cat-side__toggle{
+  width:100%;min-height:44px;display:flex;align-items:center;gap:.6rem;
+  padding:.5rem;border:0;background:none;cursor:pointer;
+  font-size:.9375rem;font-weight:600;color:var(--text);
+}
+.cat-side__toggle span:first-child{flex:1;text-align:left}
+.cat-side__toggle svg{transition:transform var(--dur) var(--ease)}
+.cat-side__toggle[aria-expanded="false"] svg{transform:rotate(-90deg)}
+@media(min-width:900px){.cat-side__toggle{display:none}}
+.cat-side__badge{
+  font-family:var(--font-mono);font-size:.625rem;font-weight:600;line-height:1;
+  padding:.25rem .4rem;border-radius:99px;background:var(--accent);color:var(--accent-fg);
+}
+.cat-side__badge[hidden]{display:none}
+
+.cat-side__panel{display:flex;flex-direction:column;gap:var(--s-5)}
+.cat-side__panel[hidden]{display:none}
+/* Desplegado en celular el panel mide casi 1000 px: sin tope había que
+   scrollear todo el listado de filtros para volver a ver un producto. */
+@media(max-width:899px){
+  .cat-side__panel{
+    padding-top:var(--s-4);max-height:60vh;overflow-y:auto;overscroll-behavior:contain;
+  }
+}
+.cat-side__grupo{display:flex;flex-direction:column;gap:.35rem}
+.cat-side__label{
+  font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-faint);
+  padding:0 .6rem .35rem;border-bottom:1px solid var(--border);margin-bottom:.25rem;
+}
+.cat-side__lista{list-style:none;display:flex;flex-direction:column;gap:1px;margin:0;padding:0}
+
+.cat-opt{
+  width:100%;min-height:38px;display:flex;align-items:center;justify-content:space-between;
+  gap:.6rem;padding:.45rem .6rem;border:0;border-radius:var(--r-sm);
+  background:none;text-align:left;cursor:pointer;
+  font-size:.875rem;font-weight:500;color:var(--text-muted);
+  transition:background-color var(--dur-fast) var(--ease),color var(--dur-fast) var(--ease);
+}
+@media(pointer:coarse){.cat-opt{min-height:44px}}
+.cat-opt:hover{background:var(--bg-alt);color:var(--text)}
+.cat-opt[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-on-soft);font-weight:600}
+/* Sin resultados con el filtro del otro grupo puesto: se atenúa como aviso,
+   pero se puede tocar igual (ver comentario en catalogo-filtros.ts). */
+.cat-opt[data-cero="true"]{opacity:.4}
+.cat-opt__n{
+  font-family:var(--font-mono);font-size:.6875rem;opacity:.6;
+  font-variant-numeric:tabular-nums;flex:none;
+}
+.cat-opt--todo{
+  color:var(--text);font-weight:600;
+  border:1px solid var(--border);margin-bottom:var(--s-2);
+}
+
+.cat-side__nota{font-size:.75rem;color:var(--text-faint);padding:.4rem .6rem 0}
+.cat-side__limpiar{
+  align-self:flex-start;background:none;border:0;cursor:pointer;padding:.35rem .6rem;
+  font-size:.8125rem;font-weight:500;color:var(--accent);
+  text-decoration:underline;text-underline-offset:.22em;
+}
+.cat-side__limpiar:hover{color:var(--accent-hover)}
+.cat-side__limpiar[hidden]{display:none}
+
+.c-grid{display:grid;gap:var(--s-5);grid-template-columns:1fr}
+@media(min-width:620px){.c-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.c-grid{grid-template-columns:repeat(3,1fr)}}
+
+.c-card{
+  position:relative;display:flex;flex-direction:column;overflow:hidden;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);
+  transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),
+             box-shadow var(--dur) var(--ease);
+}
+.c-card[hidden]{display:none}
+.c-card:hover{border-color:var(--border-strong);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+@media(prefers-reduced-motion:reduce){.c-card:hover{transform:none}}
+
+/* Las fotos son GIF de 250×167 sobre fondo blanco. Con `contain` se muestran a
+   su tamaño real en vez de estirarse, así que se ven nítidas; y el fondo de la
+   caja queda claro en los dos temas, porque la foto ya trae el suyo blanco. */
+.c-card__media{
+  position:relative;aspect-ratio:16/11;display:grid;place-items:center;
+  padding:var(--s-4);background:#FAFAFA;border-bottom:1px solid var(--border);
+}
+/* Sin `--photo-filter`: las fotos de producto van con su color original, no
+   desaturadas como las de ambiente del resto del sitio. En un catálogo el
+   color es información —el cono de hilado, el acabado de la máquina—, no
+   decoración que haya que apagar para que no compita con la marca. */
+.c-card__media img{
+  max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+}
+.c-card__etq{
+  position:absolute;top:.5rem;left:.5rem;border-radius:4px;
+  padding:.22rem .45rem;font-family:var(--font-mono);font-size:.625rem;
+  font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--ink);color:var(--ink-fg);
+}
+.c-card__etq[data-tipo="repuesto"]{background:var(--accent);color:var(--accent-fg)}
+
+.c-card__body{padding:var(--s-4);display:flex;flex-direction:column;gap:.625rem;flex:1}
+.c-card__title{
+  font-size:.9375rem;font-weight:600;letter-spacing:-.012em;line-height:1.32;
+  transition:color var(--dur-fast) var(--ease);
+}
+.c-card:hover .c-card__title{color:var(--accent)}
+.c-card__desc{
+  font-size:.8125rem;line-height:1.5;color:var(--text-muted);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.c-card__foot{
+  margin-top:auto;padding-top:.75rem;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+}
+.c-card__ref{
+  font-family:var(--font-mono);font-size:.6875rem;color:var(--text-faint);letter-spacing:.06em;
+}
+.c-card .link-arrow{font-size:.8125rem}
+.c-card:hover .link-arrow svg{transform:translate(3px,-3px)}
+
+/* Un solo link real por tarjeta, estirado sobre toda la superficie. */
+.c-card__link{color:inherit}
+.c-card__link::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.c-card:focus-within{outline:2px solid var(--accent);outline-offset:3px}
+.c-card__link:focus-visible{outline:none}
+
+.c-vacio{
+  padding:var(--s-7) var(--s-5);text-align:center;
+  color:var(--text-muted);font-size:.9375rem;
+  border:1px dashed var(--border-strong);border-radius:var(--r-md);
+}
+.c-vacio[hidden]{display:none}
+
+/* ══════════════════════════════════════════════════════════════════════════
    Ficha de producto (/maquinas/*.html)
    ══════════════════════════════════════════════════════════════════════════ */
 .breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--text-muted);padding-block:var(--s-5)}

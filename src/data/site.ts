@@ -73,14 +73,9 @@ export const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Inicio' },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/servicios', label: 'Servicios' },
-  {
-    href: '/catalogo',
-    label: 'Catálogo',
-    children: [
-      { href: '/catalogo#maquinas', label: 'Máquinas' },
-      { href: '/catalogo#repuestos', label: 'Accesorios y repuestos' },
-    ],
-  },
+  // Sin desplegable: el catálogo es una sola página con filtros, así que no hay
+  // dos destinos que ofrecer. Las secciones #maquinas y #repuestos ya no existen.
+  { href: '/catalogo', label: 'Catálogo' },
   { href: '/contacto', label: 'Contacto' },
 ];
 

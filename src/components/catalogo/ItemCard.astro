@@ -1,0 +1,52 @@
+---
+import Icon from '../Icon.astro';
+
+// Tarjeta única del catálogo. Sirve para los dos tipos de ítem porque la grilla
+// es una sola: una máquina lleva a su ficha, un rubro de repuestos lleva a
+// WhatsApp (no tiene ficha propia).
+//
+// Los `data-*` son lo que leen los filtros: el script no vuelve a consultar el
+// contenido, sólo compara atributos y muestra u oculta.
+
+interface Props {
+  tipo: 'maquina' | 'repuesto';
+  cat: string;
+  marca?: string;
+  href: string;
+  externo?: boolean;
+  titulo: string;
+  resumen: string;
+  chips: string[];
+  pie: string;
+  accion: string;
+  img: string;
+  alt: string;
+  etiqueta: string;
+}
+
+const { tipo, cat, marca, href, externo = false, titulo, resumen, chips, pie, accion, img, alt, etiqueta } =
+  Astro.props;
+---
+<article class="c-card" data-item data-tipo={tipo} data-cat={cat} data-marca={marca ?? ''}>
+  <div class="c-card__media">
+    <img src={`/assets/maquinas/${img}`} alt={alt} width="250" height="167" loading="lazy" decoding="async" />
+    <span class="c-card__etq" data-tipo={tipo}>{etiqueta}</span>
+  </div>
+  <div class="c-card__body">
+    <h3 class="c-card__title">
+      <a
+        class="c-card__link"
+        href={href}
+        target={externo ? '_blank' : undefined}
+        rel={externo ? 'noopener' : undefined}>{titulo}</a>
+    </h3>
+    <p class="c-card__desc">{resumen}</p>
+    {chips.length > 0 && (
+      <div class="chips">{chips.slice(0, 3).map((c) => <span class="chip chip--neutral">{c}</span>)}</div>
+    )}
+    <div class="c-card__foot">
+      <span class="c-card__ref">{pie}</span>
+      <span class="link-arrow">{accion} <Icon name="arrow" size={14} /></span>
+    </div>
+  </div>
+</article>

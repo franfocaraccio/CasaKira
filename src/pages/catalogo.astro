@@ -1,41 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
-import Maquinas from '../components/catalogo/Maquinas.astro';
-import Repuestos from '../components/catalogo/Repuestos.astro';
-import { getCollection } from 'astro:content';
-import { CATEGORIAS } from '../data/categorias';
+import CatalogoSidebar from '../components/catalogo/CatalogoSidebar.astro';
 import { waLink } from '../data/site';
-
-const maquinas = await getCollection('maquinas');
 
 const title = 'Catálogo — Máquinas, repuestos y accesorios · Casa Kira';
 const description =
   'Catálogo de máquinas de coser y bordar (rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras), con fichas técnicas. Hilados, repuestos, motores y accesorios originales. Casa Kira, CABA.';
 ---
 <Base title={title} description={description}>
-  <section class="section cat-intro">
-    <div class="wrap">
-      <nav aria-label="Migas de pan">
-        <ol class="breadcrumb">
-          <li><a href="/">Inicio</a></li>
-          <li aria-current="page">Catálogo</li>
-        </ol>
-      </nav>
-      <p class="eyebrow">Catálogo completo</p>
-      <h1 class="h-display">Máquinas, repuestos y accesorios.</h1>
-      <p class="lead">
-        Trabajamos {CATEGORIAS.length} categorías de máquinas de las principales marcas, con ficha técnica
-        de cada modelo, más hilados, repuestos y accesorios originales. Por otros modelos, consultanos.
-      </p>
-      <div class="jump-row">
-        <a class="jump" href="#maquinas">Máquinas <span class="jump__count">{maquinas.length}</span></a>
-        <a class="jump" href="#repuestos">Repuestos y accesorios</a>
-      </div>
-    </div>
-  </section>
-
-  <Maquinas />
-  <Repuestos />
+  <!-- Sin encabezado: la página arranca directamente con la grilla y la
+       columna de categorías al costado. El h1 queda igual en el documento,
+       sólo que no se dibuja: sin él la página no tiene título para Google ni
+       para un lector de pantalla. -->
+  <CatalogoSidebar />
 
   <section class="cta-band">
     <div class="tech-grid" aria-hidden="true" style="mask-image:radial-gradient(ellipse 70% 90% at 80% 50%,#000 20%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 70% 90% at 80% 50%,#000 20%,transparent 100%)"></div>
@@ -54,4 +31,5 @@ const description =
 
 <script>
   import '../scripts/enhance';
+  import '../scripts/catalogo-filtros';
 </script>

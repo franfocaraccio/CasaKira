@@ -70,8 +70,8 @@ Sigue cargando `urchin.js` (Google Analytics discontinuado en 2012).
 |---|---|
 | `index.html` — bienvenida, teléfonos, links a Mercado Libre | Hero + sección "Tienda online" |
 | `quienes.html` — desde 1968, marcas, post venta | Sección "Nosotros" |
-| `productos.html` — 7 categorías de máquinas, 13 modelos | Sección "Máquinas", con tabs por categoría |
-| `repuestos.html` — hilos, accesorios, cortantes, motores, soportes | Sección "Repuestos", en bento grid |
+| `productos.html` — 7 categorías de máquinas, 13 modelos | `/catalogo`, grilla única filtrable |
+| `repuestos.html` — hilos, accesorios, cortantes, motores, soportes | `/catalogo`, mismos 5 rubros en la misma grilla |
 | `servicios.html` — post venta, mantenimiento, reparación | Sección "Servicios" |
 | `contactos.html` — datos, horarios, formulario | Sección "Contacto" |
 | `link/index.html` — **descartada** | Directorio de intercambio de links de los 2000 (Lycos, AddMe, SurfGopher). No aporta información del negocio y hoy son enlaces rotos que perjudican el SEO. |
@@ -189,8 +189,8 @@ rojo se aclara.
 - Contraste WCAG AA con la paleta roja: 24/24 sondas en claro, 28/28 en oscuro (medido en el
   navegador, compositando el alfa de cada capa). Botón primario 5,84 en claro y 4,71 en oscuro.
 - Sin scroll horizontal ni solapes en el nav a 375, 414, 768, 1024, 1152, 1280 y 1440 px.
-- Targets táctiles ≥ 44 px en nav, tabs, botones y campos.
-- Tabs con `role="tablist"`, navegación por flechas / Home / End.
+- Targets táctiles ≥ 44 px en nav, filtros, botones y campos.
+- Filtros del catálogo con `aria-pressed`, conteo anunciado por `aria-live` y estado en la URL.
 - Formulario: validación al `blur`, error debajo del campo, foco automático en el primero que falla.
 - Menú mobile con `aria-expanded`, cierre con Escape y bloqueo de scroll.
 - `prefers-reduced-motion` desactiva marquee, reveals y contadores.
@@ -248,5 +248,6 @@ Pedidos del cliente, sin empezar. No hay orden de prioridad todavía.
 - **Logos de marcas.** Reemplazar el marquee tipográfico por los logos oficiales de las
   11 marcas (ver punto 2 de la lista de arriba, es el mismo trabajo).
 - **Sección del certificado.** Darle un lugar propio en el sitio.
-- **"Motores bajo consumo" en el catálogo.** Categoría o sección nueva en `/catalogo`.
+- **"Motores bajo consumo" en el catálogo.** El rubro «Motores» ya existe como filtro y tarjeta
+  en `/catalogo`; falta que el cliente confirme el texto sobre consumo para sumarlo a la ficha.
 - **Poner un item con la opinion y experiencia que tuvieron con nuestra empresa.**

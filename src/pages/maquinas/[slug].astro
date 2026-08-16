@@ -58,7 +58,7 @@ const jsonLd = {
       <ol class="breadcrumb">
         <li><a href="/">Inicio</a></li>
         <li><a href="/catalogo">Catálogo</a></li>
-        <li><a href="/catalogo#maquinas">{cat.nombre}</a></li>
+        <li><a href={`/catalogo?cat=${cat.id}`}>{cat.nombre}</a></li>
         <li><span aria-current="page">{d.marca}</span></li>
       </ol>
     </nav>

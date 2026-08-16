@@ -1,0 +1,165 @@
+---
+import { getCollection } from 'astro:content';
+import { CATEGORIAS } from '../../data/categorias';
+import { REPUESTOS } from '../../data/repuestos';
+import { SITE, waLink } from '../../data/site';
+import ItemCard from './ItemCard.astro';
+
+// Opción B: barra lateral de categorías, como una tienda online. Mismo
+// contenido y misma lógica que la opción A —una sola grilla con máquinas y
+// repuestos, filtros que achican— pero con los filtros en columna al costado.
+
+const maquinas = await getCollection('maquinas');
+
+const items = CATEGORIAS.flatMap((cat) =>
+  maquinas
+    .filter((m) => m.data.categoria === cat.id)
+    .sort((a, b) => a.data.orden - b.data.orden)
+    .map((m) => ({ cat, m }))
+);
+
+const marcas = [...new Set(maquinas.map((m) => m.data.marca))]
+  .map((nombre) => ({ nombre, n: maquinas.filter((m) => m.data.marca === nombre).length }))
+  .sort((a, b) => b.n - a.n || a.nombre.localeCompare(b.nombre));
+
+const catsConteo = CATEGORIAS.map((c) => ({
+  ...c,
+  n: maquinas.filter((m) => m.data.categoria === c.id).length,
+}));
+
+const total = maquinas.length + REPUESTOS.length;
+const dosDigitos = (n: number) => String(n).padStart(2, '0');
+---
+<section class="section section--catalogo" id="catalogo">
+  <h1 class="sr-only">Catálogo de máquinas, repuestos y accesorios</h1>
+  <div class="wrap cat-b">
+
+    <aside class="cat-side" data-filtros aria-label="Filtros del catálogo">
+      <div class="cat-side__caja">
+        <button class="cat-side__toggle" type="button" data-toggle aria-expanded="true" aria-controls="panel-filtros">
+          <span>Filtrar catálogo</span>
+          <span class="cat-side__badge" data-activos hidden></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+
+        <div class="cat-side__panel" id="panel-filtros" data-panel>
+          <button class="cat-opt cat-opt--todo" type="button" data-f="cat" data-v="" aria-pressed="true">
+            <span>Ver todo</span>
+            <span class="cat-opt__n" data-n>{dosDigitos(total)}</span>
+          </button>
+
+          <div class="cat-side__grupo">
+            <p class="cat-side__label" id="g-maquinas">Máquinas</p>
+            <ul class="cat-side__lista" aria-labelledby="g-maquinas">
+              {catsConteo.map((c) => (
+                <li>
+                  <button class="cat-opt" type="button" data-f="cat" data-v={c.id} aria-pressed="false">
+                    <span>{c.nombre}</span>
+                    <span class="cat-opt__n" data-n>{dosDigitos(c.n)}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="cat-side__grupo">
+            <p class="cat-side__label" id="g-repuestos">Repuestos y accesorios</p>
+            <ul class="cat-side__lista" aria-labelledby="g-repuestos">
+              {REPUESTOS.map((r) => (
+                <li>
+                  <button class="cat-opt" type="button" data-f="cat" data-v={r.id} aria-pressed="false">
+                    <span>{r.nombre}</span>
+                    <span class="cat-opt__n" data-n>01</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="cat-side__grupo">
+            <p class="cat-side__label" id="g-marca">Marca</p>
+            <ul class="cat-side__lista" aria-labelledby="g-marca">
+              <li>
+                <button class="cat-opt" type="button" data-f="marca" data-v="" aria-pressed="true">
+                  <span>Todas</span>
+                </button>
+              </li>
+              {marcas.map((m) => (
+                <li>
+                  <button class="cat-opt" type="button" data-f="marca" data-v={m.nombre} aria-pressed="false">
+                    <span>{m.nombre}</span>
+                    <span class="cat-opt__n" data-n>{dosDigitos(m.n)}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <p class="cat-side__nota" data-nota-marca hidden>Las marcas aplican sólo a las máquinas.</p>
+          </div>
+
+          <button class="cat-side__limpiar" type="button" data-limpiar hidden>Limpiar filtros</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="cat-b__main">
+      <!-- El conteo no se dibuja, pero sigue existiendo y se anuncia al filtrar:
+           quien usa lector de pantalla no ve desaparecer tarjetas, necesita que
+           algo le diga cuántas quedaron. -->
+      <p class="sr-only" data-conteo aria-live="polite">{total} productos</p>
+
+      <div class="c-grid" data-grilla>
+        {items.map(({ cat, m }) => (
+          <ItemCard
+            tipo="maquina"
+            cat={cat.id}
+            marca={m.data.marca}
+            href={`/maquinas/${m.id}`}
+            titulo={`${m.data.nombre} ${m.data.marca}`}
+            resumen={m.data.resumen}
+            chips={m.data.chips}
+            pie={m.data.ref}
+            accion="Ver ficha"
+            img={m.data.img}
+            alt={`${m.data.nombre} ${m.data.marca}`}
+            etiqueta={m.data.marca}
+          />
+        ))}
+
+        {REPUESTOS.map((r) => (
+          <ItemCard
+            tipo="repuesto"
+            cat={r.id}
+            href={waLink(`Hola Casa Kira, quería consultar por ${r.nombre.toLowerCase()}.`)}
+            externo={true}
+            titulo={r.titulo}
+            resumen={r.resumen}
+            chips={r.tags}
+            pie={`${r.tags.length} ${r.tags.length === 1 ? 'variante' : 'variantes'}`}
+            accion="Consultar"
+            img={r.img}
+            alt={r.titulo}
+            etiqueta="Repuestos"
+          />
+        ))}
+      </div>
+
+      <p class="c-vacio" data-vacio hidden>
+        No hay productos con esa combinación de filtros.
+      </p>
+
+      <div class="callout">
+        <div>
+          <h3>¿No encontrás el modelo o el repuesto que buscás?</h3>
+          <p>Trabajamos otros tipos y modelos, y fabricamos piezas para maquinaria antigua o discontinuada.</p>
+        </div>
+        <div class="callout__actions">
+          <a class="btn btn--primary btn--sm" href={waLink()} target="_blank" rel="noopener">Consultar por WhatsApp</a>
+          <a class="btn btn--ghost btn--sm" href={`tel:${SITE.tel}`}>{SITE.telHumano}</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
