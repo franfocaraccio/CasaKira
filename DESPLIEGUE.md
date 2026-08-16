@@ -347,8 +347,14 @@ Tres cosas que hacen fallar esto y cuestan un rato de averiguar:
    Zoho. La app de Zoho Mail no tiene este problema.
 3. **El acceso IMAP tiene que estar habilitado** en la casilla:
    *Configuración → Cuentas de correo → `casakirasrl@casakira.com.ar` → sección IMAP →*
-   tildar **Acceso IMAP**. Si aparece bloqueado, lo restringe una política de organización
-   y se destraba desde la consola de administración.
+   tildar **Acceso IMAP**. Venía desactivado de fábrica; se activó el 2026-08-16. Si
+   aparece bloqueado, lo restringe una política de organización y se destraba desde la
+   consola de administración.
+
+En esa misma pantalla se **desactivó el acceso POP**, que venía activo. POP *descarga* el
+correo al dispositivo en vez de sincronizarlo: si alguien configurara el teléfono con POP
+por error, podría llevarse los mails del servidor. Con sólo IMAP habilitado ese error deja
+de ser posible, y para el uso normal no falta nada.
 
 ---
 
