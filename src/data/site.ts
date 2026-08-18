@@ -71,12 +71,12 @@ export interface NavLink {
 
 export const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Inicio' },
-  { href: '/nosotros', label: 'Nosotros' },
-  { href: '/servicios', label: 'Servicios' },
+  { href: '/nosotros/', label: 'Nosotros' },
+  { href: '/servicios/', label: 'Servicios' },
   // Sin desplegable: el catálogo es una sola página con filtros, así que no hay
   // dos destinos que ofrecer. Las secciones #maquinas y #repuestos ya no existen.
-  { href: '/catalogo', label: 'Catálogo' },
-  { href: '/contacto', label: 'Contacto' },
+  { href: '/catalogo/', label: 'Catálogo' },
+  { href: '/contacto/', label: 'Contacto' },
 ];
 
 /** Link de WhatsApp, con mensaje ya redactado si se pasa uno. */

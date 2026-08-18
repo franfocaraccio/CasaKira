@@ -50,7 +50,7 @@ const slides = [
 
 const cards = [
   {
-    n: '01', href: '/catalogo', img: 'maquinas.jpg',
+    n: '01', href: '/catalogo/', img: 'maquinas.jpg',
     alt: 'Máquinas de coser industriales alineadas en un taller',
     h: 'Máquinas de coser y bordar',
     p: 'Rectas, overlock, interlock, de poste, atracadoras, ojaladoras y cortadoras de tela. Industriales y familiares.',
@@ -58,7 +58,7 @@ const cards = [
     go: 'Ver máquinas',
   },
   {
-    n: '02', href: '/catalogo?cat=accesorios', img: 'accesorios.jpg',
+    n: '02', href: '/catalogo/?cat=accesorios', img: 'accesorios.jpg',
     alt: 'Estantes de taller con accesorios y herramientas',
     h: 'Accesorios y herramientas',
     p: 'Prensatelas, guías, cuchillas, bobinas y chapas. Tijeras, cortantes, pinzas especiales y abridores de costura.',
@@ -66,7 +66,7 @@ const cards = [
     go: 'Ver accesorios',
   },
   {
-    n: '03', href: '/catalogo?cat=hilados', img: 'hilos.png',
+    n: '03', href: '/catalogo/?cat=hilados', img: 'hilos.png',
     alt: 'Conos de hilo de distintos colores',
     h: 'Repuestos e insumos',
     p: 'Repuestos originales de las principales marcas e hilados 100% poliéster para coser y bordar.',
@@ -129,7 +129,7 @@ const cards = [
           <p class="pc-eyebrow">Catálogo</p>
           <h2 class="pc-h2">Todo lo que el taller necesita.</h2>
         </div>
-        <a class="link-arrow" href="/catalogo">Ver el catálogo completo <Icon name="arrowUpRight" size={15} /></a>
+        <a class="link-arrow" href="/catalogo/">Ver el catálogo completo <Icon name="arrowUpRight" size={15} /></a>
       </div>
 
       <div class="pc-cards">
@@ -160,7 +160,7 @@ const cards = [
         <p>Contanos qué producís y te recomendamos la máquina que mejor se adapta.</p>
       </div>
       <div class="pc-cta">
-        <a class="btn btn--w" href="/contacto">Pedir presupuesto</a>
+        <a class="btn btn--w" href="/contacto/">Pedir presupuesto</a>
         <a class="btn btn--wg" href={`tel:${SITE.tel}`}>{SITE.telHumano}</a>
       </div>
     </div>

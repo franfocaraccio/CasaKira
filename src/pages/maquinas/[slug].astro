@@ -36,7 +36,7 @@ const jsonLd = {
   brand: { '@type': 'Brand', name: d.marca },
   category: cat.titulo,
   image: imgAbs,
-  url: `${SITE.dominio}/maquinas/${m.id}`,
+  url: `${SITE.dominio}/maquinas/${m.id}/`,
   offers: {
     '@type': 'Offer',
     availability: 'https://schema.org/InStock',
@@ -57,8 +57,8 @@ const jsonLd = {
     <nav aria-label="Migas de pan">
       <ol class="breadcrumb">
         <li><a href="/">Inicio</a></li>
-        <li><a href="/catalogo">Catálogo</a></li>
-        <li><a href={`/catalogo?cat=${cat.id}`}>{cat.nombre}</a></li>
+        <li><a href="/catalogo/">Catálogo</a></li>
+        <li><a href={`/catalogo/?cat=${cat.id}`}>{cat.nombre}</a></li>
         <li><span aria-current="page">{d.marca}</span></li>
       </ol>
     </nav>
@@ -116,7 +116,7 @@ const jsonLd = {
     <section class="related">
       <div class="related__head">
         <h2>{hermanos.length ? `Otros modelos de ${cat.nombre.toLowerCase()}` : 'También te puede servir'}</h2>
-        <a class="link-arrow" href="/catalogo">Ver todo el catálogo <Icon name="arrow" size={15} /></a>
+        <a class="link-arrow" href="/catalogo/">Ver todo el catálogo <Icon name="arrow" size={15} /></a>
       </div>
       <div class="machines">
         {relacionados.map((o) => (
@@ -144,7 +144,7 @@ const jsonLd = {
       </div>
       <div class="cta-band__actions">
         <a class="btn btn--ink" href={waHref} target="_blank" rel="noopener">Consultar por esta máquina</a>
-        <a class="btn btn--ink-ghost" href="/contacto">Ver datos de contacto</a>
+        <a class="btn btn--ink-ghost" href="/contacto/">Ver datos de contacto</a>
       </div>
     </div>
   </section>

@@ -6,11 +6,11 @@ import BrandIcon from './BrandIcon.astro';
 import Icon from './Icon.astro';
 
 const secciones = [
-  { href: '/nosotros', label: 'Quiénes somos' },
-  { href: '/catalogo', label: 'Catálogo' },
-  { href: '/servicios', label: 'Servicios' },
+  { href: '/nosotros/', label: 'Quiénes somos' },
+  { href: '/catalogo/', label: 'Catálogo' },
+  { href: '/servicios/', label: 'Servicios' },
   { href: SITE.tiendaUrl, label: 'Tienda online', external: true },
-  { href: '/contacto', label: 'Contacto' },
+  { href: '/contacto/', label: 'Contacto' },
 ];
 ---
 <footer class="footer">
@@ -38,7 +38,7 @@ const secciones = [
       <div>
         <h4>Máquinas</h4>
         <!-- Cada categoría entra al catálogo ya filtrada por ella. -->
-        <ul>{CATEGORIAS.map((c) => <li><a href={`/catalogo?cat=${c.id}`}>{c.nombre}</a></li>)}</ul>
+        <ul>{CATEGORIAS.map((c) => <li><a href={`/catalogo/?cat=${c.id}`}>{c.nombre}</a></li>)}</ul>
       </div>
 
       <div>

@@ -13,7 +13,7 @@ interface Props {
 }
 const { slug, nombre, marca, ref, img, chips, feats, heading = 'h4' } = Astro.props;
 const H = heading;
-const url = `/maquinas/${slug}`;
+const url = `/maquinas/${slug}/`;
 ---
 <article class="m-card">
   <a class="m-card__media" href={url} tabindex="-1" aria-hidden="true">

@@ -115,7 +115,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, '0');
             tipo="maquina"
             cat={cat.id}
             marca={m.data.marca}
-            href={`/maquinas/${m.id}`}
+            href={`/maquinas/${m.id}/`}
             titulo={`${m.data.nombre} ${m.data.marca}`}
             resumen={m.data.resumen}
             chips={m.data.chips}
