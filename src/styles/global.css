@@ -483,6 +483,11 @@ input,textarea,select{font:inherit;color:inherit}
 .photo-panel--square img{aspect-ratio:1/1}
 @media(min-width:1024px){.photo-panel--square{max-width:520px;margin-left:auto}}
 .photo-panel:hover img{filter:saturate(.75) contrast(1.03);transform:scale(1.02)}
+/* La fachada de Nosotros: siempre a color, sin el grisado ambiente del resto
+   de fotos del sitio — el amarillo del cartel es parte de la marca. Sólo
+   conserva el zoom leve al pasar el mouse. */
+.photo-panel--color img{filter:none}
+.photo-panel--color:hover img{filter:none;transform:scale(1.02)}
 .photo-panel__tag{
   position:absolute;top:var(--s-4);left:var(--s-4);
   background:var(--nav-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
