@@ -1,7 +1,9 @@
 ---
 // Las tarjetas de "Importador directo" y "Servicio técnico propio" se mudaron
 // a la sección Servicios: hablan de lo que hacemos, no de quiénes somos.
+import { Picture } from 'astro:assets';
 import { marcasEnProsa } from '../../data/site';
+import imgFrente from '../../assets/nosotros/frente.jpg';
 ---
 <section class="section" id="nosotros">
   <div class="wrap">
@@ -37,7 +39,14 @@ import { marcasEnProsa } from '../../data/site';
 
       <div class="reveal">
         <div class="photo-panel photo-panel--square">
-          <img src="/assets/maquinas/Foto-Quienes.gif" alt="Salón de ventas de Casa Kira con máquinas de coser industriales" width="295" height="303" loading="lazy" />
+          <Picture
+            src={imgFrente}
+            alt="Frente del local de Casa Kira en Av. Forest 888, con el cartel de la casa y la vidriera"
+            formats={['avif', 'webp']}
+            widths={[320, 480, 640, 960, 1200]}
+            sizes="(min-width: 1024px) 520px, calc(100vw - 3rem)"
+            loading="lazy"
+          />
           <span class="photo-panel__tag">Casa central · Av. Forest 888</span>
         </div>
       </div>
